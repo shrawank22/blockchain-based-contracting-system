@@ -143,10 +143,10 @@ contract ContractingPlatform {
 	function getProjectDetails(address _partyAddress, uint256 _projectId) public view returns (string memory, string memory, uint256, bool) {
 	    require(parties[_partyAddress].projects[_projectId].budget > 0, "Project does not exist");
 	    return (
-		parties[_partyAddress].projects[_projectId].title,
-		parties[_partyAddress].projects[_projectId].description,
-		parties[_partyAddress].projects[_projectId].budget,
-		parties[_partyAddress].projects[_projectId].isOpen
+            parties[_partyAddress].projects[_projectId].title,
+            parties[_partyAddress].projects[_projectId].description,
+            parties[_partyAddress].projects[_projectId].budget,
+            parties[_partyAddress].projects[_projectId].isOpen
 	    );
 	}
 }
