@@ -1,0 +1,125 @@
+.register {
+    background: -webkit-linear-gradient(left, #11101D, #11101D);
+    padding: 3%;
+    height: 100%;
+  }
+  
+  
+  .register-right {
+    margin: 5% auto;
+    height: 450px;
+    background: #E4E9F7;
+    border-radius: 2%;
+    box-shadow: 0px 3px 6px #00000029;
+  }
+  
+  
+  @-webkit-keyframes mover {
+    0% {
+      transform: translateY(0);
+    }
+  
+    100% {
+      transform: translateY(-20px);
+    }
+  }
+  
+  @keyframes mover {
+    0% {
+      transform: translateY(0);
+    }
+  
+    100% {
+      transform: translateY(-20px);
+    }
+  }
+  
+  
+  .register .register-form {
+    padding: 2% 10% 2% 10%;
+  }
+  
+  .btnRegister {
+    margin:1em;
+    border: none;
+    border-radius: 1.5rem;
+    padding: 2%;
+    background: #11101D;
+    color: #fff;
+    font-weight: 600;
+    width: 150px;
+    cursor: pointer;
+  }
+  
+  .register .nav-tabs {
+    margin-top: 3%;
+    border: none;
+    background: #0062cc;
+    border-radius: 1.5rem;
+    width: 28%;
+    float: right;
+  }
+  
+  .register .nav-tabs .nav-link {
+    padding: 2%;
+    height: 34px;
+    font-weight: 600;
+    color: #fff;
+    border-top-right-radius: 1.5rem;
+    border-bottom-right-radius: 1.5rem;
+  }
+  
+  .register .nav-tabs .nav-link:hover {
+    border: none;
+  }
+  
+  .register .nav-tabs .nav-link.active {
+    width: 100px;
+    color: #0062cc;
+    border: 2px solid #0062cc;
+    border-top-left-radius: 1.5rem;
+    border-bottom-left-radius: 1.5rem;
+  }
+  
+  
+  .form-group input,
+  .form-group select {
+    margin: 10px 0px;
+    border-radius: 7px;
+  }
+  
+  .label label {
+    margin-top: 20px;
+  }
+  
+  .logo {
+    text-align: center;
+    margin: 10px 0px;
+  }
+  
+  .logo i,
+  .logo span {
+    font-size: 40px;
+  }
+  
+  .error-message {
+    margin-top: 10px;
+    color: red;
+    font-size: 10px;
+  }
+  
+  .register-text {
+    text-align: center;
+    font-size: small;
+    a{
+      color: #9B40CC;
+    }
+  }
+  
+  .register-link {
+    text-decoration: none
+  }
+  
+  .login-button {
+    text-align: center;
+  }
