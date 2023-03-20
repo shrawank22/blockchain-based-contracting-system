@@ -134,21 +134,21 @@ contract ContractingPlatform {
     }
 
     // Function for getting all the projects ids associated with a particular party
-	function getProjectIds(address _partyAddress) public view returns (uint256[] memory) {
-	    require(parties[_partyAddress].partyAddress != address(0), "Party does not exist");
-	    return parties[_partyAddress].projectIds;
-	}
+    function getProjectIds(address _partyAddress) public view returns (uint256[] memory) {
+	require(parties[_partyAddress].partyAddress != address(0), "Party does not exist");
+	return parties[_partyAddress].projectIds;
+    }
 
     // Function for getting details of a project
-	function getProjectDetails(address _partyAddress, uint256 _projectId) public view returns (string memory, string memory, uint256, bool) {
-	    require(parties[_partyAddress].projects[_projectId].budget > 0, "Project does not exist");
-	    return (
+    function getProjectDetails(address _partyAddress, uint256 _projectId) public view returns (string memory, string memory, uint256, bool) {
+	require(parties[_partyAddress].projects[_projectId].budget > 0, "Project does not exist");
+	return (
             parties[_partyAddress].projects[_projectId].title,
             parties[_partyAddress].projects[_projectId].description,
             parties[_partyAddress].projects[_projectId].budget,
             parties[_partyAddress].projects[_projectId].isOpen
-	    );
-	}
+	);
+    }
 }
 
 
