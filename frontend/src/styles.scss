@@ -1,0 +1,27 @@
+/* You can add global styles to this file, and also import other style files */
+@import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+@import '../node_modules/boxicons/css/boxicons.min.css';
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
+
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background: #E4E9F7;
+}
+
+/* Importing Bootstrap SCSS file. */
+// @import '~bootstrap/scss/bootstrap';
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
