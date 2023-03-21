@@ -7,6 +7,19 @@
   box-sizing: border-box;
   font-family: "Poppins" , sans-serif;
 }
+
+.rounded-circle{
+  border-radius: 50% !important;
+  width: 40px;
+  height: 40px;
+}
+.dropdown-icons {
+  margin-right: 1em;
+}
+.dashboard-icon {
+  width: 4px;
+  height: 4px;
+}
 .sidebar{
   position: fixed;
   left: 0;

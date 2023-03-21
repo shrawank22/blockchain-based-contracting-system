@@ -1,11 +1,22 @@
 <nav class="navbar navbar-light" style="background-color: #11101D; height: 4rem;">
-    <nav class="header-nav ms-auto">
-      <a [matMenuTriggerFor]="menu" class="nav-link nav-profile d-flex align-items-center pe-0" data-bs-toggle="dropdown">
+    <nav class="header-nav ms-auto">   
+      <a [matMenuTriggerFor]="menu" class="nav-link nav-profile d-flex align-items-center pe-0" data-bs-toggle="dropdown" style="margin: 0 32px 0 0; cursor: pointer;">
+        <img src="../../assets/images/profile.png" alt="Profile" class="rounded-circle">
         <span class="d-none d-md-block dropdown-toggle ps-2" style="color: white;">User 1</span>
       </a>
       <mat-menu #menu="matMenu">
-        <button mat-menu-item>Item 1</button>
-        <button mat-menu-item>Item 2</button>
+        <button mat-menu-item>
+          <a class="dropdown-item d-flex align-items-center" routerLink="/connet-to-wallet">
+            <i class='bx bxs-wallet dropdown-icons' ></i>
+            <span>Connect to Wallet</span>
+          </a>
+        </button>
+        <button mat-menu-item>
+          <a class="dropdown-item d-flex align-items-center" routerLink="/login">
+            <i class='bx bx-log-out dropdown-icons' ></i>
+            <span>Sign Out</span>
+          </a>
+        </button>
       </mat-menu>
     </nav>
   </nav>
@@ -18,55 +29,38 @@
     <ul class="nav-list">
       <li>
         <a routerLink="/dashboard" routerLinkActive="active-link">
-          <i class='bx bx-grid-alt'></i>
+          <img class= "dashboard-icon" src="../../assets/images/icons8-dashboard-layout-48.png" alt="bid-icon" />
           <span class="links_name">Dashboard</span>
         </a>
         <span class="tooltip">Dashboard</span>
       </li>
       <li>
         <a href="#">
-          <i class='bx bx-user'></i>
+          <img class= "dashboard-icon" src="../../assets/images/icons8-clipboard-list-64.png" alt="bid-icon" />
           <span class="links_name">Active Tenders</span>
         </a>
         <span class="tooltip">Active Tenders</span>
       </li>
       <li>
         <a href="#">
-          <i class='bx bx-chat'></i>
+          <img class= "dashboard-icon" src="../../assets/images/icons8-ballot-48.png" alt="bid-icon" />
           <span class="links_name">Tenders</span>
         </a>
         <span class="tooltip">Tenders</span>
       </li>
       <li>
         <a href="#">
-          <i class='bx bx-wallet-alt'></i>
-          <span class="links_name">Connect Wallet</span>
-        </a>
-        <span class="tooltip">Connect Wallet</span>
-      </li>
-      <li>
-        <a href="#">
-          <i class='bx bx-folder'></i>
+          <img class= "dashboard-icon" src="../../assets/images/icons8-bid-64.png" alt="bid-icon" />
           <span class="links_name">Bids</span>
         </a>
         <span class="tooltip">Bids</span>
       </li>
       <li>
         <a href="#">
-          <i class='bx bx-cart-alt'></i>
+          <img class= "dashboard-icon" src="../../assets/images/icons8-project-64.png" alt="project-icon" />
           <span class="links_name">Projects</span>
         </a>
         <span class="tooltip">Projects</span>
-      </li>
-      <li class="profile">
-        <div class="profile-details">
-          <!--<img src="profile.jpg" alt="profileImg">-->
-          <div class="name_job">
-            <div class="name">Account number</div>
-            <div class="job">121212121 </div>
-          </div>
-        </div>
-        <i class='bx bx-log-out' id="log_out"></i>
       </li>
     </ul>
   </div>
