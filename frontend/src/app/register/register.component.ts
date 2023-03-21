@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { CustomValidationService } from '../services/custom-validation.service';
 import { RegisterService } from '../services/register.service';
 import Swal from 'sweetalert2';
+import { Web3Service } from '../services/web3.service';
 
 @Component({
   selector: 'app-register',
@@ -15,7 +16,7 @@ export class RegisterComponent {
     factoryDetails: ["", [Validators.required, Validators.minLength(3)]],
     factoryLocation: ["", [Validators.required, Validators.minLength(3)]],
     industryType: ["", [Validators.required, Validators.minLength(3)]],
-    employeeId: ["", [Validators.required, Validators.minLength(1), Validators.pattern('[0-9]+')]],
+    walletId: ["", [Validators.required, Validators.minLength(1)]],
     contact: ["", [Validators.required, Validators.minLength(8), Validators.pattern('[- +()0-9]+')]],
     email: ["", [Validators.required, Validators.pattern('^[^\\s@]+@[^\\s@]+\\.[^\\s@]{2,}$')]],
     password: ["", [Validators.required,
@@ -29,7 +30,9 @@ export class RegisterComponent {
     validators: this.customvalidator.passwordMatchValidator("password", "confirmPassword")
   })
 
-  constructor(private fb: FormBuilder, private customvalidator: CustomValidationService, private router: Router, private registerService: RegisterService) {
+  constructor(private fb: FormBuilder, private customvalidator: CustomValidationService,
+    private router: Router, private registerService: RegisterService,
+    private web3Service: Web3Service) {
 
   }
 
@@ -48,8 +51,8 @@ export class RegisterComponent {
     return this.registerForm.get('industryType');
   }
 
-  get employeeId() {
-    return this.registerForm.get('employeeId');
+  get walletId() {
+    return this.registerForm.get('walletId');
   }
   get contact() {
     return this.registerForm.get('contact');
@@ -98,4 +101,8 @@ export class RegisterComponent {
     this.router.navigateByUrl('/login');
   }
 
+  getAddress() {
+    this.web3Service.connectToMetaMask();
+    this.registerForm.controls['walletId'].setValue(this.web3Service.address);
+  }
 }
