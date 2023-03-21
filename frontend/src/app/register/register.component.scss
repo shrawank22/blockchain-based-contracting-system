@@ -148,3 +148,20 @@
     color: red;
     font-size: 10px;
   }
+
+  .connect-to-wallet {
+    margin-top: 20px;
+  }
+
+  .addMore{
+    border: none;
+    width: 32px;
+    height: 32px;
+    background-color: #eee;
+    transition: all ease-in-out 0.2s;
+    cursor: pointer;
+  }
+  .addMore:hover{
+    border: 1px solid #888;
+    background-color: #ddd;
+  }

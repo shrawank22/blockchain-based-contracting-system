@@ -99,17 +99,25 @@
                 <div class="col-md-6 label">
                   <label for="employeeDetails">EMPLOYEE DETAILS</label>
                   <div class="form-group">
-                    <input type="number" formControlName="employeeId"
-                    [ngClass]="{'is-invalid':employeeId?.errors && employeeId?.touched}"
-                     class="form-control" placeholder="Employee Id"
-                      value="" />
+                    <div class="input-group mb-3">
+                      <input type="text"  
+                      [ngClass]="{'is-invalid':walletId?.errors && walletId?.touched}"
+                      class="form-control" placeholder="Eth Address"
+                      value="" disabled>
+                      <button class="btn btn-outline-secondary connect-to-wallet" 
+                        (click)="getAddress()"
+                        type="button"
+                        title="connect to wallet"> 
+                        <i class='bx bx-wallet-alt'></i>
+                      </button>
                       <div class="error-message"
-                      *ngIf="!employeeId?.valid && employeeId?.touched">
-                      <div [hidden]="!employeeId?.errors?.['required']">
+                      *ngIf="!walletId?.valid && walletId?.touched">
+                      <div [hidden]="!walletId?.errors?.['required']">
                           Employee Id is required
                       </div>
-                      <div [hidden]="!employeeId?.errors?.['pattern']">
+                      <div [hidden]="!walletId?.errors?.['pattern']">
                         Employee Id should be valid
+                      </div>
                       </div>
                     </div>
                   </div>

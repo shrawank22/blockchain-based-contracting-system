@@ -11,6 +11,7 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatCardModule } from '@angular/material/card';
 import { MatMenuModule } from '@angular/material/menu';
+import { ConnectToWalletComponent } from './connect-to-wallet/connect-to-wallet.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { MatMenuModule } from '@angular/material/menu';
     LoginComponent,
     RegisterComponent,
     DashboardComponent,
-    NavbarComponent
+    NavbarComponent,
+    ConnectToWalletComponent
   ],
   imports: [
     BrowserModule,
