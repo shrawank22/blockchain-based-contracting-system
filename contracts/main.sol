@@ -141,51 +141,6 @@ contract ContractingPlatform {
         project.bids[bidId] = newBid;
     }
 
-    // Function for selecting party with minimum bid and returning amounts to all 
-    function selectBid(address _partyAddress, uint256 _projectId) public payable {
-        Project storage project = parties[_partyAddress].projects[_projectId];
-        require(msg.sender == project.creator, "Only project creator can select the winner");
-        require(!project.isOpen, "Project must be closed to select a winner");
-        require(block.timestamp >= project.deadline, "Bidding has not yet ended");
-
-        uint256 bidCount = project.bidIds.length;
-
-        require(bidCount > 0, "No bids have been placed for this project");
-
-        uint256 lowestBid = project.budget;
-        address payable lowestBidder = payable(address(0));
-
-        // Find the lowest bid
-        for (uint256 i = 0; i < bidCount; i++) {
-            uint256 bidId = project.bidIds[i];
-            Bid storage bid = project.bids[bidId];
-            if (bid.amount < lowestBid) {
-                lowestBid = bid.amount;
-                lowestBidder = payable(bid.bidder);
-            }
-        }
-
-        // Return the funds to all bidders except the winner
-        for (uint256 i = 0; i < bidCount; i++) {
-            uint256 bidId = project.bidIds[i];
-            Bid storage bid = project.bids[bidId];
-            address payable bidder = payable(bid.bidder);
-            uint256 amount = bid.amount;
-
-            if (bidder != lowestBidder) {
-                (bool success, ) = bidder.call{value: amount}("");
-                require(success, "Failed to send funds to bidder");
-            }
-        }
-
-        // Transfer the funds to the winner
-        (bool success1, ) = lowestBidder.call{value: lowestBid}("");
-        require(success1, "Failed to transfer funds to winner");
-
-        project.lowestBidder = lowestBidder;
-        project.lowestBid = lowestBid;
-    }
-
    // For getting bid count on a particular project
    function getBidCount(address _partyAddress, uint256 _projectId) public view returns (uint256) {
     	require(parties[_partyAddress].projects[_projectId].budget > 0, "Project does not exist");
