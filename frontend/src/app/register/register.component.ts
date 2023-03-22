@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 import { CustomValidationService } from '../services/custom-validation.service';
 import { RegisterService } from '../services/register.service';
 import Swal from 'sweetalert2';
-import { Web3Service } from '../services/web3.service';
 
 @Component({
   selector: 'app-register',
@@ -30,9 +29,10 @@ export class RegisterComponent {
     validators: this.customvalidator.passwordMatchValidator("password", "confirmPassword")
   })
 
+  web3Provider: any = null;
+  address: string = "";
   constructor(private fb: FormBuilder, private customvalidator: CustomValidationService,
-    private router: Router, private registerService: RegisterService,
-    private web3Service: Web3Service) {
+    private router: Router, private registerService: RegisterService) {
 
   }
 
@@ -72,7 +72,6 @@ export class RegisterComponent {
     return this.registerForm.get('securityAnswer');
   }
 
-
   onSubmit() {
     this.registerService.register(this.registerForm.value)
       .subscribe(success => {
@@ -102,7 +101,31 @@ export class RegisterComponent {
   }
 
   getAddress() {
-    this.web3Service.connectToMetaMask();
-    this.registerForm.controls['walletId'].setValue(this.web3Service.address);
+    let ethereum = (window as { [key: string]: any })['ethereum'];
+    if (typeof ethereum !== 'undefined') {
+      this.address = "";
+      console.log('MetaMask is installed!');
+    }
+    if (ethereum) {
+      this.web3Provider = ethereum;
+      try {
+        // Request account access
+        ethereum.request({ method: 'eth_requestAccounts' }).then((address: any) => {
+          this.address = address[0];
+          this.registerForm.controls['walletId'].setValue(this.address);
+          console.log("Account connected: ", address[0]);
+        });
+      } catch (error) {
+        // User denied account access...
+        this.address = "";
+        this.registerForm.controls['walletId'].setValue(this.address);
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'User denied account access '
+        });
+        console.error("User denied account access");
+      }
+    }
   }
 }
