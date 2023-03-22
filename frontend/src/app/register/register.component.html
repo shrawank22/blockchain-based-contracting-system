@@ -100,10 +100,10 @@
                   <label for="employeeDetails">EMPLOYEE DETAILS</label>
                   <div class="form-group">
                     <div class="input-group mb-3">
-                      <input type="text"  
+                      <input type="text"  formControlName="walletId" 
                       [ngClass]="{'is-invalid':walletId?.errors && walletId?.touched}"
                       class="form-control" placeholder="Eth Address"
-                      value="" disabled>
+                      value="">
                       <button class="btn btn-outline-secondary connect-to-wallet" 
                         (click)="getAddress()"
                         type="button"
@@ -113,10 +113,10 @@
                       <div class="error-message"
                       *ngIf="!walletId?.valid && walletId?.touched">
                       <div [hidden]="!walletId?.errors?.['required']">
-                          Employee Id is required
+                          Wallet address is required
                       </div>
                       <div [hidden]="!walletId?.errors?.['pattern']">
-                        Employee Id should be valid
+                        Wallet address  should be valid
                       </div>
                       </div>
                     </div>

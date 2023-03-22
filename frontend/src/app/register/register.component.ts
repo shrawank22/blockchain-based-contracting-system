@@ -15,7 +15,7 @@ export class RegisterComponent {
     factoryDetails: ["", [Validators.required, Validators.minLength(3)]],
     factoryLocation: ["", [Validators.required, Validators.minLength(3)]],
     industryType: ["", [Validators.required, Validators.minLength(3)]],
-    walletId: ["", [Validators.required, Validators.minLength(1)]],
+    walletId: [{ value:"", disabled: true}, [Validators.required, Validators.minLength(1)]],
     contact: ["", [Validators.required, Validators.minLength(8), Validators.pattern('[- +()0-9]+')]],
     email: ["", [Validators.required, Validators.pattern('^[^\\s@]+@[^\\s@]+\\.[^\\s@]{2,}$')]],
     password: ["", [Validators.required,
@@ -104,7 +104,6 @@ export class RegisterComponent {
     let ethereum = (window as { [key: string]: any })['ethereum'];
     if (typeof ethereum !== 'undefined') {
       this.address = "";
-      console.log('MetaMask is installed!');
     }
     if (ethereum) {
       this.web3Provider = ethereum;
@@ -113,7 +112,6 @@ export class RegisterComponent {
         ethereum.request({ method: 'eth_requestAccounts' }).then((address: any) => {
           this.address = address[0];
           this.registerForm.controls['walletId'].setValue(this.address);
-          console.log("Account connected: ", address[0]);
         });
       } catch (error) {
         // User denied account access...
