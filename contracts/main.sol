@@ -2,10 +2,9 @@
 
 pragma solidity >=0.7.0 <0.9.0;
 
-
 contract ContractingPlatform {
 
-    //Bidding Struct
+    // Bidding Struct
     struct Bid {
         string message;
         uint256 amount;
@@ -44,9 +43,10 @@ contract ContractingPlatform {
     constructor() {
         admin = msg.sender;
     }
-    
+
     // Function for creating party
     function createParty(string memory _name, address _partyAddress) public {
+        require(_partyAddress != admin, "Admin can't be a party");
         require(msg.sender == admin, "Only admin can create a party");
         require(parties[_partyAddress].partyAddress == address(0), "Party already exists");
 
@@ -79,7 +79,7 @@ contract ContractingPlatform {
             }
         }
     }
-    
+
     // Function for creating a project
     function createProject(uint256 _budget, string memory _title, string memory _description, uint256 _deadline) public returns (uint256) {
         require(parties[msg.sender].partyAddress != address(0), "Party does not exist");
@@ -101,13 +101,15 @@ contract ContractingPlatform {
 
     // Function for updating projects
     function updateProject(uint256 _projectId, uint256 _newBudget, string memory _newTitle, string memory _newDescription, uint256 _newDeadline) public {
-        require(parties[msg.sender].projects[_projectId].budget > 0, "Project does not exist");
-        require(parties[msg.sender].projects[_projectId].creator == msg.sender, "Only the creator of the project can update it");
-        require(parties[msg.sender].projects[_projectId].isOpen, "Project is closed and cannot be updated");
-        parties[msg.sender].projects[_projectId].budget = _newBudget;
-        parties[msg.sender].projects[_projectId].title = _newTitle;
-        parties[msg.sender].projects[_projectId].description = _newDescription;
-        parties[msg.sender].projects[_projectId].deadline = _newDeadline;
+        Project storage project = parties[msg.sender].projects[_projectId];
+        require(project.budget > 0, "Project does not exist");
+        require(project.creator == msg.sender, "Only the creator of the project can update it");
+        require(project.isOpen, "Project is closed and cannot be updated");
+        project.budget = _newBudget;
+        project.title = _newTitle;
+        project.description = _newDescription;
+        // project.isOpen = _isOpen;
+        project.deadline = _newDeadline;
     }
     
     // Function for closing projects
@@ -118,7 +120,87 @@ contract ContractingPlatform {
         require(block.timestamp >= project.deadline, "Bidding has not yet ended");
         require(project.isOpen, "Project is already closed");
         project.isOpen = false;
-        project.lowestBidder.transfer(parties[msg.sender].projects[_projectId].lowestBid);
+    }
+
+    // Function for creating bids on projects
+    function createBid(address _partyAddress, uint256 _projectId, string memory _message, uint256 _amount) public{
+        Project storage project = parties[_partyAddress].projects[_projectId];
+        require(parties[msg.sender].partyAddress != address(0), "Party does not exist");
+        require(project.budget > 0, "Project does not exist");
+        require(project.isOpen, "Project is not open for bids");
+        require(block.timestamp < project.deadline, "Bidding has ended");
+        require(msg.sender != project.creator, "Owner cannot bid on their own project");
+
+        Bid memory newBid = Bid({
+            message: _message,
+            amount: _amount,
+            bidder: msg.sender
+        });
+        uint256 bidId = project.bidIds.length;
+        project.bidIds.push(bidId);
+        project.bids[bidId] = newBid;
+    }
+
+    // Function for selecting party with minimum bid and returning amounts to all 
+    function selectBid(address _partyAddress, uint256 _projectId) public payable {
+        Project storage project = parties[_partyAddress].projects[_projectId];
+        require(msg.sender == project.creator, "Only project creator can select the winner");
+        require(!project.isOpen, "Project must be closed to select a winner");
+        require(block.timestamp >= project.deadline, "Bidding has not yet ended");
+
+        uint256 bidCount = project.bidIds.length;
+
+        require(bidCount > 0, "No bids have been placed for this project");
+
+        uint256 lowestBid = project.budget;
+        address payable lowestBidder = payable(address(0));
+
+        // Find the lowest bid
+        for (uint256 i = 0; i < bidCount; i++) {
+            uint256 bidId = project.bidIds[i];
+            Bid storage bid = project.bids[bidId];
+            if (bid.amount < lowestBid) {
+                lowestBid = bid.amount;
+                lowestBidder = payable(bid.bidder);
+            }
+        }
+
+        // Return the funds to all bidders except the winner
+        for (uint256 i = 0; i < bidCount; i++) {
+            uint256 bidId = project.bidIds[i];
+            Bid storage bid = project.bids[bidId];
+            address payable bidder = payable(bid.bidder);
+            uint256 amount = bid.amount;
+
+            if (bidder != lowestBidder) {
+                (bool success, ) = bidder.call{value: amount}("");
+                require(success, "Failed to send funds to bidder");
+            }
+        }
+
+        // Transfer the funds to the winner
+        (bool success1, ) = lowestBidder.call{value: lowestBid}("");
+        require(success1, "Failed to transfer funds to winner");
+
+        project.lowestBidder = lowestBidder;
+        project.lowestBid = lowestBid;
+    }
+
+   // For getting bid count on a particular project
+   function getBidCount(address _partyAddress, uint256 _projectId) public view returns (uint256) {
+    	require(parties[_partyAddress].projects[_projectId].budget > 0, "Project does not exist");
+    	return parties[_partyAddress].projects[_projectId].bidIds.length;
+    }
+
+    // For getting bid details like message, amount, address of bidders 
+    function getBidDetails(address _partyAddress, uint256 _projectId, uint256 _bidId) public view returns (string memory, uint256, address) {
+    	Project storage project = parties[_partyAddress].projects[_projectId];
+	require(project.bids[_bidId].amount > 0, "Bid does not exist");
+    	return (
+		project.bids[_bidId].message,
+		project.bids[_bidId].amount,
+		project.bids[_bidId].bidder
+    	);
     }
 
     // Function for getting details of a particular party
@@ -140,17 +222,24 @@ contract ContractingPlatform {
     }
 
     // Function for getting details of a project
-    function getProjectDetails(address _partyAddress, uint256 _projectId) public view returns (string memory, string memory, uint256, bool) {
+    function getProjectDetails(address _partyAddress, uint256 _projectId) public view returns (string memory, string memory, uint256, bool, uint256) {
 	require(parties[_partyAddress].projects[_projectId].budget > 0, "Project does not exist");
 	return (
-            parties[_partyAddress].projects[_projectId].title,
-            parties[_partyAddress].projects[_projectId].description,
-            parties[_partyAddress].projects[_projectId].budget,
-            parties[_partyAddress].projects[_projectId].isOpen
+		parties[_partyAddress].projects[_projectId].title,
+		parties[_partyAddress].projects[_projectId].description,
+		parties[_partyAddress].projects[_projectId].budget,
+		parties[_partyAddress].projects[_projectId].isOpen,
+		parties[_partyAddress].projects[_projectId].deadline
 	);
     }
+
+    // Function for getting total no of parties
+    function getPartyCount() public view returns (uint256) {
+        return partyAddresses.length;
+    }
+    
+    // Function for getting the address of a particular party.
+    function getPartyAddress(uint256 index) public view returns (address) {
+        return partyAddresses[index];
+    }
 }
-
-
-
-
