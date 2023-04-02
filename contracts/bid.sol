@@ -19,24 +19,6 @@ contract BidContract{
         owner = msg.sender; 
     }
 
-        function createTender(address _partyAddress, uint256 _budget, string memory _title, string memory _description, uint256 _deadline) isOwner(_partyAddress) public returns (uint256) {
-        // uint256 tenderId = tenderCount;
-        // Tender storage newTender = partyRef.parties[msg.sender].tenders[tenderId];
-        // newTender.title = _title;
-        // newTender.description = _description;
-        // newTender.budget = _budget;
-        // newTender.isOpen = true;
-        // newTender.TenderStatus = TenderStatus.OPENED;
-        // newTender.bidIds = new uint256[](0);
-        // newTender.creator = payable(msg.sender);
-        // newTender.deadline = _deadline;
-        // newTender.lowestBidder = payable(address(0));
-        // newTender.lowestBid = 0;
-        // partyRef.parties[msg.sender].TenderIds.push(tenderId);
-        // tenderCount++;
-        // return tenderId;
-        Tender storage newTender = partyRef.parties[_partyAddress].tenders[address(this)];
-    }
 
 
     // Function for creating bids on tenders
