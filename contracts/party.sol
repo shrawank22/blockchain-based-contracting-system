@@ -84,7 +84,9 @@ contract PartyContract{
 
     // Function for creating a tender
     function createTender(address _partyAddress, uint256 _budget, string memory _title, string memory _description, uint256 _deadline, uint256 _totalMilestones) isOwner(_partyAddress) public {
-        Tender storage newTender = parties[_partyAddress].tenders[address(this)];
+        require(_partyAddress.balance >= _budget/2, "insufficient funds to create a tender");
+        uint256 idx = parties[_partyAddress].tenderIds.length;
+        Tender storage newTender = parties[_partyAddress].tenders[idx];
         newTender.title = _title;
         newTender.description = _description;
         newTender.budget = _budget;
@@ -94,7 +96,7 @@ contract PartyContract{
         newTender.issuerAddress = _partyAddress;
         newTender.tenderAddress = address(this);
         newTender.totalMilestones = _totalMilestones;
-        parties[_partyAddress].tenderIds.push(address(this));
+        parties[_partyAddress].tenderIds.push(idx);
     }
 
     function getAllTenders() public view returns (Tender[] memory){
@@ -106,7 +108,7 @@ contract PartyContract{
         Tender[] memory tenderList  = new Tender[](count);
         uint k = 0;
         for(uint i = 0; i < partyAddresses.length ; i++){
-            address[] memory partyTenders = parties[partyAddresses[i]].tenderIds;
+            uint256[] memory partyTenders = parties[partyAddresses[i]].tenderIds;
             for(uint j = 0; j< partyTenders.length; j++){
                 Tender memory tempTender = parties[partyAddresses[i]].tenders[partyTenders[j]];
                 if(tempTender.tenderStatus == TenderStatus.OPEN)
@@ -118,7 +120,7 @@ contract PartyContract{
 
     function getMyTenders(address _partyAddress) public view returns ( Tender[] memory){
         require(parties[_partyAddress].tenderIds.length > 0, "No tenders exists");
-        address[] memory partyTenders = parties[_partyAddress].tenderIds;
+        uint256[] memory partyTenders = parties[_partyAddress].tenderIds;
         Tender[] memory tenderList  = new Tender[](partyTenders.length);
         for(uint i = 0; i< partyTenders.length; i++){
             tenderList[i] = parties[_partyAddress].tenders[partyTenders[i]];
@@ -126,18 +128,18 @@ contract PartyContract{
         return(tenderList);
     }
 
-    function getTenderDetails(address _partyAddress, address _tenderAddress) public view returns ( Tender memory){
+    function getTenderDetails(address _partyAddress, uint256 _tenderAddress) public view returns ( Tender memory){
         require(parties[_partyAddress].tenderIds.length > 0, "No tenders exists");
         require(parties[_partyAddress].tenders[_tenderAddress].budget > 0 , "tender with address doesn't exists");
         return(parties[_partyAddress].tenders[_tenderAddress]);
     }
 
-    function updateTenderStatus(address _partyAddress, address _tenderAddress, TenderStatus _tenderStatus) public {
+    function updateTenderStatus(address _partyAddress, uint256 _tenderAddress, TenderStatus _tenderStatus) public {
         Tender storage updatedTender = parties[_partyAddress].tenders[_tenderAddress];
         updatedTender.tenderStatus = _tenderStatus;
     }
 
-    function updateTender(address _partyAddress, address _tenderAddress, uint256 _budget, string memory _title, string memory _description, uint256 _deadline, uint256 _totalMilestones) public {
+    function updateTender(address _partyAddress, uint256 _tenderAddress, uint256 _budget, string memory _title, string memory _description, uint256 _deadline, uint256 _totalMilestones) public {
         Tender storage updatedTender = parties[_partyAddress].tenders[_tenderAddress];
         updatedTender.budget = _budget;
         updatedTender.title = _title;
@@ -146,7 +148,7 @@ contract PartyContract{
         updatedTender.totalMilestones = _totalMilestones;
     }
 
-    function deleteTender(address _partyAddress, address _tenderAddress) public{
+    function deleteTender(address _partyAddress, uint256 _tenderAddress) public{
         require(parties[_partyAddress].tenderIds.length > 0, "No tenders exists");
         require(parties[_partyAddress].tenders[_tenderAddress].budget > 0 , "tender with address doesn't exists");
         require(parties[_partyAddress].tenders[_tenderAddress].tenderStatus == TenderStatus.NEW ||
