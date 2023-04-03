@@ -33,23 +33,22 @@ enum BidStatus{PENDING, REJECTED, APPROVED}
         address[] validatorsAddresses;
         uint256[] milestoneTimePeriods;
         uint256[] bidIds;
-        mapping(uint256 => Bid) tenders;
     }
 
-    struct TenderResponse {
-        string title;
-        string description;
-        uint256 budget;
-        address issuerAddress;
-        TenderStatus tenderStatus; 
-        uint256 createdAt;
-        uint256 deadline;
-        uint256 totalMilestones;
-        address tenderAddress;
-        address[] validatorsAddresses;
-        uint256[] milestoneTimePeriods;
-        uint256[] bidIds;
-    }
+    // struct TenderResponse {
+    //     string title;
+    //     string description;
+    //     uint256 budget;
+    //     address issuerAddress;
+    //     TenderStatus tenderStatus; 
+    //     uint256 createdAt;
+    //     uint256 deadline;
+    //     uint256 totalMilestones;
+    //     address tenderAddress;
+    //     address[] validatorsAddresses;
+    //     uint256[] milestoneTimePeriods;
+    //     uint256[] bidIds;
+    // }
 
     // Party Structure
     struct Party {
@@ -61,7 +60,6 @@ enum BidStatus{PENDING, REJECTED, APPROVED}
         uint256 createdAt;
         address partyAddress;
         uint256[] tenderIds;
-        mapping(uint256 => Tender) tenders;
     }
 
     
