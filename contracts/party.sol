@@ -3,13 +3,13 @@
 //the version of solidity that is compatible
 pragma solidity >=0.7.0 <0.9.0; 
 
-import {Party, Tender, TenderStatus} from './entities.sol';
+import {Party, Tender, TenderStatus, Bid, TenderResponse} from './entities.sol';
 
 contract PartyContract{
 
     mapping (address => Party) public parties;
     address[] public partyAddresses;
-
+    mapping (uint => Bid) bids;
     constructor() {
     }
 
@@ -99,39 +99,81 @@ contract PartyContract{
         parties[_partyAddress].tenderIds.push(idx);
     }
 
-    function getAllTenders() public view returns (Tender[] memory){
+    function getAllTenders() public view returns (TenderResponse[] memory){
         require(partyAddresses.length > 0, "No parties exists");
         uint count = 0;
         for(uint i = 0; i< partyAddresses.length ; i++){
             count += parties[partyAddresses[i]].tenderIds.length;
         }
-        Tender[] memory tenderList  = new Tender[](count);
+        TenderResponse[] memory tenderList  = new TenderResponse[](count);
         uint k = 0;
         for(uint i = 0; i < partyAddresses.length ; i++){
             uint256[] memory partyTenders = parties[partyAddresses[i]].tenderIds;
             for(uint j = 0; j< partyTenders.length; j++){
-                Tender memory tempTender = parties[partyAddresses[i]].tenders[partyTenders[j]];
-                if(tempTender.tenderStatus == TenderStatus.OPEN)
-                    tenderList[k++] = tempTender;
+                Tender storage tempTender = parties[partyAddresses[i]].tenders[partyTenders[j]];
+                if(tempTender.tenderStatus == TenderStatus.OPEN){
+                    tenderList[k++] = TenderResponse({
+                                                    title: tempTender.title,
+                                                    description: tempTender.description,
+                                                    budget:  tempTender.budget,
+                                                    issuerAddress:  tempTender.issuerAddress,
+                                                    tenderStatus:  tempTender.tenderStatus,
+                                                    createdAt:  tempTender.createdAt,
+                                                    deadline:  tempTender.deadline,
+                                                    totalMilestones:  tempTender.totalMilestones,
+                                                    tenderAddress:  tempTender.tenderAddress,
+                                                    validatorsAddresses:  tempTender.validatorsAddresses,
+                                                    milestoneTimePeriods:  tempTender.milestoneTimePeriods,
+                                                    bidIds:  tempTender.bidIds
+                                                    });
+                }
             }
         }
         return(tenderList);
     }
 
-    function getMyTenders(address _partyAddress) public view returns ( Tender[] memory){
+    function getMyTenders(address _partyAddress) public view returns ( TenderResponse[] memory){
         require(parties[_partyAddress].tenderIds.length > 0, "No tenders exists");
         uint256[] memory partyTenders = parties[_partyAddress].tenderIds;
-        Tender[] memory tenderList  = new Tender[](partyTenders.length);
+        TenderResponse[] memory tenderList  = new TenderResponse[](partyTenders.length);
         for(uint i = 0; i< partyTenders.length; i++){
-            tenderList[i] = parties[_partyAddress].tenders[partyTenders[i]];
+            Tender storage tempTender = parties[_partyAddress].tenders[partyTenders[i]];
+            tenderList[i] = TenderResponse({
+                                            title: tempTender.title,
+                                            description: tempTender.description,
+                                            budget:  tempTender.budget,
+                                            issuerAddress:  tempTender.issuerAddress,
+                                            tenderStatus:  tempTender.tenderStatus,
+                                            createdAt:  tempTender.createdAt,
+                                            deadline:  tempTender.deadline,
+                                            totalMilestones:  tempTender.totalMilestones,
+                                            tenderAddress:  tempTender.tenderAddress,
+                                            validatorsAddresses:  tempTender.validatorsAddresses,
+                                            milestoneTimePeriods:  tempTender.milestoneTimePeriods,
+                                            bidIds:  tempTender.bidIds
+                                            });
         }
         return(tenderList);
     }
 
-    function getTenderDetails(address _partyAddress, uint256 _tenderAddress) public view returns ( Tender memory){
+    function getTenderDetails(address _partyAddress, uint256 _tenderAddress) public view returns ( TenderResponse memory){
         require(parties[_partyAddress].tenderIds.length > 0, "No tenders exists");
         require(parties[_partyAddress].tenders[_tenderAddress].budget > 0 , "tender with address doesn't exists");
-        return(parties[_partyAddress].tenders[_tenderAddress]);
+        Tender storage tempTender = parties[_partyAddress].tenders[_tenderAddress];
+        return(TenderResponse({
+                                title: tempTender.title,
+                                description: tempTender.description,
+                                budget:  tempTender.budget,
+                                issuerAddress:  tempTender.issuerAddress,
+                                tenderStatus:  tempTender.tenderStatus,
+                                createdAt:  tempTender.createdAt,
+                                deadline:  tempTender.deadline,
+                                totalMilestones:  tempTender.totalMilestones,
+                                tenderAddress:  tempTender.tenderAddress,
+                                validatorsAddresses:  tempTender.validatorsAddresses,
+                                milestoneTimePeriods:  tempTender.milestoneTimePeriods,
+                                bidIds:  tempTender.bidIds
+                                }));
     }
 
     function updateTenderStatus(address _partyAddress, uint256 _tenderAddress, TenderStatus _tenderStatus) public {
