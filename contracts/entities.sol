@@ -19,7 +19,7 @@ enum BidStatus{PENDING, REJECTED, APPROVED}
         uint256 createdAt;
     }
     
-    // Project/Tender Structure
+    // Tender Structure
     struct Tender {
         string title;
         string description;
@@ -33,7 +33,7 @@ enum BidStatus{PENDING, REJECTED, APPROVED}
         address[] validatorsAddresses;
         uint256[] milestoneTimePeriods;
         address[] bidIds;
-        // mapping(address => Bid) bids;
+        Bid[] bids;
     }
 
     // Party Structure
@@ -46,7 +46,7 @@ enum BidStatus{PENDING, REJECTED, APPROVED}
         uint256 createdAt;
         address partyAddress;
         address[] tenderIds;
-        // mapping(address => Tender) tenders;
+        mapping(address => Tender) tenders;
     }
 
     
