@@ -3,13 +3,15 @@
 //the version of solidity that is compatible
 pragma solidity >=0.7.0 <0.9.0; 
 
-import {Party, Tender, TenderStatus, Bid, BidStatus} from './entities.sol';
+import {Party, Tender, TenderStatus, Bid, BidStatus} from './interfaces.sol';
 
 contract PartyContract{
 
     mapping (address => Party) public parties;
     mapping (uint256 => Tender) public tenders;
+    mapping (uint256 => Bid) public bids;
     uint256 tenderCount = 0;
+    uint256 bidCount = 0;
     address[] public partyAddresses;
 
     constructor() {
@@ -103,34 +105,6 @@ contract PartyContract{
 
     function getAllTenders() public view returns (Tender[] memory){
         require(partyAddresses.length > 0, "No parties exists");
-        // uint count = 0;
-        // for(uint i = 0; i< partyAddresses.length ; i++){
-        //     count += parties[partyAddresses[i]].tenderIds.length;
-        // }
-        // TenderResponse[] memory tenderList  = new TenderResponse[](count);
-        // uint k = 0;
-        // for(uint i = 0; i < partyAddresses.length ; i++){
-        //     uint256[] memory partyTenders = parties[partyAddresses[i]].tenderIds;
-        //     for(uint j = 0; j< partyTenders.length; j++){
-        //         Tender storage tempTender = parties[partyAddresses[i]].tenders[partyTenders[j]];
-        //         if(tempTender.tenderStatus == TenderStatus.OPEN){
-        //             tenderList[k++] = TenderResponse({
-        //                                             title: tempTender.title,
-        //                                             description: tempTender.description,
-        //                                             budget:  tempTender.budget,
-        //                                             issuerAddress:  tempTender.issuerAddress,
-        //                                             tenderStatus:  tempTender.tenderStatus,
-        //                                             createdAt:  tempTender.createdAt,
-        //                                             deadline:  tempTender.deadline,
-        //                                             totalMilestones:  tempTender.totalMilestones,
-        //                                             tenderAddress:  tempTender.tenderAddress,
-        //                                             validatorsAddresses:  tempTender.validatorsAddresses,
-        //                                             milestoneTimePeriods:  tempTender.milestoneTimePeriods,
-        //                                             bidIds:  tempTender.bidIds
-        //                                             });
-        //         }
-        //     }
-        // }
         Tender[] memory tendersList = new Tender[](tenderCount);
         for (uint256 i = 0; i < tenderCount; i++) {
             tendersList[i] = tenders[i];
@@ -140,58 +114,25 @@ contract PartyContract{
 
     function getMyTenders(address _partyAddress) public view returns ( Tender[] memory){
         require(parties[_partyAddress].tenderIds.length > 0, "No tenders exists");
-        uint256[] memory partyTenders = parties[_partyAddress].tenderIds;
-        // TenderResponse[] memory tenderList  = new TenderResponse[](partyTenders.length);
-        // for(uint i = 0; i< partyTenders.length; i++){
-        //     Tender storage tempTender = parties[_partyAddress].tenders[partyTenders[i]];
-        //     tenderList[i] = TenderResponse({
-        //                                     title: tempTender.title,
-        //                                     description: tempTender.description,
-        //                                     budget:  tempTender.budget,
-        //                                     issuerAddress:  tempTender.issuerAddress,
-        //                                     tenderStatus:  tempTender.tenderStatus,
-        //                                     createdAt:  tempTender.createdAt,
-        //                                     deadline:  tempTender.deadline,
-        //                                     totalMilestones:  tempTender.totalMilestones,
-        //                                     tenderAddress:  tempTender.tenderAddress,
-        //                                     validatorsAddresses:  tempTender.validatorsAddresses,
-        //                                     milestoneTimePeriods:  tempTender.milestoneTimePeriods,
-        //                                     bidIds:  tempTender.bidIds
-        //                                     });
-        // }
-        Tender[] memory tendersList = new Tender[](partyTenders.length);
-        for (uint256 i = 0; i < partyTenders.length; i++) {
-            tendersList[i] = tenders[partyTenders[i]];
+        uint256[] memory partyTenderIds = parties[_partyAddress].tenderIds;
+        Tender[] memory tendersList = new Tender[](partyTenderIds.length);
+        for (uint256 i = 0; i < partyTenderIds.length; i++) {
+            tendersList[i] = tenders[partyTenderIds[i]];
         }
         return(tendersList);
     }
 
     function getTenderDetails(uint256 _tenderAddress) public view returns ( Tender memory){
         require(tenders[_tenderAddress].budget > 0 , "tender with address doesn't exists");
-        // Tender storage tempTender = parties[_partyAddress].tenders[_tenderAddress];
-        // return(TenderResponse({
-        //                         title: tempTender.title,
-        //                         description: tempTender.description,
-        //                         budget:  tempTender.budget,
-        //                         issuerAddress:  tempTender.issuerAddress,
-        //                         tenderStatus:  tempTender.tenderStatus,
-        //                         createdAt:  tempTender.createdAt,
-        //                         deadline:  tempTender.deadline,
-        //                         totalMilestones:  tempTender.totalMilestones,
-        //                         tenderAddress:  tempTender.tenderAddress,
-        //                         validatorsAddresses:  tempTender.validatorsAddresses,
-        //                         milestoneTimePeriods:  tempTender.milestoneTimePeriods,
-        //                         bidIds:  tempTender.bidIds
-        //                         }));
         return(tenders[_tenderAddress]);
     }
 
-    function updateTenderStatus(address _partyAddress, uint256 _tenderAddress, TenderStatus _tenderStatus) public isOwner(_partyAddress) {
+    function updateTenderStatus(uint256 _tenderAddress, TenderStatus _tenderStatus) public {
         Tender storage updatedTender = tenders[_tenderAddress];
         updatedTender.tenderStatus = _tenderStatus;
     }
 
-    function updateTender(address _partyAddress, uint256 _tenderAddress, uint256 _budget, string memory _title, string memory _description, uint256 _deadline, uint256 _totalMilestones) public isOwner(_partyAddress){
+    function updateTender(address _partyAddress, uint256 _tenderAddress, uint256 _budget, string memory _title, string memory _description, uint256 _deadline, uint256 _totalMilestones) public isTenderOwner(_partyAddress, _tenderAddress){
         Tender storage updatedTender = tenders[_tenderAddress];
         updatedTender.budget = _budget;
         updatedTender.title = _title;
@@ -200,19 +141,141 @@ contract PartyContract{
         updatedTender.totalMilestones = _totalMilestones;
     }
 
-    function deleteTender(address _partyAddress, uint256 _tenderAddress) public isOwner(_partyAddress){ 
+    function deleteTender(address _partyAddress, uint256 _tenderAddress) public isTenderOwner(_partyAddress, _tenderAddress){ 
         require(parties[_partyAddress].tenderIds.length > 0, "No tenders exists");
         require(tenders[_tenderAddress].budget > 0 , "tender with address doesn't exists");
         require(tenders[_tenderAddress].tenderStatus == TenderStatus.NEW ||
                 tenders[_tenderAddress].tenderStatus == TenderStatus.SUSPENDED , "tender cannot be deleted");
-        delete tenders[_tenderAddress];
-        for (uint i = 0; i < parties[_partyAddress].tenderIds.length; i++){
-            if(parties[_partyAddress].tenderIds[i] == _tenderAddress){
-                parties[_partyAddress].tenderIds[i] = parties[_partyAddress].tenderIds[i++];
+        uint256[] storage _tenderIds = parties[_partyAddress].tenderIds;
+        for (uint i = 0; i < _tenderIds.length; i++){
+            if(_tenderIds[i] == _tenderAddress){
+                delete tenders[_tenderAddress];
+                _tenderIds[i] = _tenderIds[_tenderIds.length - 1];
+                _tenderIds.pop();
+                break;
             }
         }
     }
 
     // @todo - add modifer for above functions
+
+    modifier isTenderOwner(address _partyAddress, uint256 _tenderAddress) {
+        require(tenders[_tenderAddress].issuerAddress == _partyAddress, "you're not authorized to perform this action");
+        _;
+    }
+
+    modifier isBidOwner(address _bidderAddress, uint256 _bidId) {
+        require(bids[_bidId].bidderAddress == _bidderAddress, "you're not authorized to perform this action");
+        _;
+    }
+
+    function createBid(address _bidderAddress, uint256 _tenderAddress, string memory _bidClause, uint256 _quotedAmount) public{
+        Tender storage tender = tenders[_tenderAddress];
+        require(tender.budget > 0, "Tender does not exist");
+        require(tender.tenderStatus == TenderStatus.OPEN, "Tender is not open for bids");
+        require(block.timestamp > tender.deadline, "Bidding has ended");
+        require(_bidderAddress != tender.issuerAddress, "Owner cannot bid on their own tender");
+
+        Bid storage newBid = bids[bidCount];
+        newBid.bidClause = _bidClause;
+        newBid.quotedAmount = _quotedAmount;
+        newBid.bidderAddress = _bidderAddress;
+        newBid.tenderAddress = _tenderAddress;
+        newBid.bidStatus = BidStatus.PENDING;
+        newBid.createdAt = block.timestamp;
+        tenders[_tenderAddress].bidIds.push(bidCount);
+        bidCount++;
+    }
+
+    modifier canViewBid(address _bidderAddress, address _issuerAddress ,uint256 _tenderId, uint256 _bidId){
+        require(bids[_bidId].bidderAddress == _bidderAddress  && tenders[_tenderId].issuerAddress == _issuerAddress && (msg.sender == _issuerAddress || msg.sender == _bidderAddress), "Not authorized to view bid details");
+        _;
+    }
+
+    // For getting bid details like message, amount, address of bidders 
+    function getBidDetails(address _bidderAddress, address _issuerAddress ,uint256 _tenderId, uint256 _bidId) public view canViewBid(_bidderAddress, _issuerAddress, _tenderId, _bidId) returns (Bid memory) {
+	    require(bids[_bidId].quotedAmount > 0, "Bid does not exist");
+    	return (bids[_bidId]);
+    }
+
+    // For getting all bids of a tender
+    function getAllBids(address _partyAddress, uint256 _tenderId) public view isTenderOwner(_partyAddress, _tenderId) returns(Bid[] memory){
+        require(tenders[_tenderId].bidIds.length > 0, "No bids exists");
+        uint256[] memory tenderBidIds = tenders[_tenderId].bidIds;
+        Bid[] memory bidsList = new Bid[](tenderBidIds.length);
+        for (uint256 i = 0; i < tenderBidIds.length; i++) {
+            bidsList[i] = bids[tenderBidIds[i]];
+        }
+        return(bidsList);
+    }
+
+    function updateBidStatus(address _partyAddress, uint256 _tenderAddress, uint256 _bidAddress ,BidStatus _bidStatus) public isTenderOwner(_partyAddress, _tenderAddress) {
+        Bid storage updatedBid = bids[_bidAddress];
+        updatedBid.bidStatus = _bidStatus;
+    }
+
+    function updateBid(address _bidderAddress, uint256 _bidId, string memory _bidClause, uint256 _quotedAmount) public isBidOwner(_bidderAddress, _bidId) {
+        Bid storage updatedBid = bids[_bidId];
+        updatedBid.bidClause = _bidClause;
+        updatedBid.quotedAmount = _quotedAmount;
+    }
+
+    function deleteBid(address _bidderAddress, uint256 _tenderId ,uint256 _bidId) public isBidOwner(_bidderAddress, _bidId){ 
+        require(tenders[_tenderId].bidIds.length > 0, "No bids exists");
+        require(bids[_bidId].quotedAmount > 0 , "bid with address doesn't exists");
+        require(bids[_bidId].bidStatus != BidStatus.PENDING , "bid cannot be deleted");
+        uint256[] storage _bidIds = tenders[_tenderId].bidIds;
+        for (uint i = 0; i < _bidIds.length; i++){
+            if(_bidIds[i] == _bidId){
+                delete bids[_bidId];
+                _bidIds[i] = _bidIds[_bidIds.length - 1];
+                _bidIds.pop();
+                break;
+            }
+        }
+    }
+
+    modifier isValidTender(uint256 tenderId) {
+        require(block.timestamp >= tenders[tenderId].deadline && tenders[tenderId].tenderStatus == TenderStatus.CLOSED);
+        _;
+    }
+
+    function selectTopBids(address _partyAddress, uint256 _tenderId ) public view isTenderOwner(_partyAddress, _tenderId) isValidTender(_tenderId) returns (Bid[] memory) {
+        //invoke this function once deadline is crossed and can be invoked by project issue party, make sure this project is not assigned to anyone------modifier
+        // get all the bids for pt
+        Bid[] memory bidList = getAllBids(_partyAddress, _tenderId);
+        require(bidList.length > 0, "No bids exists");
+        // sort bids by price
+        for (uint i = 1; i < bidList.length; i++){
+            for (uint j = 0; j < i; j++){
+                if (bidList[i].quotedAmount < bidList[j].quotedAmount) {
+                    Bid memory tempBid = bidList[i];
+                    bidList[i] = bidList[j];
+                    bidList[j] = tempBid;
+                }
+            }
+        }
+        uint256 shortListedBidsCount = (bidList.length < 5) ? bidList.length : 5; 
+        Bid[] memory shortListedBids = new Bid[](shortListedBidsCount);
+        for (uint i = 0; i < shortListedBidsCount; i++){
+            shortListedBids[i] = bidList[i];
+        }
+
+        return shortListedBids;
+        //returns a list of top 5 bidders and history of bidders
+
+        // - in case of a tie, the bidder with the largest "trust" is given the project. ( Trust in this context is measured in terms of the number of previous projects done and the token assets a party has.)
+        // update the status of each bid to APPROVED / REJECTED from PENDING.
+    }
+
+    function finaliseWinnerBid(address _partyAddress, uint256 _tenderId, uint256 _bidId) public isTenderOwner(_partyAddress, _tenderId){
+        for(uint256 i=0;i<tenders[_tenderId].bidIds.length ;i++){
+            if(tenders[_tenderId].bidIds[i] == _bidId)
+                updateBidStatus(_partyAddress, _tenderId, tenders[_tenderId].bidIds[i], BidStatus.APPROVED);
+            else 
+                updateBidStatus(_partyAddress, _tenderId, tenders[_tenderId].bidIds[i], BidStatus.REJECTED);
+        }
+        tenders[_tenderId].tenderStatus = TenderStatus.ASSIGNED;
+    }
 
 }
