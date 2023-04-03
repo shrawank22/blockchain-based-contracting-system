@@ -45,8 +45,8 @@ enum BidStatus{PENDING, REJECTED, APPROVED}
         uint256 trustScore;
         uint256 createdAt;
         address partyAddress;
-        address[] tenderIds;
-        mapping(address => Tender) tenders;
+        uint256[] tenderIds;
+        mapping(uint256 => Tender) tenders;
     }
 
     
