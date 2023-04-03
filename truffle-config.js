@@ -42,7 +42,9 @@
  */
 
 require('dotenv').config();
-const { MNEMONIC, PROJECT_ID } = process.env;
+var MNEMONIC = "cabin sadness rapid verify coin cinnamon finger analyst caught noodle surge excuse"; 
+
+// const { MNEMONIC, PROJECT_ID } = process.env;
 
 const HDWalletProvider = require('@truffle/hdwallet-provider');
 
@@ -83,7 +85,7 @@ module.exports = {
     // Useful for deploying to a public network.
     // Note: It's important to wrap the provider as a function to ensure truffle uses a new provider every time.
     goerli: {
-      provider: () => new HDWalletProvider(MNEMONIC, `wss://eth-goerli.g.alchemy.com/v2/${PROJECT_ID}`),
+      provider: () => new HDWalletProvider(MNEMONIC, 'http://127.0.0.1:7545/", 0, 50'),
       network_id: 5,       // Goerli's id
       confirmations: 2,    // # of confirmations to wait between deployments. (default: 0)
       timeoutBlocks: 200,  // # of blocks before a deployment times out  (minimum/default: 50)

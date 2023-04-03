@@ -33,7 +33,7 @@ enum BidStatus{PENDING, REJECTED, APPROVED}
         address[] validatorsAddresses;
         uint256[] milestoneTimePeriods;
         address[] bidIds;
-        mapping(address => Bid) bids;
+        // mapping(address => Bid) bids;
     }
 
     // Party Structure
