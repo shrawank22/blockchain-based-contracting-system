@@ -3,7 +3,7 @@
 //the version of solidity that is compatible
 pragma solidity >=0.7.0 <0.9.0; 
 
-import {Party, Tender, TenderStatus, Bid, BidStatus} from './interfaces.sol';
+import {Party, Tender, TenderStatus, Bid, BidStatus} from './entities.sol';
 
 contract PartyContract{
 
