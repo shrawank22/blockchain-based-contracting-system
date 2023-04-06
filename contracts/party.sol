@@ -150,7 +150,7 @@ contract PartyContract{
         }
         else
         {
-            revert("You're not authorized to valid this tender.");
+            revert("You're not authorized to validate this tender.");
         }
     }
 
