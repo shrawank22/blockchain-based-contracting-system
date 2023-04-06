@@ -99,8 +99,83 @@ contract PartyContract{
         newTender.issuerAddress = _partyAddress;
         newTender.tenderAddress = address(this);
         newTender.totalMilestones = _totalMilestones;
+        address[] memory sortedlist = sortByTrustScore();
+        uint len = sortedlist.length;
+        if(len<=10)
+        {
+            newTender.validatorsAddresses = sortedlist;
+        }
+        else
+        {
+            for(uint i=0; i<10; i++)
+            {
+                if(sortedlist[len-i-1] != parties[msg.sender].partyAddress)
+                {
+                    newTender.validatorsAddresses.push(sortedlist[len-i-1]);
+                }
+            }
+        }
         parties[_partyAddress].tenderIds.push(tenderCount);
         tenderCount++;
+    }
+
+    function sortByTrustScore() public view returns(address[] memory) {
+    address[] memory _party = partyAddresses;
+    for (uint i = 1; i < partyAddresses.length; i++)
+        for (uint j = 0; j < i; j++)
+            if (parties[_party[i]].trustScore < parties[_party[j]].trustScore) {
+                address x = _party[i];
+                _party[i] = _party[j];
+                _party[j] = x;
+            }
+
+    return _party;
+    }
+
+    function validate(uint256 _tenderAddress, bool _vote) public {
+        bool valid = false;
+        Tender storage newTender = tenders[_tenderAddress];
+        uint len = newTender.validatorsAddresses.length;
+        for(uint i=0; i<len; i++)
+        {
+            if(newTender.validatorsAddresses[i] == msg.sender)
+            {
+                valid = true;
+                break;
+            }
+        }
+        if(valid)
+        {
+            newTender.validationVotes.push(_vote);
+        }
+        else
+        {
+            revert("You're not authorized to valid this tender.");
+        }
+    }
+
+    function checkTenderValidation(uint256 _tenderAddress) public {
+        Tender storage newTender = tenders[_tenderAddress];
+        if(isValid(newTender.validationVotes)) {
+            updateTenderStatus(_tenderAddress, TenderStatus.OPEN);
+        }
+    }
+    
+    function isValid(bool[] memory _validationVotes) public pure returns (bool) {
+        uint voteCount = 0;
+        for(uint i=0; i<_validationVotes.length; i++)
+        {
+            if(_validationVotes[i])
+            {
+                voteCount++;
+            }
+        }
+
+        if(voteCount>=6)
+        {
+            return true;
+        }
+        return false;
     }
 
     function getAllTenders() public view returns (Tender[] memory){
