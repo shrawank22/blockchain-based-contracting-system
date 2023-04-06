@@ -3,7 +3,7 @@
 //the version of solidity that is compatible
 
 pragma solidity >=0.7.0 <0.9.0;
-enum TenderStatus{ NEW, OPEN, CLOSED, SUSPENDED, ASSIGNED } //created---OPEN, deadline crosses---CLOSED, project is assigned ---- ASSIGNED
+enum TenderStatus{ NEW, OPEN, CLOSED, SUSPENDED, ASSIGNED } //created---NEW, validated---OPEN, deadline crosses---CLOSED, project is assigned ---- ASSIGNED
 
 enum ProjectStatus{ ASSIGNED, ONGOING, COMPLEDTED }
 
@@ -31,6 +31,7 @@ struct Tender {
     uint256 totalMilestones;
     address tenderAddress;
     address[] validatorsAddresses;
+    bool[] validationVotes;
     uint256[] milestoneTimePeriods;
     uint256[] bidIds;
 }
