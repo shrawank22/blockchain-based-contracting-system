@@ -74,15 +74,11 @@ export class RegisterService {
     this.data = {
       "email": user.email,
       "password": user.password,
-      "factory_name": user.factoryDetails,
-      "employee_id": user.employeeId,
-      "factory_location": user.factoryLocation,
-      "industry_type": user.industryType,
-      "phone_number": user.contact,
-      "security_question": user.securityQuestion,
-      "answer": user.securityAnswer
+      "user_name": user.userDetails,
+      "wallet_id": user.walletId,
+      "contact_number": user.contact,
     }
-    return this.http.post<any>(`${config.apiUrl}/user/register/`, this.data)
+    return this.http.post<any>(`${config.apiUrl}/party/register/`, this.data)
       .pipe(
         mapTo(true),
         catchError(this.handleError))

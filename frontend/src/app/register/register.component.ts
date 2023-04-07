@@ -12,19 +12,14 @@ import Swal from 'sweetalert2';
 })
 export class RegisterComponent {
   registerForm = this.fb.group({
-    factoryDetails: ["", [Validators.required, Validators.minLength(3)]],
-    factoryLocation: ["", [Validators.required, Validators.minLength(3)]],
-    industryType: ["", [Validators.required, Validators.minLength(3)]],
-    walletId: [{ value:"", disabled: true}, [Validators.required, Validators.minLength(1)]],
+    userDetails: ["", [Validators.required, Validators.minLength(3)]],
+    walletId: ["", [Validators.required, Validators.minLength(1)]],
     contact: ["", [Validators.required, Validators.minLength(8), Validators.pattern('[- +()0-9]+')]],
     email: ["", [Validators.required, Validators.pattern('^[^\\s@]+@[^\\s@]+\\.[^\\s@]{2,}$')]],
     password: ["", [Validators.required,
     Validators.pattern('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{7,}')]],
     confirmPassword: ["", [Validators.required,
     Validators.pattern('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{7,}')]],
-    securityQuestion: ["1", [Validators.required]],
-    securityAnswer: ["", [Validators.required]]
-
   }, {
     validators: this.customvalidator.passwordMatchValidator("password", "confirmPassword")
   })
@@ -40,15 +35,8 @@ export class RegisterComponent {
 
   }
 
-  get factoryDetails() {
-    return this.registerForm.get('factoryDetails');
-  }
-
-  get factoryLocation() {
-    return this.registerForm.get('factoryLocation');
-  }
-  get industryType() {
-    return this.registerForm.get('industryType');
+  get userDetails() {
+    return this.registerForm.get('userDetails');
   }
 
   get walletId() {
@@ -65,12 +53,7 @@ export class RegisterComponent {
   }
   get confirmPassword() {
     return this.registerForm.get('confirmPassword');
-  } get securityQuestion() {
-    return this.registerForm.get('securityQuestion');
-  }
-  get securityAnswer() {
-    return this.registerForm.get('securityAnswer');
-  }
+  } 
 
   onSubmit() {
     this.registerService.register(this.registerForm.value)

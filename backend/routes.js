@@ -4,32 +4,30 @@ function routes(app, web3, Party){
         res.json({"status":"success"})
     });
 
-    app.get("/party", async(req,res,next) => {
+    app.get("/api/party", async(req,res,next) => {
         var party = await Party.deployed();
         var accounts = await web3.eth.getAccounts();
-        party.getPartyDetails(accounts[0], {from:accounts[0]})
+        party.getPartyDetails(req.query.id, {from:req.query.id})
         .then((data)=>{
-            console.log(data)
             res.json({"status":"success","respone" : data})
         })
         .catch(err=>{
-            console.log(err)
-            res.json({"status":"error","respone" : err})
+            res.json({"status":"error","respone" : err.message})
 
         })
 
     })
 
-    app.post("/party", async (req,res,next) => {
+    app.post("/api/party/register/", async (req,res,next) => {
+        const {email, password, user_name, wallet_id, contact_number} = req.body;
         var party = await Party.deployed();
         var accounts = await web3.eth.getAccounts();
-        party.createParty("sdasd","sds","Dsd","DSad", accounts[0], {from: accounts[0]})
+        party.createParty(user_name, contact_number, email, password, wallet_id, {from: wallet_id})
         .then((data)=>{
-            console.log(data)
             res.json({"status":"success","respone" : data})
         })
         .catch(err=>{
-            console.log(err)
+            res.json({"status":"error","respone" : err.message})
         })
     })
     

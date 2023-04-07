@@ -11,54 +11,24 @@
                   <img src="../../assets/images/smart-bidding-low-resolution-color-logo.png" alt="smart bidding" width="200px" height="100px"/>
                 </div>
                 <div class="col-md-6 label">
-                  <label for="factoryDetails">FACTORY DETAILS</label>
+                  <label for="userDetails">USER DETAILS</label>
   
                   <div class="form-group">
-                    <input type="text" formControlName="factoryDetails"
-                    [ngClass]="{'is-invalid':factoryDetails?.errors && factoryDetails?.touched}"
-                    class="form-control" placeholder="Factory Name"
+                    <input type="text" formControlName="userDetails"
+                    [ngClass]="{'is-invalid':userDetails?.errors && userDetails?.touched}"
+                    class="form-control" placeholder="User Name"
                       value="" />
                     <div class="error-message"
-                      *ngIf="!factoryDetails?.valid && factoryDetails?.touched">
-                      <div [hidden]="!factoryDetails?.errors?.['required']">
-                        Factory Name is required
+                      *ngIf="!userDetails?.valid && userDetails?.touched">
+                      <div [hidden]="!userDetails?.errors?.['required']">
+                        User Name is required
                       </div>
-                      <div [hidden]="!factoryDetails?.errors?.['minlength']">
+                      <div [hidden]="!userDetails?.errors?.['minlength']">
                         Minimum  Length is 3
                       </div>
                     </div>
                   </div>
   
-                  <div class="form-group">
-                    <input type="text" formControlName="factoryLocation" 
-                    [ngClass]="{'is-invalid':factoryLocation?.errors && factoryLocation?.touched}"
-                    class="form-control" placeholder="Factory Location"
-                      value="" />
-                      <div class="error-message"
-                      *ngIf="!factoryLocation?.valid && factoryLocation?.touched">
-                      <div [hidden]="!factoryLocation?.errors?.['required']">
-                          Factory Location is required
-                      </div>
-                      <div [hidden]="!factoryLocation?.errors?.['minlength']">
-                        Minimum  Length is 3
-                      </div>
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <input type="text" formControlName="industryType"
-                    [ngClass]="{'is-invalid':industryType?.errors && industryType?.touched}"
-                     class="form-control" placeholder="Industry Type"
-                      value="" />
-                      <div class="error-message"
-                      *ngIf="!industryType?.valid && industryType?.touched">
-                      <div [hidden]="!industryType?.errors?.['required']">
-                          Industry Type is required
-                      </div>
-                      <div [hidden]="!industryType?.errors?.['minlength']">
-                        Minimum  Length is 3
-                      </div>
-                    </div>
-                  </div>
                   <label for="password">PASSWORD</label>
   
   
@@ -97,7 +67,7 @@
   
                 </div>
                 <div class="col-md-6 label">
-                  <label for="employeeDetails">EMPLOYEE DETAILS</label>
+                  <label for="connectWallet">CONNECT WALLET</label>
                   <div class="form-group">
                     <div class="input-group mb-3">
                       <input type="text"  formControlName="walletId" 
@@ -121,6 +91,7 @@
                       </div>
                     </div>
                   </div>
+                  <label for="employeeDetails">CONTACT DETAILS</label>
                   <div class="form-group">
                     <input type="email" formControlName="email"
                     [ngClass]="{'is-invalid':email?.errors && email?.touched}"
@@ -148,34 +119,6 @@
                       </div>
                       <div [hidden]="!contact?.errors?.['pattern']">
                         Contact number should be valid
-                      </div>
-                    </div>
-                  </div>
-                  <label for="securityQuestion">SECURITY QUESTION</label>
-                  <div class="form-group">
-                    <select formControlName="securityQuestion"
-                    [ngClass]="{'is-invalid':securityQuestion?.errors && securityQuestion?.touched}"
-                     class="form-control form-select">
-                      <option value=1 selected >What is your Birthdate?</option>
-                      <option value=2 >What is Your old Phone Number</option>
-                      <option value=3 >What is your Pet Name?</option>
-                    </select>
-                    <div class="error-message"
-                    *ngIf="!securityQuestion?.valid && securityQuestion?.touched">
-                    <div [hidden]="!securityQuestion?.errors?.['required']">
-                      Security Question is required
-                    </div>
-                  </div>
-                  </div>
-                  <div class="form-group">
-                    <input formControlName="securityAnswer" 
-                    [ngClass]="{'is-invalid':securityAnswer?.errors && securityAnswer?.touched}"
-                    type="text" class="form-control" placeholder="Answer"
-                      value="" />
-                      <div class="error-message"
-                      *ngIf="!securityAnswer?.valid && securityAnswer?.touched">
-                      <div [hidden]="!securityAnswer?.errors?.['required']">
-                          Security Answer is required
                       </div>
                     </div>
                   </div>
