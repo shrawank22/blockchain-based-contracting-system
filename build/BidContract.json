@@ -1,0 +1,161 @@
+{
+  "contractName": "BidContract",
+  "abi": [],
+  "metadata": "{\"compiler\":{\"version\":\"0.8.19+commit.7dd6d404\"},\"language\":\"Solidity\",\"output\":{\"abi\":[],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"project:/contracts/bid.sol\":\"BidContract\"},\"evmVersion\":\"paris\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"project:/contracts/bid.sol\":{\"keccak256\":\"0x5b64646273df814480888aacd015475a82273e0e4c3e2bd981f71ec3464e85d2\",\"license\":\"UNLICENSED\",\"urls\":[\"bzz-raw://f911af4794a9320a349187a8c3b9c146b298ccfc07759ef2ffd1a8ef663081cd\",\"dweb:/ipfs/QmNXCqsZRN9VrmtFxPQHP9nUUcRZVX7DNgMeaMdksrWVMD\"]},\"project:/contracts/interfaces.sol\":{\"keccak256\":\"0xc83d650b50cfc032d1b2f0a7bf75d99f9baeb24236dea4dfcae666e86639f7f4\",\"license\":\"UNLICENSED\",\"urls\":[\"bzz-raw://83e509ce5bcb82278a8607e0c8e1e3ca1bf87626c99cfecd107a5f64cdd417e0\",\"dweb:/ipfs/Qme1aq2gkA3kfTd2XjB7EF3kshmFsLuV98mkgKh13zst7k\"]},\"project:/contracts/party.sol\":{\"keccak256\":\"0xe93ace801bf6c5711c5fd5107a4276845c6eb9e8d7a450a4d5a51de4ad2a08a8\",\"license\":\"UNLICENSED\",\"urls\":[\"bzz-raw://f508286d6f52ef774c93145957e1a80859a5d66ce557ff4412eec8efd1e01060\",\"dweb:/ipfs/QmX2oeZojhxnETVvStqwKYZBd2VcTVeH5tea2d9dHRcrnP\"]}},\"version\":1}",
+  "bytecode": "0x6080604052348015600f57600080fd5b50603f80601d6000396000f3fe6080604052600080fdfea2646970667358221220f1d574a3243260c0e64faac4194b222680738f978eb76e9ee69f0b7ed5b0a6b664736f6c63430008130033",
+  "deployedBytecode": "0x6080604052600080fdfea2646970667358221220f1d574a3243260c0e64faac4194b222680738f978eb76e9ee69f0b7ed5b0a6b664736f6c63430008130033",
+  "immutableReferences": {},
+  "generatedSources": [],
+  "deployedGeneratedSources": [],
+  "sourceMap": "227:4629:2:-:0;;;;;;;;;;;;;;;;;;;",
+  "deployedSourceMap": "227:4629:2:-:0;;;;;",
+  "source": "// SPDX-License-Identifier: UNLICENSED\r\n\r\n//the version of solidity that is compatible\r\npragma solidity ^0.8.0;\r\n\r\nimport {ProjectStatus, Tender, Bid} from './interfaces.sol';\r\nimport {PartyContractFile} from \"./party.sol\";\r\n\r\ncontract BidContract{\r\n\r\n//     address private owner;\r\n//     PartyContract public partyRef;\r\n\r\n//     constructor(PartyContract _partyRef) {\r\n//         partyRef = _partyRef;\r\n//         owner = msg.sender; \r\n//     }\r\n\r\n\r\n\r\n//     // Function for creating bids on tenders\r\n//     function createBid(address _partyAddress, address _tenderId, string memory _message, uint256 _amount, string memory status) public{\r\n//         Tender storage tender = partyRef.parties[_partyAddress].tenders[_tenderId];\r\n//         require(partyRef.parties[msg.sender].partyAddress != address(0), \"Party does not exist\");\r\n//         require(tender.budget > 0, \"Tender does not exist\");\r\n//         require(tender.isOpen, \"Tender is not open for bids\");\r\n//         require(block.timestamp < tender.deadline, \"Bidding has ended\");\r\n//         require(msg.sender != tender.creator, \"Owner cannot bid on their own tender\");\r\n\r\n//         Bid memory newBid = Bid({\r\n//             message: _message,\r\n//             amount: _amount,\r\n//             bidder: msg.sender,\r\n//             bidStatus: status\r\n//         });\r\n//         uint256 bidId = tender.bidIds.length;\r\n//         tender.bidIds.push(bidId);\r\n//         tender.bids[bidId] = newBid;\r\n//     }\r\n\r\n//    // For getting bid count on a particular tender\r\n//    function getBidCount(address _partyAddress, uint256 _tenderId) public view returns (uint256) {\r\n//     \trequire(partyRef.parties[_partyAddress].tenders[_tenderId].budget > 0, \"Tender does not exist\");\r\n//     \treturn partyRef.parties[_partyAddress].tenders[_tenderId].bidIds.length;\r\n//     }\r\n\r\n//     // For getting bid details like message, amount, address of bidders \r\n//     function getBidDetails(address _partyAddress, uint256 _tenderId, uint256 _bidId) public view returns (string memory, uint256, address) {\r\n//     \tTender storage tender = partyRef.parties[_partyAddress].tenders[_tenderId];\r\n// \trequire(tender.bids[_bidId].amount > 0, \"Bid does not exist\");\r\n//     \treturn (\r\n// \t\ttender.bids[_bidId].message,\r\n// \t\ttender.bids[_bidId].amount,\r\n// \t\ttender.bids[_bidId].bidder\r\n//     \t);\r\n//     }\r\n\r\n//     function getAllBids(address _partyAddress, uint256 _tenderId) public view returns (Bid[] memory) {\r\n//         Tender storage tender = partyRef.parties[_partyAddress].tenders[_tenderId];\r\n//         require(tender.bidIds.length > 0, \"No bids exists\");\r\n//         Bid[] memory bids = new Bid[](tender.bidIds.length);\r\n//         for (uint256 i = 0; i < tender.bidIds.length; i++) {\r\n//             bids[i] = tender.bids[i];\r\n//         }\r\n//         return (bids);\r\n//     }\r\n\r\n//     modifier isOwner() {\r\n//         require(msg.sender == owner, \"Caller is not owner\");\r\n//         _;\r\n//     }\r\n\r\n//     modifier isValidTender(uint256 tenderId) {\r\n//         (string memory title, string memory description, uint256 budget, bool isOpen, uint256 deadline, ProjectStatus projectStatus) = partyRef.getTenderDetails(msg.sender, tenderId);\r\n//         require(block.timestamp >= deadline && projectStatus == ProjectStatus.CLOSED);\r\n//         _;\r\n//     }\r\n\r\n//     function selectWinnerBid(address _partyAddress, uint256 projectId ) public view isOwner isValidTender(projectId) returns (Bid[] memory) {\r\n//         //invoke this function once deadline is crossed and can be invoked by project issue party, make sure this project is not assigned to anyone------modifier\r\n//         // get all the bids for pt\r\n//         Bid[] memory bids = getAllBids(_partyAddress, projectId);\r\n//         require(bids.length > 0, \"No bids exists\");\r\n//         // sort bids by price\r\n//         for (uint i = 1; i < bids.length; i++){\r\n//             for (uint j = 0; j < i; j++){\r\n//                 if (bids[i].amount > bids[j].amount) {\r\n//                     Bid memory x = bids[i];\r\n//                     bids[i] = bids[j];\r\n//                     bids[j] = x;\r\n//                 }s\r\n//             }\r\n//         }\r\n//         uint256 shortListedBidsCount = (bids.length < 5) ? bids.length : 5; \r\n//         Bid[] memory shortListedBids = new Bid[](shortListedBidsCount);\r\n//         for (uint i = 0; i < shortListedBidsCount; i++){\r\n//             shortListedBids[i] = bids[i];\r\n//         }\r\n\r\n//         return shortListedBids;\r\n//         //returns a list of top 5 bidders and history of bidders\r\n\r\n//         // - in case of a tie, the bidder with the largest \"trust\" is given the project. ( Trust in this context is measured in terms of the number of previous projects done and the token assets a party has.)\r\n//         // update the status of each bid to APPROVED / REJECTED from PENDING.\r\n//     }  \r\n\r\n}",
+  "sourcePath": "C:\\Users\\sabba\\OneDrive\\Documents\\BlockchainProject\\blockchain-based-contracting-system\\contracts\\bid.sol",
+  "ast": {
+    "absolutePath": "project:/contracts/bid.sol",
+    "exportedSymbols": {
+      "Bid": [
+        244
+      ],
+      "BidContract": [
+        214
+      ],
+      "PartyContractFile": [
+        300
+      ],
+      "ProjectStatus": [
+        226
+      ],
+      "Tender": [
+        273
+      ]
+    },
+    "id": 215,
+    "license": "UNLICENSED",
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 207,
+        "literals": [
+          "solidity",
+          "^",
+          "0.8",
+          ".0"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "88:23:2"
+      },
+      {
+        "absolutePath": "project:/contracts/interfaces.sol",
+        "file": "./interfaces.sol",
+        "id": 211,
+        "nameLocation": "-1:-1:-1",
+        "nodeType": "ImportDirective",
+        "scope": 215,
+        "sourceUnit": 292,
+        "src": "115:60:2",
+        "symbolAliases": [
+          {
+            "foreign": {
+              "id": 208,
+              "name": "ProjectStatus",
+              "nodeType": "Identifier",
+              "overloadedDeclarations": [],
+              "referencedDeclaration": 226,
+              "src": "123:13:2",
+              "typeDescriptions": {}
+            },
+            "nameLocation": "-1:-1:-1"
+          },
+          {
+            "foreign": {
+              "id": 209,
+              "name": "Tender",
+              "nodeType": "Identifier",
+              "overloadedDeclarations": [],
+              "referencedDeclaration": 273,
+              "src": "138:6:2",
+              "typeDescriptions": {}
+            },
+            "nameLocation": "-1:-1:-1"
+          },
+          {
+            "foreign": {
+              "id": 210,
+              "name": "Bid",
+              "nodeType": "Identifier",
+              "overloadedDeclarations": [],
+              "referencedDeclaration": 244,
+              "src": "146:3:2",
+              "typeDescriptions": {}
+            },
+            "nameLocation": "-1:-1:-1"
+          }
+        ],
+        "unitAlias": ""
+      },
+      {
+        "absolutePath": "project:/contracts/party.sol",
+        "file": "./party.sol",
+        "id": 213,
+        "nameLocation": "-1:-1:-1",
+        "nodeType": "ImportDirective",
+        "scope": 215,
+        "sourceUnit": 301,
+        "src": "177:46:2",
+        "symbolAliases": [
+          {
+            "foreign": {
+              "id": 212,
+              "name": "PartyContractFile",
+              "nodeType": "Identifier",
+              "overloadedDeclarations": [],
+              "referencedDeclaration": 300,
+              "src": "185:17:2",
+              "typeDescriptions": {}
+            },
+            "nameLocation": "-1:-1:-1"
+          }
+        ],
+        "unitAlias": ""
+      },
+      {
+        "abstract": false,
+        "baseContracts": [],
+        "canonicalName": "BidContract",
+        "contractDependencies": [],
+        "contractKind": "contract",
+        "fullyImplemented": true,
+        "id": 214,
+        "linearizedBaseContracts": [
+          214
+        ],
+        "name": "BidContract",
+        "nameLocation": "236:11:2",
+        "nodeType": "ContractDefinition",
+        "nodes": [],
+        "scope": 215,
+        "src": "227:4629:2",
+        "usedErrors": []
+      }
+    ],
+    "src": "88:4768:2"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.8.19+commit.7dd6d404.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "3.4.13",
+  "updatedAt": "2023-04-07T19:08:47.987Z",
+  "devdoc": {
+    "kind": "dev",
+    "methods": {},
+    "version": 1
+  },
+  "userdoc": {
+    "kind": "user",
+    "methods": {},
+    "version": 1
+  }
+}

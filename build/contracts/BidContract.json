@@ -1,9 +1,9 @@
 {
   "contractName": "BidContract",
   "abi": [],
-  "metadata": "{\"compiler\":{\"version\":\"0.8.17+commit.8df45f5f\"},\"language\":\"Solidity\",\"output\":{\"abi\":[],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"project:/contracts/bid.sol\":\"BidContract\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"project:/contracts/bid.sol\":{\"keccak256\":\"0x722d397864c4dd59a50df9df09ef3172d80e7042b9940f71b01f30017fb3a5bf\",\"license\":\"UNLICENSED\",\"urls\":[\"bzz-raw://b6af6c434fce50bd822393f781787c3769982e5c32902d7c355a50323783c11a\",\"dweb:/ipfs/QmPpZP6CN2u1deFuRki2pm3FBS4YNVLb7mWKJt58q81hqj\"]},\"project:/contracts/entities.sol\":{\"keccak256\":\"0xbff01387234861e0638d917efe0a19634c63219231a9064618291576bfae703b\",\"license\":\"UNLICENSED\",\"urls\":[\"bzz-raw://5ad827b4dce21ff0e6f99e792b588fb380043a3660baf4dc66d2eb7d90894df5\",\"dweb:/ipfs/QmSzc75cdZx2xJvWJjkF3LTdmPyd8JdERnzUnym5wKs5cD\"]},\"project:/contracts/party.sol\":{\"keccak256\":\"0xd519980c8d3de343eab724e01f54ab5448174f2c3b9ca8a6ba5245f8aed92576\",\"license\":\"UNLICENSED\",\"urls\":[\"bzz-raw://cb2645a089dc3bcf7050583945bc36a0dc021af48697c3ddf4b912e548145ffa\",\"dweb:/ipfs/QmUg6HXMxWsNCYcKodXZaEBWdkfBeNA8Yjc4iCrLscWeH3\"]}},\"version\":1}",
-  "bytecode": "0x6080604052348015600f57600080fd5b50603f80601d6000396000f3fe6080604052600080fdfea26469706673582212201e8a1e0cca2b93919aae23c9f90ec1f0ac648126ab7c186ba9b91722e472d89364736f6c63430008110033",
-  "deployedBytecode": "0x6080604052600080fdfea26469706673582212201e8a1e0cca2b93919aae23c9f90ec1f0ac648126ab7c186ba9b91722e472d89364736f6c63430008110033",
+  "metadata": "{\"compiler\":{\"version\":\"0.8.17+commit.8df45f5f\"},\"language\":\"Solidity\",\"output\":{\"abi\":[],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"project:/contracts/bid.sol\":\"BidContract\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"project:/contracts/bid.sol\":{\"keccak256\":\"0x722d397864c4dd59a50df9df09ef3172d80e7042b9940f71b01f30017fb3a5bf\",\"license\":\"UNLICENSED\",\"urls\":[\"bzz-raw://b6af6c434fce50bd822393f781787c3769982e5c32902d7c355a50323783c11a\",\"dweb:/ipfs/QmPpZP6CN2u1deFuRki2pm3FBS4YNVLb7mWKJt58q81hqj\"]},\"project:/contracts/entities.sol\":{\"keccak256\":\"0xfc009e86b101c8260c4ed14f40e23c731fd4b70e0d876640c8de12c34ddef454\",\"license\":\"UNLICENSED\",\"urls\":[\"bzz-raw://1db5a5f4177db3d55f764db45600737ff6e187dd0cd96cb2eb0eaca21d9376e9\",\"dweb:/ipfs/QmZzJEzPo6JRDcbCxd6k6mcXwRPRJqfwLkaMB6vaKX6We1\"]},\"project:/contracts/party.sol\":{\"keccak256\":\"0xb23daa5ae500857a41466327d17f7aba006c97b6d9ae1e4c585009db5697b266\",\"license\":\"UNLICENSED\",\"urls\":[\"bzz-raw://eb185aca7fb1aec54798f8c7eadf6c2b600bbcd81febc1394de1dbe293f72818\",\"dweb:/ipfs/QmRytRxgvQsy15KRHhPaJ3H53c2GqKbfFnKAvSXZEsJuYq\"]}},\"version\":1}",
+  "bytecode": "0x6080604052348015600f57600080fd5b50603f80601d6000396000f3fe6080604052600080fdfea2646970667358221220c456e83ae7056c8692b67d478733f6196f053c0f79500c7577c91ae43e2e399264736f6c63430008110033",
+  "deployedBytecode": "0x6080604052600080fdfea2646970667358221220c456e83ae7056c8692b67d478733f6196f053c0f79500c7577c91ae43e2e399264736f6c63430008110033",
   "immutableReferences": {},
   "generatedSources": [],
   "deployedGeneratedSources": [],
@@ -21,13 +21,13 @@
         8
       ],
       "PartyContract": [
-        929
+        1535
       ],
       "ProjectStatus": [
         20
       ],
       "Tender": [
-        71
+        67
       ]
     },
     "id": 9,
@@ -55,7 +55,7 @@
         "nameLocation": "-1:-1:-1",
         "nodeType": "ImportDirective",
         "scope": 9,
-        "sourceUnit": 95,
+        "sourceUnit": 86,
         "src": "124:58:0",
         "symbolAliases": [
           {
@@ -76,7 +76,7 @@
               "name": "Tender",
               "nodeType": "Identifier",
               "overloadedDeclarations": [],
-              "referencedDeclaration": 71,
+              "referencedDeclaration": 67,
               "src": "147:6:0",
               "typeDescriptions": {}
             },
@@ -104,7 +104,7 @@
         "nameLocation": "-1:-1:-1",
         "nodeType": "ImportDirective",
         "scope": 9,
-        "sourceUnit": 930,
+        "sourceUnit": 1536,
         "src": "184:42:0",
         "symbolAliases": [
           {
@@ -113,7 +113,7 @@
               "name": "PartyContract",
               "nodeType": "Identifier",
               "overloadedDeclarations": [],
-              "referencedDeclaration": 929,
+              "referencedDeclaration": 1535,
               "src": "192:13:0",
               "typeDescriptions": {}
             },
@@ -150,7 +150,7 @@
   },
   "networks": {},
   "schemaVersion": "3.4.13",
-  "updatedAt": "2023-04-03T06:45:18.624Z",
+  "updatedAt": "2023-04-06T18:36:48.226Z",
   "devdoc": {
     "kind": "dev",
     "methods": {},

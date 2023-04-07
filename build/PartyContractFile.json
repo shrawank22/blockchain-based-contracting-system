@@ -1,0 +1,163 @@
+{
+  "contractName": "PartyContractFile",
+  "abi": [],
+  "metadata": "{\"compiler\":{\"version\":\"0.8.19+commit.7dd6d404\"},\"language\":\"Solidity\",\"output\":{\"abi\":[],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"project:/contracts/party.sol\":\"PartyContractFile\"},\"evmVersion\":\"paris\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"project:/contracts/interfaces.sol\":{\"keccak256\":\"0xc83d650b50cfc032d1b2f0a7bf75d99f9baeb24236dea4dfcae666e86639f7f4\",\"license\":\"UNLICENSED\",\"urls\":[\"bzz-raw://83e509ce5bcb82278a8607e0c8e1e3ca1bf87626c99cfecd107a5f64cdd417e0\",\"dweb:/ipfs/Qme1aq2gkA3kfTd2XjB7EF3kshmFsLuV98mkgKh13zst7k\"]},\"project:/contracts/party.sol\":{\"keccak256\":\"0xe93ace801bf6c5711c5fd5107a4276845c6eb9e8d7a450a4d5a51de4ad2a08a8\",\"license\":\"UNLICENSED\",\"urls\":[\"bzz-raw://f508286d6f52ef774c93145957e1a80859a5d66ce557ff4412eec8efd1e01060\",\"dweb:/ipfs/QmX2oeZojhxnETVvStqwKYZBd2VcTVeH5tea2d9dHRcrnP\"]}},\"version\":1}",
+  "bytecode": "0x6080604052348015600f57600080fd5b50603f80601d6000396000f3fe6080604052600080fdfea2646970667358221220ca05bbdde8c223e299878ddf6b7a187edb9f926732a16ae8dbe8931ea9adf27164736f6c63430008130033",
+  "deployedBytecode": "0x6080604052600080fdfea2646970667358221220ca05bbdde8c223e299878ddf6b7a187edb9f926732a16ae8dbe8931ea9adf27164736f6c63430008130033",
+  "immutableReferences": {},
+  "generatedSources": [],
+  "deployedGeneratedSources": [],
+  "sourceMap": "198:14215:4:-:0;;;;;;;;;;;;;;;;;;;",
+  "deployedSourceMap": "198:14215:4:-:0;;;;;",
+  "source": "// SPDX-License-Identifier: UNLICENSED\r\n\r\n//the version of solidity that is compatible\r\n\r\npragma solidity ^0.8.0;\r\n\r\nimport {Party, Tender, TenderStatus, Bid, BidStatus} from './interfaces.sol';\r\n\r\ncontract PartyContractFile{\r\n\r\n    // mapping (address => Party) public parties;\r\n    // mapping (uint256 => Tender) public tenders;\r\n    // mapping (uint256 => Bid) public bids;\r\n    // uint256 tenderCount = 0;\r\n    // uint256 bidCount = 0;\r\n    // address[] public partyAddresses;\r\n\r\n    // constructor() {\r\n    // }\r\n\r\n    // modifier isOwner(address owner) {\r\n    //     require(msg.sender == owner, \"Caller is not owner\");\r\n    //     _;\r\n    // }\r\n\r\n    // modifier isPartyExists(address _partyAddress) {\r\n    //     require(parties[_partyAddress].partyAddress != address(0), \"Party does not exist\");\r\n    //     _;\r\n    // }\r\n\r\n    // // Function for creating party\r\n    // function createParty(string memory _name, string memory _contactNumber, string memory _email, string memory _password, address _partyAddress) public isOwner(_partyAddress){\r\n    //     require(parties[_partyAddress].partyAddress == address(0), \"Party already exists\"); //\r\n\r\n    //     Party storage newParty = parties[_partyAddress];\r\n    //     newParty.name = _name;\r\n    //     newParty.contactNumber = _contactNumber;\r\n    //     newParty.email = _email;\r\n    //     newParty.password = _password;\r\n    //     newParty.trustScore = 0;\r\n    //     newParty.createdAt = block.timestamp;\r\n    //     newParty.partyAddress = _partyAddress;\r\n    //     // newParty.tenderIds = new address[](0);\r\n    //     partyAddresses.push(_partyAddress);\r\n    // }\r\n\r\n    // //Function for updating party\r\n    // function updateParty(string memory _name, string memory _password, address _partyAddress) public isOwner(_partyAddress) isPartyExists(_partyAddress) {\r\n    //     // require(msg.sender == parties[_partyAddress].partyAddress, \"Only party owner can update/delete party details.\");\r\n    //     Party storage updatedParty = parties[_partyAddress];\r\n    //     updatedParty.name  = _name;\r\n    //     updatedParty.password = _password;\r\n    // }\r\n    \r\n    // //Function for deleting a party on platform\r\n    // function deleteParty(address _partyAddress) public isOwner(_partyAddress) isPartyExists(_partyAddress) {\r\n    //     // require(msg.sender == parties[_partyAddress].partyAddress, \"Only party owner can update/delete party details.\");\r\n    //     delete parties[_partyAddress];\r\n    //     for (uint256 i = 0; i < partyAddresses.length; i++) {\r\n    //         if (partyAddresses[i] == msg.sender) {\r\n    //             partyAddresses[i] = partyAddresses[partyAddresses.length - 1];\r\n    //             partyAddresses.pop();\r\n    //             break;\r\n    //         }\r\n    //     }\r\n    // }\r\n \r\n    // // Function for getting details of a particular party\r\n    // function getPartyDetails(address _partyAddress) public isOwner(_partyAddress) isPartyExists(_partyAddress) view returns (string memory, string memory, string memory, address, uint256) {\r\n    //     return (parties[_partyAddress].name, parties[_partyAddress].contactNumber, parties[_partyAddress].email, parties[_partyAddress].partyAddress, parties[_partyAddress].trustScore);\r\n    // }\r\n\r\n    // //function to update party's trust score\r\n    // function updateTrustScore(address _partyAddress, uint256 _trustScore) public isOwner(_partyAddress) isPartyExists(_partyAddress) {\r\n    //     Party storage updatedParty = parties[_partyAddress];\r\n    //     updatedParty.trustScore = _trustScore;\r\n    // }\r\n\r\n    \r\n    // // Function for getting total no of parties\r\n    // // function getPartyCount() public view returns (uint256) {\r\n    // //     return partyAddresses.length;\r\n    // // }\r\n    \r\n    // // Function for getting the address of a particular party.\r\n    // // function getPartyAddress(uint256 index) public view returns (address) {\r\n    // //     return partyAddresses[index];\r\n    // // }\r\n\r\n    // // Function for creating a tender\r\n    // function createTender(address _partyAddress, uint256 _budget, string memory _title, string memory _description, uint256 _deadline, uint256 _totalMilestones) isOwner(_partyAddress) public {\r\n    //     require(_partyAddress.balance >= _budget/2, \"insufficient funds to create a tender\");\r\n    //     Tender storage newTender = tenders[tenderCount];\r\n    //     newTender.title = _title;\r\n    //     newTender.description = _description;\r\n    //     newTender.budget = _budget;\r\n    //     newTender.tenderStatus = TenderStatus.NEW;\r\n    //     newTender.createdAt = block.timestamp;\r\n    //     newTender.deadline = _deadline;\r\n    //     newTender.issuerAddress = _partyAddress;\r\n    //     newTender.tenderAddress = address(this);\r\n    //     newTender.totalMilestones = _totalMilestones;\r\n    //     parties[_partyAddress].tenderIds.push(tenderCount);\r\n    //     tenderCount++;\r\n    // }\r\n\r\n    // function getAllTenders() public view returns (Tender[] memory){\r\n    //     require(partyAddresses.length > 0, \"No parties exists\");\r\n    //     Tender[] memory tendersList = new Tender[](tenderCount);\r\n    //     for (uint256 i = 0; i < tenderCount; i++) {\r\n    //         tendersList[i] = tenders[i];\r\n    //     }\r\n    //     return(tendersList);\r\n    // }\r\n\r\n    // function getMyTenders(address _partyAddress) public view returns ( Tender[] memory){\r\n    //     require(parties[_partyAddress].tenderIds.length > 0, \"No tenders exists\");\r\n    //     uint256[] memory partyTenderIds = parties[_partyAddress].tenderIds;\r\n    //     Tender[] memory tendersList = new Tender[](partyTenderIds.length);\r\n    //     for (uint256 i = 0; i < partyTenderIds.length; i++) {\r\n    //         tendersList[i] = tenders[partyTenderIds[i]];\r\n    //     }\r\n    //     return(tendersList);\r\n    // }\r\n\r\n    // function getTenderDetails(uint256 _tenderAddress) public view returns ( Tender memory){\r\n    //     require(tenders[_tenderAddress].budget > 0 , \"tender with address doesn't exists\");\r\n    //     return(tenders[_tenderAddress]);\r\n    // }\r\n\r\n    // function updateTenderStatus(uint256 _tenderAddress, TenderStatus _tenderStatus) public {\r\n    //     Tender storage updatedTender = tenders[_tenderAddress];\r\n    //     updatedTender.tenderStatus = _tenderStatus;\r\n    // }\r\n\r\n    // function updateTender(address _partyAddress, uint256 _tenderAddress, uint256 _budget, string memory _title, string memory _description, uint256 _deadline, uint256 _totalMilestones) public isTenderOwner(_partyAddress, _tenderAddress){\r\n    //     Tender storage updatedTender = tenders[_tenderAddress];\r\n    //     updatedTender.budget = _budget;\r\n    //     updatedTender.title = _title;\r\n    //     updatedTender.description = _description;\r\n    //     updatedTender.deadline = _deadline;\r\n    //     updatedTender.totalMilestones = _totalMilestones;\r\n    // }\r\n\r\n    // function deleteTender(address _partyAddress, uint256 _tenderAddress) public isTenderOwner(_partyAddress, _tenderAddress){ \r\n    //     require(parties[_partyAddress].tenderIds.length > 0, \"No tenders exists\");\r\n    //     require(tenders[_tenderAddress].budget > 0 , \"tender with address doesn't exists\");\r\n    //     require(tenders[_tenderAddress].tenderStatus == TenderStatus.NEW ||\r\n    //             tenders[_tenderAddress].tenderStatus == TenderStatus.SUSPENDED , \"tender cannot be deleted\");\r\n    //     uint256[] storage _tenderIds = parties[_partyAddress].tenderIds;\r\n    //     for (uint i = 0; i < _tenderIds.length; i++){\r\n    //         if(_tenderIds[i] == _tenderAddress){\r\n    //             delete tenders[_tenderAddress];\r\n    //             _tenderIds[i] = _tenderIds[_tenderIds.length - 1];\r\n    //             _tenderIds.pop();\r\n    //             break;\r\n    //         }\r\n    //     }\r\n    // }\r\n\r\n    // // @todo - add modifer for above functions\r\n\r\n    // modifier isTenderOwner(address _partyAddress, uint256 _tenderAddress) {\r\n    //     require(tenders[_tenderAddress].issuerAddress == _partyAddress, \"you're not authorized to perform this action\");\r\n    //     _;\r\n    // }\r\n\r\n    // modifier isBidOwner(address _bidderAddress, uint256 _bidId) {\r\n    //     require(bids[_bidId].bidderAddress == _bidderAddress, \"you're not authorized to perform this action\");\r\n    //     _;\r\n    // }\r\n\r\n    // function createBid(address _bidderAddress, uint256 _tenderAddress, string memory _bidClause, uint256 _quotedAmount) public{\r\n    //     Tender storage tender = tenders[_tenderAddress];\r\n    //     require(tender.budget > 0, \"Tender does not exist\");\r\n    //     require(tender.tenderStatus == TenderStatus.OPEN, \"Tender is not open for bids\");\r\n    //     require(block.timestamp > tender.deadline, \"Bidding has ended\");\r\n    //     require(_bidderAddress != tender.issuerAddress, \"Owner cannot bid on their own tender\");\r\n\r\n    //     Bid storage newBid = bids[bidCount];\r\n    //     newBid.bidClause = _bidClause;\r\n    //     newBid.quotedAmount = _quotedAmount;\r\n    //     newBid.bidderAddress = _bidderAddress;\r\n    //     newBid.tenderAddress = _tenderAddress;\r\n    //     newBid.bidStatus = BidStatus.PENDING;\r\n    //     newBid.createdAt = block.timestamp;\r\n    //     tenders[_tenderAddress].bidIds.push(bidCount);\r\n    //     bidCount++;\r\n    // }\r\n\r\n    // modifier canViewBid(address _bidderAddress, address _issuerAddress ,uint256 _tenderId, uint256 _bidId){\r\n    //     require(bids[_bidId].bidderAddress == _bidderAddress  && tenders[_tenderId].issuerAddress == _issuerAddress && (msg.sender == _issuerAddress || msg.sender == _bidderAddress), \"Not authorized to view bid details\");\r\n    //     _;\r\n    // }\r\n\r\n    // // For getting bid details like message, amount, address of bidders \r\n    // function getBidDetails(address _bidderAddress, address _issuerAddress ,uint256 _tenderId, uint256 _bidId) public view canViewBid(_bidderAddress, _issuerAddress, _tenderId, _bidId) returns (Bid memory) {\r\n\t//     require(bids[_bidId].quotedAmount > 0, \"Bid does not exist\");\r\n    // \treturn (bids[_bidId]);\r\n    // }\r\n\r\n    // // For getting all bids of a tender\r\n    // function getAllBids(address _partyAddress, uint256 _tenderId) public view isTenderOwner(_partyAddress, _tenderId) returns(Bid[] memory){\r\n    //     require(tenders[_tenderId].bidIds.length > 0, \"No bids exists\");\r\n    //     uint256[] memory tenderBidIds = tenders[_tenderId].bidIds;\r\n    //     Bid[] memory bidsList = new Bid[](tenderBidIds.length);\r\n    //     for (uint256 i = 0; i < tenderBidIds.length; i++) {\r\n    //         bidsList[i] = bids[tenderBidIds[i]];\r\n    //     }\r\n    //     return(bidsList);\r\n    // }\r\n\r\n    // function updateBidStatus(address _partyAddress, uint256 _tenderAddress, uint256 _bidAddress ,BidStatus _bidStatus) public isTenderOwner(_partyAddress, _tenderAddress) {\r\n    //     Bid storage updatedBid = bids[_bidAddress];\r\n    //     updatedBid.bidStatus = _bidStatus;\r\n    // }\r\n\r\n    // function updateBid(address _bidderAddress, uint256 _bidId, string memory _bidClause, uint256 _quotedAmount) public isBidOwner(_bidderAddress, _bidId) {\r\n    //     Bid storage updatedBid = bids[_bidId];\r\n    //     updatedBid.bidClause = _bidClause;\r\n    //     updatedBid.quotedAmount = _quotedAmount;\r\n    // }\r\n\r\n    // function deleteBid(address _bidderAddress, uint256 _tenderId ,uint256 _bidId) public isBidOwner(_bidderAddress, _bidId){ \r\n    //     require(tenders[_tenderId].bidIds.length > 0, \"No bids exists\");\r\n    //     require(bids[_bidId].quotedAmount > 0 , \"bid with address doesn't exists\");\r\n    //     require(bids[_bidId].bidStatus != BidStatus.PENDING , \"bid cannot be deleted\");\r\n    //     uint256[] storage _bidIds = tenders[_tenderId].bidIds;\r\n    //     for (uint i = 0; i < _bidIds.length; i++){\r\n    //         if(_bidIds[i] == _bidId){\r\n    //             delete bids[_bidId];\r\n    //             _bidIds[i] = _bidIds[_bidIds.length - 1];\r\n    //             _bidIds.pop();\r\n    //             break;\r\n    //         }\r\n    //     }\r\n    // }\r\n\r\n    // modifier isValidTender(uint256 tenderId) {\r\n    //     require(block.timestamp >= tenders[tenderId].deadline && tenders[tenderId].tenderStatus == TenderStatus.CLOSED);\r\n    //     _;\r\n    // }\r\n\r\n    // function selectTopBids(address _partyAddress, uint256 _tenderId ) public view isTenderOwner(_partyAddress, _tenderId) isValidTender(_tenderId) returns (Bid[] memory) {\r\n    //     //invoke this function once deadline is crossed and can be invoked by project issue party, make sure this project is not assigned to anyone------modifier\r\n    //     // get all the bids for pt\r\n    //     Bid[] memory bidList = getAllBids(_partyAddress, _tenderId);\r\n    //     require(bidList.length > 0, \"No bids exists\");\r\n    //     // sort bids by price\r\n    //     for (uint i = 1; i < bidList.length; i++){\r\n    //         for (uint j = 0; j < i; j++){\r\n    //             if (bidList[i].quotedAmount < bidList[j].quotedAmount) {\r\n    //                 Bid memory tempBid = bidList[i];\r\n    //                 bidList[i] = bidList[j];\r\n    //                 bidList[j] = tempBid;\r\n    //             }\r\n    //         }\r\n    //     }\r\n    //     uint256 shortListedBidsCount = (bidList.length < 5) ? bidList.length : 5; \r\n    //     Bid[] memory shortListedBids = new Bid[](shortListedBidsCount);\r\n    //     for (uint i = 0; i < shortListedBidsCount; i++){\r\n    //         shortListedBids[i] = bidList[i];\r\n    //     }\r\n\r\n    //     return shortListedBids;\r\n    //     //returns a list of top 5 bidders and history of bidders\r\n\r\n    //     // - in case of a tie, the bidder with the largest \"trust\" is given the project. ( Trust in this context is measured in terms of the number of previous projects done and the token assets a party has.)\r\n    //     // update the status of each bid to APPROVED / REJECTED from PENDING.\r\n    // }\r\n\r\n    // function finaliseWinnerBid(address _partyAddress, uint256 _tenderId, uint256 _bidId) public isTenderOwner(_partyAddress, _tenderId){\r\n    //     for(uint256 i=0;i<tenders[_tenderId].bidIds.length ;i++){\r\n    //         if(tenders[_tenderId].bidIds[i] == _bidId)\r\n    //             updateBidStatus(_partyAddress, _tenderId, tenders[_tenderId].bidIds[i], BidStatus.APPROVED);\r\n    //         else \r\n    //             updateBidStatus(_partyAddress, _tenderId, tenders[_tenderId].bidIds[i], BidStatus.REJECTED);\r\n    //     }\r\n    //     tenders[_tenderId].tenderStatus = TenderStatus.ASSIGNED;\r\n    // }\r\n\r\n}\r\n",
+  "sourcePath": "C:\\Users\\sabba\\OneDrive\\Documents\\BlockchainProject\\blockchain-based-contracting-system\\contracts\\party.sol",
+  "ast": {
+    "absolutePath": "project:/contracts/party.sol",
+    "exportedSymbols": {
+      "Bid": [
+        244
+      ],
+      "BidStatus": [
+        230
+      ],
+      "Party": [
+        291
+      ],
+      "PartyContractFile": [
+        300
+      ],
+      "Tender": [
+        273
+      ],
+      "TenderStatus": [
+        222
+      ]
+    },
+    "id": 301,
+    "license": "UNLICENSED",
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 293,
+        "literals": [
+          "solidity",
+          "^",
+          "0.8",
+          ".0"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "90:23:4"
+      },
+      {
+        "absolutePath": "project:/contracts/interfaces.sol",
+        "file": "./interfaces.sol",
+        "id": 299,
+        "nameLocation": "-1:-1:-1",
+        "nodeType": "ImportDirective",
+        "scope": 301,
+        "sourceUnit": 292,
+        "src": "117:77:4",
+        "symbolAliases": [
+          {
+            "foreign": {
+              "id": 294,
+              "name": "Party",
+              "nodeType": "Identifier",
+              "overloadedDeclarations": [],
+              "referencedDeclaration": 291,
+              "src": "125:5:4",
+              "typeDescriptions": {}
+            },
+            "nameLocation": "-1:-1:-1"
+          },
+          {
+            "foreign": {
+              "id": 295,
+              "name": "Tender",
+              "nodeType": "Identifier",
+              "overloadedDeclarations": [],
+              "referencedDeclaration": 273,
+              "src": "132:6:4",
+              "typeDescriptions": {}
+            },
+            "nameLocation": "-1:-1:-1"
+          },
+          {
+            "foreign": {
+              "id": 296,
+              "name": "TenderStatus",
+              "nodeType": "Identifier",
+              "overloadedDeclarations": [],
+              "referencedDeclaration": 222,
+              "src": "140:12:4",
+              "typeDescriptions": {}
+            },
+            "nameLocation": "-1:-1:-1"
+          },
+          {
+            "foreign": {
+              "id": 297,
+              "name": "Bid",
+              "nodeType": "Identifier",
+              "overloadedDeclarations": [],
+              "referencedDeclaration": 244,
+              "src": "154:3:4",
+              "typeDescriptions": {}
+            },
+            "nameLocation": "-1:-1:-1"
+          },
+          {
+            "foreign": {
+              "id": 298,
+              "name": "BidStatus",
+              "nodeType": "Identifier",
+              "overloadedDeclarations": [],
+              "referencedDeclaration": 230,
+              "src": "159:9:4",
+              "typeDescriptions": {}
+            },
+            "nameLocation": "-1:-1:-1"
+          }
+        ],
+        "unitAlias": ""
+      },
+      {
+        "abstract": false,
+        "baseContracts": [],
+        "canonicalName": "PartyContractFile",
+        "contractDependencies": [],
+        "contractKind": "contract",
+        "fullyImplemented": true,
+        "id": 300,
+        "linearizedBaseContracts": [
+          300
+        ],
+        "name": "PartyContractFile",
+        "nameLocation": "207:17:4",
+        "nodeType": "ContractDefinition",
+        "nodes": [],
+        "scope": 301,
+        "src": "198:14215:4",
+        "usedErrors": []
+      }
+    ],
+    "src": "90:14325:4"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.8.19+commit.7dd6d404.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "3.4.13",
+  "updatedAt": "2023-04-07T19:08:47.989Z",
+  "devdoc": {
+    "kind": "dev",
+    "methods": {},
+    "version": 1
+  },
+  "userdoc": {
+    "kind": "user",
+    "methods": {},
+    "version": 1
+  }
+}

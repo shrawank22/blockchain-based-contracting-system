@@ -2,7 +2,7 @@
 
 //the version of solidity that is compatible
 
-pragma solidity >=0.7.0 <0.9.0;
+pragma solidity ^0.8.0;
 enum TenderStatus{ NEW, OPEN, CLOSED, SUSPENDED, ASSIGNED } //created---OPEN, deadline crosses---CLOSED, project is assigned ---- ASSIGNED
 
 enum ProjectStatus{ ASSIGNED, ONGOING, COMPLEDTED }

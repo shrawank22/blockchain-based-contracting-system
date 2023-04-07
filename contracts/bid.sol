@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: UNLICENSED
 
 //the version of solidity that is compatible
-pragma solidity >=0.7.0 <0.9.0; 
+pragma solidity ^0.8.0;
 
-import {ProjectStatus, Tender, Bid} from './entities.sol';
-import {PartyContract} from "./party.sol";
+import {ProjectStatus, Tender, Bid} from './interfaces.sol';
+import {PartyContractFile} from "./party.sol";
 
 contract BidContract{
 

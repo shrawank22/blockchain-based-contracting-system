@@ -1,4 +1,7 @@
-// SPDX-License-Identifier: MIT
+// SPDX-License-Identifier: UNLICENSED
+
+//the version of solidity that is compatible
+
 pragma solidity ^0.8.0;
 
 interface IERC20 {
