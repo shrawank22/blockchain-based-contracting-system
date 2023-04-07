@@ -70,22 +70,106 @@ contract PartyContractFile{
     //     return (parties[_partyAddress].name, parties[_partyAddress].contactNumber, parties[_partyAddress].email, parties[_partyAddress].partyAddress, parties[_partyAddress].trustScore);
     // }
 
-    // //function to update party's trust score
-    // function updateTrustScore(address _partyAddress, uint256 _trustScore) public isOwner(_partyAddress) isPartyExists(_partyAddress) {
-    //     Party storage updatedParty = parties[_partyAddress];
-    //     updatedParty.trustScore = _trustScore;
+    // Function for creating a tender
+    // function createTender(address _partyAddress, uint256 _budget, string memory _title, string memory _description, uint256 _deadline, uint256 _totalMilestones) isOwner(_partyAddress) public {
+    //     require(_partyAddress.balance >= _budget/2, "insufficient funds to create a tender");
+    //     Tender storage newTender = tenders[tenderCount];
+    //     newTender.title = _title;
+    //     newTender.description = _description;
+    //     newTender.budget = _budget;
+    //     newTender.tenderStatus = TenderStatus.NEW;
+    //     newTender.createdAt = block.timestamp;
+    //     newTender.deadline = _deadline;
+    //     newTender.issuerAddress = _partyAddress;
+    //     newTender.tenderAddress = address(this);
+    //     newTender.totalMilestones = _totalMilestones;
+    //     address[] memory sortedlist = sortByTrustScore();
+    //     uint len = sortedlist.length;
+    //     if(len<=10)
+    //     {
+    //         newTender.validatorsAddresses = sortedlist;
+    //     }
+    //     else
+    //     {
+    //         for(uint i=0; i<10; i++)
+    //         {
+    //             if(sortedlist[len-i-1] != parties[msg.sender].partyAddress)
+    //             {
+    //                 newTender.validatorsAddresses.push(sortedlist[len-i-1]);
+    //             }
+    //         }
+    //     }
+    //     parties[_partyAddress].tenderIds.push(tenderCount);
+    //     tenderCount++;
     // }
 
+    // function sortByTrustScore() public view returns(address[] memory) {
+    // address[] memory _party = partyAddresses;
+    // for (uint i = 1; i < partyAddresses.length; i++)
+    //     for (uint j = 0; j < i; j++)
+    //         if (parties[_party[i]].trustScore < parties[_party[j]].trustScore) {
+    //             address x = _party[i];
+    //             _party[i] = _party[j];
+    //             _party[j] = x;
+    //         }
+
+    // return _party;
+    // }
+
+    // function validate(uint256 _tenderAddress, bool _vote) public {
+    //     bool valid = false;
+    //     Tender storage newTender = tenders[_tenderAddress];
+    //     uint len = newTender.validatorsAddresses.length;
+    //     for(uint i=0; i<len; i++)
+    //     {
+    //         if(newTender.validatorsAddresses[i] == msg.sender)
+    //         {
+    //             valid = true;
+    //             break;
+    //         }
+    //     }
+    //     if(valid)
+    //     {
+    //         newTender.validationVotes.push(_vote);
+    //     }
+    //     else
+    //     {
+    //         revert("You're not authorized to validate this tender.");
+    //     }
+    // }
+
+    // function checkTenderValidation(uint256 _tenderAddress) public {
+    //     Tender storage newTender = tenders[_tenderAddress];
+    //     if(isValid(newTender.validationVotes)) {
+    //         updateTenderStatus(_tenderAddress, TenderStatus.OPEN);
+    //     }
+    // }
     
-    // // Function for getting total no of parties
-    // // function getPartyCount() public view returns (uint256) {
-    // //     return partyAddresses.length;
-    // // }
-    
-    // // Function for getting the address of a particular party.
-    // // function getPartyAddress(uint256 index) public view returns (address) {
-    // //     return partyAddresses[index];
-    // // }
+    // function isValid(bool[] memory _validationVotes) public pure returns (bool) {
+    //     uint voteCount = 0;
+    //     for(uint i=0; i<_validationVotes.length; i++)
+    //     {
+    //         if(_validationVotes[i])
+    //         {
+    //             voteCount++;
+    //         }
+    //     }
+
+    //     if(voteCount>=6)
+    //     {
+    //         return true;
+    //     }
+    //     return false;
+    // }
+
+    // function getAllTenders() public view returns (Tender[] memory){
+    //     require(partyAddresses.length > 0, "No parties exists");
+    //     Tender[] memory tendersList = new Tender[](tenderCount);
+    //     for (uint256 i = 0; i < tenderCount; i++) {
+    //         tendersList[i] = tenders[i];
+    //     }
+    //     return(tendersList);
+    // }
 
     // // Function for creating a tender
     // function createTender(address _partyAddress, uint256 _budget, string memory _title, string memory _description, uint256 _deadline, uint256 _totalMilestones) isOwner(_partyAddress) public {

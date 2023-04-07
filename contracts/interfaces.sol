@@ -31,6 +31,7 @@ struct Tender {
     uint256 totalMilestones;
     address tenderAddress;
     address[] validatorsAddresses;
+    bool[] validationVotes;
     uint256[] milestoneTimePeriods;
     uint256[] bidIds;
 }
