@@ -165,3 +165,9 @@
     border: 1px solid #888;
     background-color: #ddd;
   }
+
+  .input-disabled{
+    cursor: not-allowed;
+    pointer-events: none;
+    background-color: #D3D3D3;
+  }
