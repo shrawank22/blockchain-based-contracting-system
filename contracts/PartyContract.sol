@@ -1,10 +1,19 @@
 // SPDX-License-Identifier: UNLICENSED
 
 //the version of solidity that is compatible
-import {Party} from "./interfaces.sol";
 
 pragma solidity ^0.8.0;
 contract PartyContract {
+    struct Party {
+        string name;
+        string contactNumber;
+        string email;
+        string password;
+        uint256 trustScore;
+        uint256 createdAt;
+        address partyAddress;
+        uint256[] tenderIds;
+    }
     
     mapping (address => Party) public parties;
     address[] public partyAddresses;
