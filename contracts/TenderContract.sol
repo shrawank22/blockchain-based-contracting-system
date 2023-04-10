@@ -27,31 +27,31 @@ contract TenderContract is PartyContract{
     uint256 tenderCount = 0;
 
     //setters and getter functions
-    function getBudget(uint256 _tenderId) external view returns(uint256){
+    function getBudget(uint256 _tenderId) public view returns(uint256){
         return tenders[_tenderId].budget;
     }
 
-    function getTenderStatus(uint256 _tenderId) external view returns(TenderStatus){
+    function getTenderStatus(uint256 _tenderId) public view returns(TenderStatus){
         return tenders[_tenderId].tenderStatus;
     }
 
-    function getDeadline(uint256 _tenderId) external view returns(uint256){
+    function getDeadline(uint256 _tenderId) public view returns(uint256){
             return tenders[_tenderId].deadline;
     }
 
-    function getBidIds(uint256 _tenderId) external view returns(uint256[] memory){
+    function getBidIds(uint256 _tenderId) public view returns(uint256[] memory){
         return tenders[_tenderId].bidIds;
     }
 
-    function getIssuerAddress(uint256 _tenderId) external view returns(address){
+    function getIssuerAddress(uint256 _tenderId) public view returns(address){
         return tenders[_tenderId].issuerAddress;
     }
 
-    function addBidId(uint256 _tenderId, uint256 bidId) external {
+    function addBidId(uint256 _tenderId, uint256 bidId) public {
         tenders[_tenderId].bidIds.push(bidId);
     }
 
-    function deleteBidId(uint256 _tenderId, uint256 _bidId) external {
+    function deleteBidId(uint256 _tenderId, uint256 _bidId) public {
         uint256[] storage tenderBidIds = tenders[_tenderId].bidIds;
         for (uint i = 0; i < tenderBidIds.length; i++){
             if(tenderBidIds[i] == _bidId){
