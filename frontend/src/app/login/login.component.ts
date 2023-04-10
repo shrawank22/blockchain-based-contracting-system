@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
+import Swal from 'sweetalert2';
+
 
 @Component({
   selector: 'app-login',
@@ -10,9 +12,11 @@ import { AuthService } from '../services/auth.service';
 })
 export class LoginComponent implements OnInit {
   errorMessage = "";
+  address: string = "";
+  web3Provider: any = null;
 
   loginForm = this.fb.group({
-    email: ["", [Validators.required, Validators.pattern('^[^\\s@]+@[^\\s@]+\\.[^\\s@]{2,}$')]],
+    walletId: ["", [Validators.required, Validators.minLength(1)]],
     password: ["", [Validators.required]]
 
   })
@@ -22,28 +26,54 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  get email() {
-    return this.loginForm.get('email');
+  get walletId() {
+    return this.loginForm.get('walletId');
   }
 
   get password() {
     return this.loginForm.get('password');
+  } 
+
+  getAddress() {
+    let ethereum = (window as { [key: string]: any })['ethereum'];
+    if (typeof ethereum !== 'undefined') {
+      this.address = "";
+    }
+    if (ethereum) {
+      this.web3Provider = ethereum;
+      try {
+        // Request account access
+        ethereum.request({ method: 'eth_requestAccounts' }).then((address: any) => {
+          this.address = address[0];
+          this.loginForm.controls['walletId'].setValue(this.address);
+        });
+      } catch (error) {
+        // User denied account access...
+        this.address = "";
+        this.loginForm.controls['walletId'].setValue(this.address);
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'User denied account access '
+        });
+        console.error("User denied account access");
+      }
+    }
   }
 
   onSubmit() {
-    // this.securityQuestion
-    // this.authService.login(
-    //   {
-    //     email: this.email?.value,
-    //     password: this.password?.value
-    //   }
-    // )
-    //   .subscribe(success => {
-    //     if (success) {
-    //       this.router.navigate(['/dashboard']);
-    //     } else {
-    //       this.errorMessage = "Incorrect Email/Password entered.";
-    //     }
-    //   });
+    this.authService.login(
+      {
+        walletId: this.walletId?.value,
+        password: this.password?.value
+      }
+    )
+      .subscribe(success => {
+        if (success) {
+          this.router.navigate(['/dashboard']);
+        } else {
+          this.errorMessage = "Incorrect Email/Password entered.";
+        }
+      });
   }
 }

@@ -12,20 +12,29 @@
                 </div>
                 <div class="error-message">{{ errorMessage }}</div>
                 <div class="form-group">
-                  <label for="email">EMAIL</label>
-                  <input type="email" formControlName="email"
-                  [ngClass]="{'is-invalid':email?.errors && email?.touched}"
-                   class="form-control" placeholder="Email Address"
-                    value="" />
-                    <div class="error-message"
-                    *ngIf="!email?.valid && email?.touched">
-                    <div [hidden]="!email?.errors?.['required']">
-                        Email is required
+                  <label for="walletId">CONNECT WALLET</label>
+                  <div class="form-group">
+                    <div class="input-group mb-3">
+                      <input type="text"  formControlName="walletId" 
+                      [ngClass]="{'is-invalid':walletId?.errors && walletId?.touched}"
+                      class="form-control input-disabled" placeholder="Eth Address"
+                      value="">
+                      <button class="btn btn-outline-secondary connect-to-wallet" 
+                        (click)="getAddress()"
+                        type="button"
+                        title="connect to wallet"> 
+                        <i class='bx bx-wallet-alt'></i>
+                      </button>
+                      <div class="error-message"
+                      *ngIf="!walletId?.valid && walletId?.touched">
+                      <div [hidden]="!walletId?.errors?.['required']">
+                          Wallet address is required
+                      </div>
+                      <div [hidden]="!walletId?.errors?.['pattern']">
+                        Wallet address  should be valid
+                      </div>
+                      </div>
                     </div>
-                    <div [hidden]="!email?.errors?.['pattern']">
-                      Email should be valid
-                    </div>
-  
                   </div>
                 </div>
   

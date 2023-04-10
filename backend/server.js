@@ -14,7 +14,7 @@ app.use(express.json())
 if (typeof web3 !== 'undefined') {
     var web3 = new Web3(web3.currentProvider)
   } else {
-    var web3 = new Web3(new Web3.providers.HttpProvider('http://127.0.0.1:8545'))
+    var web3 = new Web3(new Web3.providers.HttpProvider('http://127.0.0.1:7545'))
 }
 
 const Party = contract(party_artifact)

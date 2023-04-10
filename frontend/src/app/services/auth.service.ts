@@ -18,10 +18,10 @@ export class AuthService {
 
   constructor(private http: HttpClient, private route: Router) { }
 
-  login(user: { email: string, password: string }): Observable<boolean> {
+  login(user: { walletId: any, password: any }): Observable<boolean> {
     return this.http.post<any>(`${config.apiUrl}/login/`, user)
       .pipe(
-        tap(tokens => this.doLoginUser(user.email, tokens)),
+        tap(res => this.doLoginUser(user.walletId, res.name)),
         mapTo(true),
         catchError(error => {
           // alert(error.error);
@@ -64,10 +64,11 @@ export class AuthService {
     return jwtToken;
   }
 
-  private doLoginUser(email: string, tokens: Tokens) {
-    this.loggedUser = email;
-    this.storeTokens(tokens);
-    localStorage.setItem("EMAIL", email);
+  private doLoginUser(walletId: string, name: any) {
+    this.loggedUser = walletId;
+    // this.storeTokens(tokens);
+    localStorage.setItem("EMAIL", walletId);
+    localStorage.setItem("NAME", name);
   }
 
   private doLogoutUser() {

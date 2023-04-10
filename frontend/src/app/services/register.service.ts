@@ -11,14 +11,15 @@ import Swal from 'sweetalert2';
 export class RegisterService {
   data: any
   private handleError(error: HttpErrorResponse) {
+    debugger
     if (error.status === 0) {
       console.error('An error occurred:', error.error);
     } else {
       if (error.status === 400) {
-        if (error.error.hasOwnProperty('email')) {
+        if (error.error.hasOwnProperty('message')) {
           Swal.fire({
             icon: 'error',
-            titleText: 'User already exists please login',
+            titleText: 'Party already exists please login',
             html: `<a type="button" style="
             margin-top: 10%;
             border: none;

@@ -123,3 +123,13 @@
   .login-button {
     text-align: center;
   }
+
+  .input-disabled{
+    cursor: not-allowed;
+    pointer-events: none;
+    background-color: #D3D3D3;
+  }
+
+  .connect-to-wallet {
+    margin: 10px 0;
+  }
