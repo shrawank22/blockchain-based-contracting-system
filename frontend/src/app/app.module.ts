@@ -12,6 +12,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatCardModule } from '@angular/material/card';
 import { MatMenuModule } from '@angular/material/menu';
 import { ConnectToWalletComponent } from './connect-to-wallet/connect-to-wallet.component';
+import { CustomTableComponent } from './custom-table/custom-table.component';
+import { MatTableModule } from '@angular/material/table';
+import { TendersComponent } from './tenders/tenders.component'; 
 
 @NgModule({
   declarations: [
@@ -20,7 +23,9 @@ import { ConnectToWalletComponent } from './connect-to-wallet/connect-to-wallet.
     RegisterComponent,
     DashboardComponent,
     NavbarComponent,
-    ConnectToWalletComponent
+    ConnectToWalletComponent,
+    CustomTableComponent,
+    TendersComponent
   ],
   imports: [
     BrowserModule,
@@ -31,6 +36,7 @@ import { ConnectToWalletComponent } from './connect-to-wallet/connect-to-wallet.
     BrowserAnimationsModule,
     MatCardModule,
     MatMenuModule,
+    MatTableModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

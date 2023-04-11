@@ -4,6 +4,7 @@ import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ConnectToWalletComponent } from './connect-to-wallet/connect-to-wallet.component';
+import { TendersComponent } from './tenders/tenders.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -23,6 +24,10 @@ const routes: Routes = [
     path: 'connect-to-wallet',
     component: ConnectToWalletComponent,
   },
+  {
+    path: 'tenders',
+    component: TendersComponent,
+  }
 ];
 
 @NgModule({

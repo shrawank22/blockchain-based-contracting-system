@@ -1,1 +1,7 @@
-<app-navbar></app-navbar>
+<app-navbar [template]="template"></app-navbar>
+
+<ng-template #template>
+    <mat-card class="matcard">
+        <mat-card-content>simple card </mat-card-content>
+    </mat-card>
+</ng-template>
