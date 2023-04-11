@@ -1,71 +1,70 @@
 <nav class="navbar navbar-light" style="background-color: #11101D; height: 4rem;">
-    <nav class="header-nav ms-auto">   
-      <a [matMenuTriggerFor]="menu" class="nav-link nav-profile d-flex align-items-center pe-0" data-bs-toggle="dropdown" style="margin: 0 32px 0 0; cursor: pointer;">
-        <img src="../../assets/images/profile.png" alt="Profile" class="rounded-circle">
-        <span class="d-none d-md-block dropdown-toggle ps-2" style="color: white;">User 1</span>
-      </a>
-      <mat-menu #menu="matMenu">
-        <button mat-menu-item>
-          <a class="dropdown-item d-flex align-items-center" routerLink="/connet-to-wallet">
-            <i class='bx bxs-wallet dropdown-icons' ></i>
-            <span>Connect to Wallet</span>
-          </a>
-        </button>
-        <button mat-menu-item>
-          <a class="dropdown-item d-flex align-items-center" routerLink="/login">
-            <i class='bx bx-log-out dropdown-icons' ></i>
-            <span>Sign Out</span>
-          </a>
-        </button>
-      </mat-menu>
-    </nav>
+  <nav class="header-nav ms-auto">
+    <a [matMenuTriggerFor]="menu" class="nav-link nav-profile d-flex align-items-center pe-0" data-bs-toggle="dropdown"
+      style="margin: 0 32px 0 0; cursor: pointer;">
+      <img src="../../assets/images/profile.png" alt="Profile" class="rounded-circle">
+      <span class="d-none d-md-block dropdown-toggle ps-2" style="color: white;">User 1</span>
+    </a>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item>
+        <a class="dropdown-item d-flex align-items-center" routerLink="/connet-to-wallet">
+          <i class='bx bxs-wallet dropdown-icons'></i>
+          <span>Connect to Wallet</span>
+        </a>
+      </button>
+      <button mat-menu-item>
+        <a class="dropdown-item d-flex align-items-center" routerLink="/login">
+          <i class='bx bx-log-out dropdown-icons'></i>
+          <span>Sign Out</span>
+        </a>
+      </button>
+    </mat-menu>
   </nav>
-  <div [ngClass]="status ? 'open sidebar' : 'sidebar'" class="sidebar">
-    <div class="logo-details">
-      <i class='bx bxl-bitcoin icon'></i>
-      <div class="logo_name">Smart Contract</div>
-      <i class='bx bx-menu' id="btn" (click)="toggleButton()"></i>
-    </div>
-    <ul class="nav-list">
-      <li>
-        <a routerLink="/dashboard" routerLinkActive="active-link">
-          <img class= "dashboard-icon" src="../../assets/images/icons8-dashboard-layout-48.png" alt="bid-icon" />
-          <span class="links_name">Dashboard</span>
-        </a>
-        <span class="tooltip">Dashboard</span>
-      </li>
-      <li>
-        <a href="#">
-          <img class= "dashboard-icon" src="../../assets/images/icons8-clipboard-list-64.png" alt="bid-icon" />
-          <span class="links_name">Active Tenders</span>
-        </a>
-        <span class="tooltip">Active Tenders</span>
-      </li>
-      <li>
-        <a href="#">
-          <img class= "dashboard-icon" src="../../assets/images/icons8-ballot-48.png" alt="bid-icon" />
-          <span class="links_name">Tenders</span>
-        </a>
-        <span class="tooltip">Tenders</span>
-      </li>
-      <li>
-        <a href="#">
-          <img class= "dashboard-icon" src="../../assets/images/icons8-bid-64.png" alt="bid-icon" />
-          <span class="links_name">Bids</span>
-        </a>
-        <span class="tooltip">Bids</span>
-      </li>
-      <li>
-        <a href="#">
-          <img class= "dashboard-icon" src="../../assets/images/icons8-project-64.png" alt="project-icon" />
-          <span class="links_name">Projects</span>
-        </a>
-        <span class="tooltip">Projects</span>
-      </li>
-    </ul>
+</nav>
+<div [ngClass]="status ? 'open sidebar' : 'sidebar'" class="sidebar">
+  <div class="logo-details">
+    <i class='bx bxl-bitcoin icon'></i>
+    <div class="logo_name">Smart Contract</div>
+    <i class='bx bx-menu' id="btn" (click)="toggleButton()"></i>
   </div>
-  <section class="home-section">
-    <mat-card class="matcard">
-      <mat-card-content>Simple card</mat-card-content>
-    </mat-card>
-  </section>
+  <ul class="nav-list">
+    <li>
+      <a routerLink="/dashboard" routerLinkActive="active-link">
+        <img class="dashboard-icon" src="../../assets/images/icons8-dashboard-layout-48.png" alt="bid-icon" />
+        <span class="links_name">Dashboard</span>
+      </a>
+      <span class="tooltip">Dashboard</span>
+    </li>
+    <li>
+      <a href="#">
+        <img class="dashboard-icon" src="../../assets/images/icons8-clipboard-list-64.png" alt="bid-icon" />
+        <span class="links_name">Active Tenders</span>
+      </a>
+      <span class="tooltip">Active Tenders</span>
+    </li>
+    <li>
+      <a routerLink="/tenders" routerLinkActive="active-link">
+        <img class="dashboard-icon" src="../../assets/images/icons8-ballot-48.png" alt="bid-icon" />
+        <span class="links_name">Tenders</span>
+      </a>
+      <span class="tooltip">Tenders</span>
+    </li>
+    <li>
+      <a href="#">
+        <img class="dashboard-icon" src="../../assets/images/icons8-bid-64.png" alt="bid-icon" />
+        <span class="links_name">Bids</span>
+      </a>
+      <span class="tooltip">Bids</span>
+    </li>
+    <li>
+      <a href="#">
+        <img class="dashboard-icon" src="../../assets/images/icons8-project-64.png" alt="project-icon" />
+        <span class="links_name">Projects</span>
+      </a>
+      <span class="tooltip">Projects</span>
+    </li>
+  </ul>
+</div>
+<section class="home-section">
+  <ng-container [ngTemplateOutlet]="template"></ng-container>
+</section>
