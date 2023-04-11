@@ -69,11 +69,9 @@ contract PartyContract {
     }
  
     // Function for getting details of a particular party
-    function getPartyDetails(address _partyAddress) public isOwner(_partyAddress) isPartyExists(_partyAddress) view returns (string memory, string memory, string memory, address, uint256) {
-        return (parties[_partyAddress].name, parties[_partyAddress].contactNumber, parties[_partyAddress].email, parties[_partyAddress].partyAddress, parties[_partyAddress].trustScore);
+    function getPartyDetails(address _partyAddress) public isOwner(_partyAddress) isPartyExists(_partyAddress) view returns (string memory, string memory, string memory, address, uint256, string memory) {
+        return (parties[_partyAddress].name, parties[_partyAddress].contactNumber, parties[_partyAddress].email, parties[_partyAddress].partyAddress, parties[_partyAddress].trustScore, parties[_partyAddress].password);
     }
 
-    function getPassword(address _partyAddress) public isOwner(_partyAddress) isPartyExists(_partyAddress) view returns (string memory) {
-        return (parties[_partyAddress].password);
-    }
+
 }

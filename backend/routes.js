@@ -38,9 +38,10 @@ function routes(app, web3, Party){
         const {walletId, password} = req.body;
         var party = await Party.deployed();
         var accounts = await web3.eth.getAccounts();
-        party.getPassword(walletId, {from:walletId})
+        party.getPartyDetails(walletId, {from:walletId})
         .then((data)=>{
-            if(data["0"] === password){
+            console.log(data)
+            if(data["5"] === password){
                 res.json({"status":"success","name" : data["0"]})
             }
             else {
