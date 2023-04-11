@@ -1,5 +1,7 @@
 <app-navbar  [template]="template" ></app-navbar>
-
 <ng-template #template>
-    <app-custom-table></app-custom-table>
+    <app-custom-table
+    [tableColumns]="tableColumns"
+    [tableData]="tableData">
+    </app-custom-table>
 </ng-template>
