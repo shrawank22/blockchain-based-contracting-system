@@ -2,6 +2,10 @@ export interface Column {
     columnDef: string;
     header: string;
     cell: Function;
-    isLink?: boolean;
-    url?: string;
+    isActionsEnabled?: boolean;
+    isEditEnabled?:boolean;
+    isDeleteEnabled?:boolean,
+    isViewBids?: boolean;
+    isAddBid?: boolean;
+    isViewTender?: boolean;
   }

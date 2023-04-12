@@ -6,6 +6,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { ConnectToWalletComponent } from './connect-to-wallet/connect-to-wallet.component';
 import { TendersComponent } from './tenders/tenders.component';
 import { ActiveTendersComponent } from './active-tenders/active-tenders.component';
+import { MyBidsComponent } from './my-bids/my-bids.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -32,6 +33,10 @@ const routes: Routes = [
   {
     path: 'active-tenders',
     component: ActiveTendersComponent,
+  },
+  {
+    path: 'my-bids',
+    component: MyBidsComponent,
   },
 ];
 

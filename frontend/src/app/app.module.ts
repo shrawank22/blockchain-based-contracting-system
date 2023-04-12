@@ -16,6 +16,11 @@ import { CustomTableComponent } from './custom-table/custom-table.component';
 import { MatTableModule } from '@angular/material/table';
 import { TendersComponent } from './tenders/tenders.component';
 import { ActiveTendersComponent } from './active-tenders/active-tenders.component'; 
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MyBidsComponent } from './my-bids/my-bids.component';
+import { CdkAccordionModule } from '@angular/cdk/accordion';
 
 @NgModule({
   declarations: [
@@ -27,7 +32,8 @@ import { ActiveTendersComponent } from './active-tenders/active-tenders.componen
     ConnectToWalletComponent,
     CustomTableComponent,
     TendersComponent,
-    ActiveTendersComponent
+    ActiveTendersComponent,
+    MyBidsComponent
   ],
   imports: [
     BrowserModule,
@@ -39,6 +45,10 @@ import { ActiveTendersComponent } from './active-tenders/active-tenders.componen
     MatCardModule,
     MatMenuModule,
     MatTableModule,
+    MatButtonModule,
+    MatIconModule,
+    MatTooltipModule,
+    CdkAccordionModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
