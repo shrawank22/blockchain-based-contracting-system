@@ -3,14 +3,12 @@ import { Column } from '../custom-table/columns';
 import { Tender } from 'src/models';
 
 
-// https://jnpiyush.medium.com/how-to-build-reusable-table-component-in-angular-7a7ce79d2754
-
 @Component({
-  selector: 'app-tenders',
-  templateUrl: './tenders.component.html',
-  styleUrls: ['./tenders.component.scss']
+  selector: 'app-active-tenders',
+  templateUrl: './active-tenders.component.html',
+  styleUrls: ['./active-tenders.component.scss']
 })
-export class TendersComponent {
+export class ActiveTendersComponent {
 
   tableColumns: Array<Column> =
     [{ columnDef: 'Title', header: 'Title', cell: (element: Record<string, any>) => `${element['Title']}` },

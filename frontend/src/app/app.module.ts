@@ -14,7 +14,8 @@ import { MatMenuModule } from '@angular/material/menu';
 import { ConnectToWalletComponent } from './connect-to-wallet/connect-to-wallet.component';
 import { CustomTableComponent } from './custom-table/custom-table.component';
 import { MatTableModule } from '@angular/material/table';
-import { TendersComponent } from './tenders/tenders.component'; 
+import { TendersComponent } from './tenders/tenders.component';
+import { ActiveTendersComponent } from './active-tenders/active-tenders.component'; 
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { TendersComponent } from './tenders/tenders.component';
     NavbarComponent,
     ConnectToWalletComponent,
     CustomTableComponent,
-    TendersComponent
+    TendersComponent,
+    ActiveTendersComponent
   ],
   imports: [
     BrowserModule,
