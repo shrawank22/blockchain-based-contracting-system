@@ -15,6 +15,9 @@ import { ConnectToWalletComponent } from './connect-to-wallet/connect-to-wallet.
 import { CustomTableComponent } from './custom-table/custom-table.component';
 import { MatTableModule } from '@angular/material/table';
 import { TendersComponent } from './tenders/tenders.component'; 
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [
@@ -37,6 +40,9 @@ import { TendersComponent } from './tenders/tenders.component';
     MatCardModule,
     MatMenuModule,
     MatTableModule,
+    MatButtonModule,
+    MatIconModule,
+    MatTooltipModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

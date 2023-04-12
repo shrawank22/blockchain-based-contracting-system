@@ -6,15 +6,22 @@
         </th>
 
         <td mat-cell *matCellDef="let element">
-            <span *ngIf="!disCol.isLink; else link">
+            <span *ngIf="!disCol.isActionsEnabled; else isActionsEnabled">
                 {{ disCol.cell(element) }}
             </span>
 
-            <ng-template #link>
-                <a [routerLink]="[disCol.url]">
-                    {{ disCol.cell(element) }}
-                </a>
-            </ng-template>
+            <ng-template #isActionsEnabled >
+                <div class="actionsTemplate">
+                    <button mat-icon-button matTooltip="Delete tender">
+                        <mat-icon>delete_outline</mat-icon>
+                      </button>
+                    <button mat-icon-button matTooltip="Edit tender">
+                        <mat-icon>edit</mat-icon>
+                    </button>
+                    <button *ngIf="disCol.isViewBids" class="viewBidsButton" mat-raised-button color="primary"> View bids</button>
+    
+                </div>
+             </ng-template>
         </td>
     </ng-container>
 
