@@ -38,10 +38,8 @@ const routes: Routes = [
   {
     path: 'my-bids',
     component: MyBidsComponent,
-    children: [
-      { path: 'tender-detail/:id', component: TenderDetailComponent },
-    ],
   },
+  { path: 'tender-detail', component: TenderDetailComponent },
 ];
 
 @NgModule({

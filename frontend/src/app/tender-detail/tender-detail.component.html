@@ -1,1 +1,27 @@
-<p>tender-detail works!</p>
+<app-navbar  [template]="template" ></app-navbar>
+<ng-template #template>
+    <mat-card class="matcard">
+        <mat-card-content>
+            <div class="col-md-6">
+                <form #newEventForm="ngForm">
+                    <div class="form-group">
+                        <label for="title">Title:</label>
+                        <input [(ngModel)]="tender.Title" name="title" id="title" type="text" class="form-control" [readonly]="true"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Description:</label>
+                        <input [(ngModel)]="tender.Description" name="description" id="description" type="text" class="form-control" [readonly]="true" />
+                    </div>
+                    <div class="form-group">
+                        <label for="budget">Budget:</label>
+                        <input [(ngModel)]="tender.Budget" name="budget" id="budget" type="text" class="form-control" [readonly]="true"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="status">Status:</label>
+                        <input [(ngModel)]="tender.Status" name="status" id="status" type="text" type="number" class="form-control" [readonly]="true"/>
+                    </div>
+                </form>
+            </div>
+        </mat-card-content>
+    </mat-card>
+</ng-template>

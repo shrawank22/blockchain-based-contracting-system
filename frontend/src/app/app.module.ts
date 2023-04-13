@@ -35,7 +35,7 @@ import { TenderDetailComponent } from './tender-detail/tender-detail.component';
     TendersComponent,
     ActiveTendersComponent,
     MyBidsComponent,
-    TenderDetailComponent
+    TenderDetailComponent, 
   ],
   imports: [
     BrowserModule,
