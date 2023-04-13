@@ -51,18 +51,19 @@ function routes(app, web3, Party, Tender){
 
     app.get("/api/tenders", async(req,res,next) => {
         var tender = await Tender.deployed();
-        tender.getMyTenders(req.query.id, {from:req.query.id})
+        tender.getMyTenders(req.query.address, {from:req.query.address})
         .then((data)=>{
             tenderResponse = []
             data.map( tender => {
                 console.log(parseInt(tender[6]))
                 tenderResponse.push({
-                    "title" : tender[0],
-                    "description": tender[1],
-                    "budget": tender[2],
-                    "status": tender[4],
-                    "milestones": tender[7],
-                    "deadline": (new Date(parseInt(tender[6]))).toString()
+                    "Id": tender[8],
+                    "Title" : tender[0],
+                    "Description": tender[1],
+                    "Budget": tender[2],
+                    "Status": tender[4],
+                    "Milestones": tender[7],
+                    "Deadline": (new Date(parseInt(tender[6]))).toString()
                 })
 
             })

@@ -1,15 +1,16 @@
+import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
-import { of, Observable, throwError } from 'rxjs';
-import { catchError, mapTo, tap } from 'rxjs/operators';
-import { config } from '../config';
 import Swal from 'sweetalert2';
+import { config } from '../config';
+import { Observable, catchError, mapTo, throwError } from 'rxjs';
+import { Tender } from 'src/models';
 
 @Injectable({
   providedIn: 'root'
 })
-export class RegisterService {
+export class TenderService {
   data: any
+
   private handleError(error: HttpErrorResponse) {
     if (error.status === 0) {
       console.error('An error occurred:', error.error);
@@ -70,18 +71,27 @@ export class RegisterService {
   }
   constructor(private http: HttpClient) { }
 
-  register(user: any): Observable<boolean> {
+  createTender(tender: any): Observable<any> {
     this.data = {
-      "email": user.email,
-      "password": user.password,
-      "user_name": user.userDetails,
-      "wallet_id": user.walletId,
-      "contact_number": user.contact,
+      "title": tender.title,
+      "description": tender.description,
+      "budget": tender.budget,
+      "issuerAddress": tender.issuerAddress,
+      "deadline": tender.deadline,
+      "totalMilestones": tender.totalMilestones,
     }
-    return this.http.post<any>(`${config.apiUrl}/party/register/`, this.data)
+    return this.http.post<any>(`${config.apiUrl}/tenders`, this.data)
       .pipe(
-        mapTo(true),
         catchError(this.handleError))
+  }
+
+  getMyTenders(address: string):  Observable<Tender[]>{
+    let queryParams = new HttpParams();
+    queryParams = queryParams.append("address",address);
+    return this.http.get<Tender[]>(`${config.apiUrl}/tenders`, {params:queryParams})
+      .pipe(
+        catchError(this.handleError)
+      )
   }
 
 }

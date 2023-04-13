@@ -1,4 +1,5 @@
 export interface Tender {
+    Id: number;
     Title: string;
     Status: string;
     Budget: number;
