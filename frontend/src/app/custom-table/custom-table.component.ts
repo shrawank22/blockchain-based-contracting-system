@@ -21,8 +21,13 @@ export class CustomTableComponent<T> {
   constructor(private router: Router) { }
 
   ngOnInit(): void {
+    debugger
     this.displayedColumns = this.tableColumns.map((c) => c.columnDef);
     this.dataSource = new MatTableDataSource(this.tableData);
+  }
+
+  ngOnChanges(): void {
+        this.dataSource = new MatTableDataSource(this.tableData);
   }
 
   redirectTo(id: any) {

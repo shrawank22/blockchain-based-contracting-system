@@ -161,8 +161,9 @@ contract TenderContract is PartyContract{
         require(partyAddresses.length > 0, "No parties exists");
         Tender[] memory tendersList = new Tender[](tenderCount);
         for (uint256 i = 0; i < tenderCount; i++) {
-            if(tenders[i].tenderStatus == TenderStatus.OPEN)
-            tendersList[i] = tenders[i];
+            if(tenders[i].tenderStatus == TenderStatus.OPEN){
+                 tendersList[i] = tenders[i];
+            }
         }
         return(tendersList);
     }

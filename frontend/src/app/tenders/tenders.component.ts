@@ -14,11 +14,12 @@ import { TenderService } from '../services/tender.service';
 export class TendersComponent implements OnInit{
 
   partyAddress : any;
-  tenders : Tender[]
+  tenders : Tender[];
   ngOnInit(): void {
     this.partyAddress = localStorage.getItem("WALLETID");
     this.tenderService.getMyTenders(this.partyAddress).subscribe((tenders) => {
-        this.tenders = tenders 
+      debugger
+        this.tenders = tenders.response;
     });
   }
 

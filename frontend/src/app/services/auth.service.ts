@@ -100,7 +100,7 @@ export class AuthService {
   private removeTokens() {
     localStorage.removeItem(this.JWT_TOKEN);
     localStorage.removeItem(this.REFRESH_TOKEN);
-    localStorage.removeItem("EMAIL");
+    localStorage.removeItem("WALLETID");
     localStorage.removeItem("TOKEN_EXPIRY");
     localStorage.removeItem("UID");
   }

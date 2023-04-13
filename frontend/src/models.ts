@@ -13,3 +13,8 @@ export interface Bid {
   QuoteAmount: number;
   Status: string;
 }
+
+export interface TenderResponse {
+  status: string;
+  response: Tender[];
+}

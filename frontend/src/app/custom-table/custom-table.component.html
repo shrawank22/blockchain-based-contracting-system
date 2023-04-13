@@ -1,11 +1,11 @@
 <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
 
     <ng-container *ngFor="let disCol of tableColumns let colIndex = index;" matColumnDef="{{disCol.columnDef}}">
-        <th mat-header-cell *matHeaderCellDef>
+        <th class= "table-heading" mat-header-cell *matHeaderCellDef>
             {{ disCol.header }}
         </th>
 
-        <td mat-cell *matCellDef="let element">
+        <td class= "table-data" mat-cell *matCellDef="let element">
             <span *ngIf="!disCol.isActionsEnabled; else isActionsEnabled">
                 {{ disCol.cell(element) }}
             </span>

@@ -95,7 +95,7 @@ function routes(app, web3, Party, Tender){
 
     app.get("/api/active-tenders", async(req,res,next) => {
         var tender = await Tender.deployed();
-        tender.getAllActiveTenders(req.query.id, {from:req.query.id})
+        tender.getAllActiveTenders( {from:req.query.id})
         .then((data)=>{
             tenderResponse = []
             data.map( tender => {

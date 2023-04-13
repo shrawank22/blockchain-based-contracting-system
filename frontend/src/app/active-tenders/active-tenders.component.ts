@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Column } from '../custom-table/columns';
 import { Tender } from 'src/models';
+import { TenderService } from '../services/tender.service';
 
 
 @Component({
@@ -9,6 +10,18 @@ import { Tender } from 'src/models';
   styleUrls: ['./active-tenders.component.scss']
 })
 export class ActiveTendersComponent {
+
+  partyAddress : any;
+  tenders : Tender[];
+  ngOnInit(): void {
+    this.partyAddress = localStorage.getItem("WALLETID");
+    this.tenderService.getActiveTenders(this.partyAddress).subscribe((tenders) => {
+      debugger
+        this.tenders = tenders.response;
+    });
+  }
+
+  constructor(private tenderService : TenderService){}
 
   tableColumns: Array<Column> =
     [{ columnDef: 'Title', header: 'Title', cell: (element: Record<string, any>) => `${element['Title']}` },
@@ -20,10 +33,10 @@ export class ActiveTendersComponent {
     { columnDef: 'Actions', header: 'Actions', cell: (element: Record<string, any>) => `${element['Actions']}`, isActionsEnabled: true, isAddBid: true},
     ];
 
-  tableData: Array<Tender> = [
-    { Status: "ONGOING", Title: 'Hydrogen', Budget: 1.0079, Description: 'H', Milestones: 10, Deadline: '4/11/2023' },
-    { Status: "ONGOING", Title: 'Helium', Budget: 4.0026, Description: 'He', Milestones: 10, Deadline: '4/11/2023' },
-    { Status: "ONGOING", Title: 'Lithium', Budget: 6.941, Description: 'Li', Milestones: 10, Deadline: '4/11/2023' },
-  ];
+  // tableData: Array<Tender> = [
+  //   {Id: 0, Status: "ONGOING", Title: 'Hydrogen', Budget: 1.0079, Description: 'H', Milestones: 10, Deadline: '4/11/2023' },
+  //   {Id: 0, Status: "ONGOING", Title: 'Helium', Budget: 4.0026, Description: 'He', Milestones: 10, Deadline: '4/11/2023' },
+  //   {Id: 0, Status: "ONGOING", Title: 'Lithium', Budget: 6.941, Description: 'Li', Milestones: 10, Deadline: '4/11/2023' },
+  // ];
 
 }

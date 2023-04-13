@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import Swal from 'sweetalert2';
 import { config } from '../config';
 import { Observable, catchError, mapTo, throwError } from 'rxjs';
-import { Tender } from 'src/models';
+import { Tender, TenderResponse } from 'src/models';
 
 @Injectable({
   providedIn: 'root'
@@ -85,10 +85,19 @@ export class TenderService {
         catchError(this.handleError))
   }
 
-  getMyTenders(address: string):  Observable<Tender[]>{
+  getMyTenders(address: string):  Observable<TenderResponse>{
     let queryParams = new HttpParams();
     queryParams = queryParams.append("address",address);
-    return this.http.get<Tender[]>(`${config.apiUrl}/tenders`, {params:queryParams})
+    return this.http.get<TenderResponse>(`${config.apiUrl}/tenders`, {params:queryParams})
+      .pipe(
+        catchError(this.handleError)
+      )
+  }
+
+  getActiveTenders(address: string):  Observable<TenderResponse>{
+    let queryParams = new HttpParams();
+    queryParams = queryParams.append("address",address);
+    return this.http.get<TenderResponse>(`${config.apiUrl}/tenders`, {params:queryParams})
       .pipe(
         catchError(this.handleError)
       )
