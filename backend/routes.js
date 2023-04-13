@@ -1,4 +1,4 @@
-function routes(app, web3, Party){
+function routes(app, web3, Party, Tender){
 
     app.get('/', (req,res)=>{
         res.json({"status":"success"})
@@ -13,9 +13,7 @@ function routes(app, web3, Party){
         })
         .catch(err=>{
             res.json({"status":"error","response" : err.message})
-
         })
-
     })
 
     app.post("/api/party/register/", async (req,res,next) => {
@@ -52,8 +50,36 @@ function routes(app, web3, Party){
             res.json({"status":"error","response" : err.message})
 
         })
+    })
 
+    app.get("/api/tenders", async(req,res,next) => {
+        var tender = await Tender.deployed();
+        var accounts = await web3.eth.getAccounts();
+        tender.getMyTenders(req.query.id, {from:req.query.id})
+        .then((data)=>{
+            console.log(data)
+            res.json({"status":"success","response" : data})
+        })
+        .catch(err=>{
+            res.json({"status":"error","response" : err.message})
+        })
+    })
 
+    app.post("/api/tenders", async(req,res,next) => {
+        var tender = await Tender.deployed();
+        const {title, description, budget, issuerAddress, deadline, totalMilestones} = req.body;
+        var accounts = await web3.eth.getAccounts();
+        tender.createTender(issuerAddress, budget, title, description, deadline, totalMilestones, {from:issuerAddress})
+        .then((data)=>{
+            console.log(data)
+            res.json({"status":"success","response" : data})
+        })
+        .catch(err=>{
+            if(err.message === "Returned error: VM Exception while processing transaction: revert Party already exists -- Reason given: Party already exists.")
+                res.status(400).send({"status":"error","message" : "Party already exists please try login"})
+            else
+                res.status(500).send({"status":"error","response" : err.message})
+        })
     })
     
 }
