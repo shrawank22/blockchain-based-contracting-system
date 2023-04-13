@@ -25,8 +25,10 @@ export class CustomTableComponent<T> {
     this.dataSource = new MatTableDataSource(this.tableData);
   }
 
-  // viewTenderDetail(id: any){
-  //   console.log(id+"called")
-  //   this.router.navigateByUrl('/my-bids/tender-detail/'+ id);
-  // }
+  redirectTo(uri: any) {
+    this.router.navigateByUrl('/', {skipLocationChange: true}).then(() =>
+      this.router.navigate([`my-bids/tender-detail/${uri}`])
+    );
+  }
+
 }

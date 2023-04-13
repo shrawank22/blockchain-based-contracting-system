@@ -38,9 +38,10 @@ const routes: Routes = [
   {
     path: 'my-bids',
     component: MyBidsComponent,
-    children: [
-      { path: 'tender-detail/:id', component: TenderDetailComponent },
-    ],
+  },
+  { 
+    path: 'my-bids/tender-detail/:id', 
+    component: TenderDetailComponent,
   },
 ];
 
