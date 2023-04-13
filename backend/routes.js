@@ -91,6 +91,33 @@ function routes(app, web3, Party, Tender){
                 res.status(500).send({"status":"error","response" : err.message})
         })
     })
+
+    app.get("/api/active-tenders", async(req,res,next) => {
+        var tender = await Tender.deployed();
+        tender.getAllActiveTenders(req.query.id, {from:req.query.id})
+        .then((data)=>{
+            tenderResponse = []
+            data.map( tender => {
+                console.log(parseInt(tender[6]))
+                tenderResponse.push({
+                    "title" : tender[0],
+                    "description": tender[1],
+                    "budget": tender[2],
+                    "status": tender[4],
+                    "milestones": tender[7],
+                    "deadline": (new Date(parseInt(tender[6]))).toString()
+                })
+
+            })
+            res.json({"status":"success","response" : tenderResponse})
+        })
+        .catch(err=>{
+            if(err.message === "Returned error: VM Exception while processing transaction: revert No tenders exists")
+                res.status(400).send({"status":"error","message" : "No tenders exists"})
+            else
+                res.status(500).send({"status":"error","response" : err.message})
+        })
+    })
     
 }
 

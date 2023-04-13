@@ -17,7 +17,7 @@
                     <div class="input-group mb-3">
                       <input type="text"  formControlName="walletId" 
                       [ngClass]="{'is-invalid':walletId?.errors && walletId?.touched}"
-                      class="form-control input-disabled" placeholder="Eth Address"
+                      class="form-control" placeholder="Eth Address"
                       value="">
                       <button class="btn btn-outline-secondary connect-to-wallet" 
                         (click)="getAddress()"
