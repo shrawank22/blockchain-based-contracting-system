@@ -6,7 +6,6 @@ function routes(app, web3, Party, Tender){
 
     app.get("/api/party", async(req,res,next) => {
         var party = await Party.deployed();
-        var accounts = await web3.eth.getAccounts();
         party.getPartyDetails(req.query.id, {from:req.query.id})
         .then((data)=>{
             res.json({"status":"success","response" : data})
@@ -19,7 +18,6 @@ function routes(app, web3, Party, Tender){
     app.post("/api/party/register/", async (req,res,next) => {
         const {email, password, user_name, wallet_id, contact_number} = req.body;
         var party = await Party.deployed();
-        var accounts = await web3.eth.getAccounts();
         party.createParty(user_name, contact_number, email, password, wallet_id, {from: wallet_id})
         .then((data)=>{
             res.json({"status":"success","response" : data})
@@ -35,7 +33,6 @@ function routes(app, web3, Party, Tender){
     app.post("/api/login/", async (req,res,next) => {
         const {walletId, password} = req.body;
         var party = await Party.deployed();
-        var accounts = await web3.eth.getAccounts();
         party.getPartyDetails(walletId, {from:walletId})
         .then((data)=>{
             console.log(data)
@@ -54,32 +51,34 @@ function routes(app, web3, Party, Tender){
 
     app.get("/api/tenders", async(req,res,next) => {
         var tender = await Tender.deployed();
-        var accounts = await web3.eth.getAccounts();
         tender.getMyTenders(req.query.id, {from:req.query.id})
         .then((data)=>{
             tenderResponse = []
-            data[0].map( tender => {
+            data.map( tender => {
+                console.log(parseInt(tender[6]))
                 tenderResponse.push({
                     "title" : tender[0],
                     "description": tender[1],
                     "budget": tender[2],
                     "status": tender[4],
                     "milestones": tender[7],
-                    "deadline": (new Date(tender[6])).toString()
+                    "deadline": (new Date(parseInt(tender[6]))).toString()
                 })
+
             })
-            console.log(data)
             res.json({"status":"success","response" : tenderResponse})
         })
         .catch(err=>{
-            res.json({"status":"error","response" : err.message})
+            if(err.message === "Returned error: VM Exception while processing transaction: revert No tenders exists")
+                res.status(400).send({"status":"error","message" : "No tenders exists"})
+            else
+                res.status(500).send({"status":"error","response" : err.message})
         })
     })
 
     app.post("/api/tenders", async(req,res,next) => {
         var tender = await Tender.deployed();
         const {title, description, budget, issuerAddress, deadline, totalMilestones} = req.body;
-        var accounts = await web3.eth.getAccounts();
         tender.createTender(issuerAddress, budget, title, description, deadline, totalMilestones, {from:issuerAddress})
         .then((data)=>{
             console.log(data)
