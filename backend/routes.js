@@ -57,8 +57,19 @@ function routes(app, web3, Party, Tender){
         var accounts = await web3.eth.getAccounts();
         tender.getMyTenders(req.query.id, {from:req.query.id})
         .then((data)=>{
+            tenderResponse = []
+            data[0].map( tender => {
+                tenderResponse.push({
+                    "title" : tender[0],
+                    "description": tender[1],
+                    "budget": tender[2],
+                    "status": tender[4],
+                    "milestones": tender[7],
+                    "deadline": (new Date(tender[6])).toString()
+                })
+            })
             console.log(data)
-            res.json({"status":"success","response" : data})
+            res.json({"status":"success","response" : tenderResponse})
         })
         .catch(err=>{
             res.json({"status":"error","response" : err.message})
