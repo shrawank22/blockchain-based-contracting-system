@@ -3,7 +3,7 @@
     <a [matMenuTriggerFor]="menu" class="nav-link nav-profile d-flex align-items-center pe-0" data-bs-toggle="dropdown"
       style="margin: 0 32px 0 0; cursor: pointer;">
       <img src="../../assets/images/profile.png" alt="Profile" class="rounded-circle">
-      <span class="d-none d-md-block dropdown-toggle ps-2" style="color: white;">User 1</span>
+      <span class="d-none d-md-block dropdown-toggle ps-2" style="color: white;">{{name}}</span>
     </a>
     <mat-menu #menu="matMenu">
       <button mat-menu-item>
@@ -24,7 +24,7 @@
 <div [ngClass]="status ? 'open sidebar' : 'sidebar'" class="sidebar">
   <div class="logo-details">
     <i class='bx bxl-bitcoin icon'></i>
-    <div class="logo_name">Smart Contract</div>
+    <div class="logo_name">Smart Bidding</div>
     <i class='bx bx-menu' id="btn" (click)="toggleButton()"></i>
   </div>
   <ul class="nav-list">

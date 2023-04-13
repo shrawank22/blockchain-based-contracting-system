@@ -12,15 +12,15 @@
 
             <ng-template #isActionsEnabled >
                 <div class="actionsTemplate">
-                    <button *ngIf="disCol.isDeleteEnabled" mat-icon-button matTooltip="Delete tender">
+                    <button *ngIf="disCol.isDeleteEnabled" mat-icon-button matTooltip="Delete">
                         <mat-icon>delete_outline</mat-icon>
                       </button>
-                    <button *ngIf="disCol.isEditEnabled" mat-icon-button matTooltip="Edit tender">
+                    <button *ngIf="disCol.isEditEnabled" mat-icon-button matTooltip="Edit">
                         <mat-icon>edit</mat-icon>
                     </button>
                     <button *ngIf="disCol.isViewBids" mat-raised-button color="primary"> View bids</button>
                     <button *ngIf="disCol.isAddBid" mat-raised-button color="primary"> Place bid</button>
-                    <button *ngIf="disCol.isViewTender" mat-raised-button color="primary"> View Tender</button>
+                    <button *ngIf="disCol.isViewTender" mat-raised-button color="primary" [routerLink]="['/my-bids/tender-detail/1']" > View Tender</button>
                 </div>
              </ng-template>
         </td>

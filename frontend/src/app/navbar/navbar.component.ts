@@ -9,6 +9,8 @@ export class NavbarComponent {
   @Input() template: TemplateRef<any>;
   status: boolean = true;
 
+  name: string|null = localStorage.getItem('NAME');
+
   toggleButton(){
       this.status = !this.status;       
   }

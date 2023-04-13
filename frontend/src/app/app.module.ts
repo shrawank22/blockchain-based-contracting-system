@@ -21,6 +21,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MyBidsComponent } from './my-bids/my-bids.component';
 import { CdkAccordionModule } from '@angular/cdk/accordion';
+import { TenderDetailComponent } from './tender-detail/tender-detail.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { CdkAccordionModule } from '@angular/cdk/accordion';
     CustomTableComponent,
     TendersComponent,
     ActiveTendersComponent,
-    MyBidsComponent
+    MyBidsComponent,
+    TenderDetailComponent
   ],
   imports: [
     BrowserModule,

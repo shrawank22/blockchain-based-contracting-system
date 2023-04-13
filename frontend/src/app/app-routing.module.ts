@@ -7,6 +7,7 @@ import { ConnectToWalletComponent } from './connect-to-wallet/connect-to-wallet.
 import { TendersComponent } from './tenders/tenders.component';
 import { ActiveTendersComponent } from './active-tenders/active-tenders.component';
 import { MyBidsComponent } from './my-bids/my-bids.component';
+import { TenderDetailComponent } from './tender-detail/tender-detail.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -37,6 +38,9 @@ const routes: Routes = [
   {
     path: 'my-bids',
     component: MyBidsComponent,
+    children: [
+      { path: 'tender-detail/:id', component: TenderDetailComponent },
+    ],
   },
 ];
 
