@@ -39,6 +39,10 @@ const routes: Routes = [
     path: 'my-bids',
     component: MyBidsComponent,
   },
+  { 
+    path: 'my-bids/tender-detail/:id', 
+    component: TenderDetailComponent,
+  },
   { path: 'tender-detail', component: TenderDetailComponent },
 ];
 

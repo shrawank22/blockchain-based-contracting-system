@@ -25,4 +25,10 @@ export class CustomTableComponent<T> {
     this.dataSource = new MatTableDataSource(this.tableData);
   }
 
+  redirectTo(uri: any) {
+    this.router.navigateByUrl('/', {skipLocationChange: true}).then(() =>
+      this.router.navigate([`my-bids/tender-detail/${uri}`])
+    );
+  }
+
 }
