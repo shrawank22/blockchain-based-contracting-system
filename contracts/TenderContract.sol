@@ -112,7 +112,7 @@ contract TenderContract is PartyContract{
         bool valid = false;
         Tender storage newTender = tenders[_tenderAddress];
         uint len = newTender.validatorsAddresses.length;
-        for(uint i=0; i<len; i++)
+        while(newTender.validationVotes.length < 10)
         {
             if(newTender.validatorsAddresses[i] == msg.sender)
             {
@@ -123,6 +123,9 @@ contract TenderContract is PartyContract{
         if(valid)
         {
             newTender.validationVotes.push(_vote);
+            if(_vote) {
+                //deduct token from party account and add it to tender account
+            }
         }
         else
         {
