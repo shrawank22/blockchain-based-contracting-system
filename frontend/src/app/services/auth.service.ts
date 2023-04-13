@@ -67,7 +67,7 @@ export class AuthService {
   private doLoginUser(walletId: string, name: any) {
     this.loggedUser = walletId;
     // this.storeTokens(tokens);
-    localStorage.setItem("EMAIL", walletId);
+    localStorage.setItem("WALLETID", walletId);
     localStorage.setItem("NAME", name);
   }
 

@@ -28,7 +28,8 @@ export class TenderDetailComponent implements OnInit{
       Budget: 12,
       Status: "s",
       Milestones: 1,
-      Deadline: "sdsd"
+      Deadline: "sdsd",
+      Id: 1,
     }
   }
 

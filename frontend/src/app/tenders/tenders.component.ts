@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Column } from '../custom-table/columns';
 import { Tender } from 'src/models';
+import { TenderService } from '../services/tender.service';
 
 
 // https://jnpiyush.medium.com/how-to-build-reusable-table-component-in-angular-7a7ce79d2754
@@ -10,7 +11,18 @@ import { Tender } from 'src/models';
   templateUrl: './tenders.component.html',
   styleUrls: ['./tenders.component.scss']
 })
-export class TendersComponent {
+export class TendersComponent implements OnInit{
+
+  partyAddress : any;
+  tenders : Tender[]
+  ngOnInit(): void {
+    this.partyAddress = localStorage.getItem("WALLETID");
+    this.tenderService.getMyTenders(this.partyAddress).subscribe((tenders) => {
+        this.tenders = tenders 
+    });
+  }
+
+  constructor(private tenderService : TenderService){}
 
   tableColumns: Array<Column> =
     [{ columnDef: 'Title', header: 'Title', cell: (element: Record<string, any>) => `${element['Title']}` },
@@ -22,17 +34,17 @@ export class TendersComponent {
     { columnDef: 'Actions', header: 'Actions', cell: (element: Record<string, any>) => `${element['Actions']}`, isActionsEnabled: true, isDeleteEnabled: true, isEditEnabled: true, isViewBids: true},
     ];
 
-  tableData: Array<Tender> = [
-    { Status: "OPEN", Title: 'Hydrogen', Budget: 1.0079, Description: 'H', Milestones: 10, Deadline: '4/11/2023', },
-    { Status: "OPEN", Title: 'Helium', Budget: 4.0026, Description: 'He', Milestones: 10, Deadline: '4/11/2023'},
-    { Status: "OPEN", Title: 'Lithium', Budget: 6.941, Description: 'Li', Milestones: 10, Deadline: '4/11/2023'},
-    { Status: "OPEN", Title: 'Beryllium', Budget: 9.0122, Description: 'Be', Milestones: 10, Deadline: '4/11/2023'},
-    { Status: "OPEN", Title: 'Boron', Budget: 10.811, Description: 'B', Milestones: 10, Deadline: '4/11/2023'},
-    { Status: "OPEN", Title: 'Carbon', Budget: 12.0107, Description: 'C', Milestones: 10, Deadline: '4/11/2023'},
-    { Status: "OPEN", Title: 'Nitrogen', Budget: 14.0067, Description: 'N', Milestones: 10, Deadline: '4/11/2023'},
-    { Status: "OPEN", Title: 'Oxygen', Budget: 15.9994, Description: 'O', Milestones: 10, Deadline: '4/11/2023'},
-    { Status: "OPEN", Title: 'Fluorine', Budget: 18.9984, Description: 'F', Milestones: 10, Deadline: '4/11/2023'},
-    { Status: "OPEN", Title: 'Neon', Budget: 20.1797, Description: 'Ne', Milestones: 10, Deadline: '4/11/2023'},
-  ];
+  // tableData: Array<Tender> = [
+  //   { Id:0, Status: "OPEN", Title: 'Hydrogen', Budget: 1.0079, Description: 'H', Milestones: 10, Deadline: '4/11/2023', },
+  //   { Id:0, Status: "OPEN", Title: 'Helium', Budget: 4.0026, Description: 'He', Milestones: 10, Deadline: '4/11/2023'},
+  //   { Id:0, Status: "OPEN", Title: 'Lithium', Budget: 6.941, Description: 'Li', Milestones: 10, Deadline: '4/11/2023'},
+  //   { Id:0, Status: "OPEN", Title: 'Beryllium', Budget: 9.0122, Description: 'Be', Milestones: 10, Deadline: '4/11/2023'},
+  //   { Id:0, Status: "OPEN", Title: 'Boron', Budget: 10.811, Description: 'B', Milestones: 10, Deadline: '4/11/2023'},
+  //   { Id:0, Status: "OPEN", Title: 'Carbon', Budget: 12.0107, Description: 'C', Milestones: 10, Deadline: '4/11/2023'},
+  //   { Id:0, Status: "OPEN", Title: 'Nitrogen', Budget: 14.0067, Description: 'N', Milestones: 10, Deadline: '4/11/2023'},
+  //   { Id:0, Status: "OPEN", Title: 'Oxygen', Budget: 15.9994, Description: 'O', Milestones: 10, Deadline: '4/11/2023'},
+  //   { Id:0, Status: "OPEN", Title: 'Fluorine', Budget: 18.9984, Description: 'F', Milestones: 10, Deadline: '4/11/2023'},
+  //   { Id:0, Status: "OPEN", Title: 'Neon', Budget: 20.1797, Description: 'Ne', Milestones: 10, Deadline: '4/11/2023'},
+  // ];
 
 }
