@@ -16,7 +16,7 @@ contract TenderContract is PartyContract{
         uint256 createdAt;
         uint256 deadline;
         uint256 totalMilestones;
-        address tenderAddress;
+        uint256 tenderId;
         address[] validatorsAddresses;
         bool[] validationVotes;
         uint256[] milestoneTimePeriods;
@@ -73,7 +73,7 @@ contract TenderContract is PartyContract{
         newTender.createdAt = block.timestamp;
         newTender.deadline = _deadline;
         newTender.issuerAddress = _partyAddress;
-        newTender.tenderAddress = address(this);
+        newTender.tenderId = tenderCount;
         newTender.totalMilestones = _totalMilestones;
         address[] memory sortedlist = sortByTrustScore();
         uint len = sortedlist.length;
@@ -108,11 +108,11 @@ contract TenderContract is PartyContract{
     return _party;
     }
 
-    function validate(uint256 _tenderAddress, bool _vote) public {
+    function validate(uint256 _tenderId, bool _vote) public {
         bool valid = false;
-        Tender storage newTender = tenders[_tenderAddress];
+        Tender storage newTender = tenders[_tenderId];
         uint len = newTender.validatorsAddresses.length;
-        while(newTender.validationVotes.length < 10)
+        for(uint i=0; i<len; i++)
         {
             if(newTender.validatorsAddresses[i] == msg.sender)
             {
@@ -133,10 +133,10 @@ contract TenderContract is PartyContract{
         }
     }
 
-    function checkTenderValidation(uint256 _tenderAddress) public {
-        Tender storage newTender = tenders[_tenderAddress];
+    function checkTenderValidation(uint256 _tenderId) public {
+        Tender storage newTender = tenders[_tenderId];
         if(isValid(newTender.validationVotes)) {
-            updateTenderStatus(_tenderAddress, TenderStatus.OPEN);
+            updateTenderStatus(_tenderId, TenderStatus.OPEN);
         }
     }
     
@@ -157,10 +157,11 @@ contract TenderContract is PartyContract{
         return false;
     }
 
-    function getAllTenders() public view returns (Tender[] memory){
+    function getAllActiveTenders() public view returns (Tender[] memory){
         require(partyAddresses.length > 0, "No parties exists");
         Tender[] memory tendersList = new Tender[](tenderCount);
         for (uint256 i = 0; i < tenderCount; i++) {
+            if(tenders[i].tenderStatus == TenderStatus.OPEN)
             tendersList[i] = tenders[i];
         }
         return(tendersList);
@@ -176,18 +177,18 @@ contract TenderContract is PartyContract{
         return(tendersList);
     }
 
-    function getTenderDetails(uint256 _tenderAddress) public view returns ( Tender memory){
-        require(tenders[_tenderAddress].budget > 0 , "tender with address doesn't exists");
-        return(tenders[_tenderAddress]);
+    function getTenderDetails(uint256 _tenderId) public view returns ( Tender memory){
+        require(tenders[_tenderId].budget > 0 , "tender with address doesn't exists");
+        return(tenders[_tenderId]);
     }
 
-    function updateTenderStatus(uint256 _tenderAddress, TenderStatus _tenderStatus) public {
-        Tender storage updatedTender = tenders[_tenderAddress];
+    function updateTenderStatus(uint256 _tenderId, TenderStatus _tenderStatus) public {
+        Tender storage updatedTender = tenders[_tenderId];
         updatedTender.tenderStatus = _tenderStatus;
     }
 
-    function updateTender(address _partyAddress, uint256 _tenderAddress, uint256 _budget, string memory _title, string memory _description, uint256 _deadline, uint256 _totalMilestones) public isTenderOwner(_partyAddress, _tenderAddress){
-        Tender storage updatedTender = tenders[_tenderAddress];
+    function updateTender(address _partyAddress, uint256 _tenderId, uint256 _budget, string memory _title, string memory _description, uint256 _deadline, uint256 _totalMilestones) public isTenderOwner(_partyAddress, _tenderId){
+        Tender storage updatedTender = tenders[_tenderId];
         updatedTender.budget = _budget;
         updatedTender.title = _title;
         updatedTender.description = _description;
@@ -195,15 +196,15 @@ contract TenderContract is PartyContract{
         updatedTender.totalMilestones = _totalMilestones;
     }
 
-    function deleteTender(address _partyAddress, uint256 _tenderAddress) public isTenderOwner(_partyAddress, _tenderAddress){ 
+    function deleteTender(address _partyAddress, uint256 _tenderId) public isTenderOwner(_partyAddress, _tenderId){ 
         require(parties[_partyAddress].tenderIds.length > 0, "No tenders exists");
-        require(tenders[_tenderAddress].budget > 0 , "tender with address doesn't exists");
-        require(tenders[_tenderAddress].tenderStatus == TenderStatus.NEW ||
-                tenders[_tenderAddress].tenderStatus == TenderStatus.SUSPENDED , "tender cannot be deleted");
+        require(tenders[_tenderId].budget > 0 , "tender with address doesn't exists");
+        require(tenders[_tenderId].tenderStatus == TenderStatus.NEW ||
+                tenders[_tenderId].tenderStatus == TenderStatus.SUSPENDED , "tender cannot be deleted");
         uint256[] storage _tenderIds = parties[_partyAddress].tenderIds;
         for (uint i = 0; i < _tenderIds.length; i++){
-            if(_tenderIds[i] == _tenderAddress){
-                delete tenders[_tenderAddress];
+            if(_tenderIds[i] == _tenderId){
+                delete tenders[_tenderId];
                 _tenderIds[i] = _tenderIds[_tenderIds.length - 1];
                 _tenderIds.pop();
                 break;
@@ -213,8 +214,8 @@ contract TenderContract is PartyContract{
 
     // @todo - add modifer for above functions
 
-    modifier isTenderOwner(address _partyAddress, uint256 _tenderAddress) {
-        require(tenders[_tenderAddress].issuerAddress == _partyAddress, "you're not authorized to perform this action");
+    modifier isTenderOwner(address _partyAddress, uint256 _tenderId) {
+        require(tenders[_tenderId].issuerAddress == _partyAddress, "you're not authorized to perform this action");
         _;
     }
 

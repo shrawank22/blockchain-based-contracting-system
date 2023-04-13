@@ -11,10 +11,11 @@ contract BidContract {
 
     // Bidding Struct
     struct Bid {
+        uint256 bidId;
         string bidClause;
         uint256 quotedAmount;
         address bidderAddress;
-        uint256 tenderAddress;
+        uint256 tenderId;
         BidStatus bidStatus;
         uint256 createdAt;
     }
@@ -27,8 +28,8 @@ contract BidContract {
         tenderRef = _tenderRef;
     }
 
-    modifier isTenderOwner(address _partyAddress, uint256 _tenderAddress) {
-        address issuerAddress = tenderRef.getIssuerAddress(_tenderAddress);
+    modifier isTenderOwner(address _partyAddress, uint256 _tenderId) {
+        address issuerAddress = tenderRef.getIssuerAddress(_tenderId);
         require(issuerAddress == _partyAddress, "you're not authorized to perform this action");
         _;
     }
@@ -38,25 +39,26 @@ contract BidContract {
         _;
     }
 
-    function createBid(address _bidderAddress, uint256 _tenderAddress, string memory _bidClause, uint256 _quotedAmount) public{
-        // Tender storage _tender = tenderRef.tenders(_tenderAddress);
-        uint256 _budget = tenderRef.getBudget(_tenderAddress);
-        TenderStatus _tenderStatus = tenderRef.getTenderStatus(_tenderAddress);
-        uint256 _deadline = tenderRef.getDeadline(_tenderAddress);
-        address _issuerAddress = tenderRef.getIssuerAddress(_tenderAddress);
+    function createBid(address _bidderAddress, uint256 _tenderId, string memory _bidClause, uint256 _quotedAmount) public{
+        // Tender storage _tender = tenderRef.tenders(_tenderId);
+        uint256 _budget = tenderRef.getBudget(_tenderId);
+        TenderStatus _tenderStatus = tenderRef.getTenderStatus(_tenderId);
+        uint256 _deadline = tenderRef.getDeadline(_tenderId);
+        address _issuerAddress = tenderRef.getIssuerAddress(_tenderId);
         require(_budget > 0, "Tender does not exist");
         require(_tenderStatus == TenderStatus.OPEN, "Tender is not open for bids");
         require(block.timestamp > _deadline, "Bidding has ended");
         require(_bidderAddress != _issuerAddress, "Owner cannot bid on their own tender");
 
         Bid storage newBid = bids[bidCount];
+        newBid.bidId = bidCount;
         newBid.bidClause = _bidClause;
         newBid.quotedAmount = _quotedAmount;
         newBid.bidderAddress = _bidderAddress;
-        newBid.tenderAddress = _tenderAddress;
+        newBid.tenderId = _tenderId;
         newBid.bidStatus = BidStatus.PENDING;
         newBid.createdAt = block.timestamp;
-        tenderRef.addBidId(_tenderAddress, bidCount);
+        tenderRef.addBidId(_tenderId, bidCount);
         bidCount++;
     }
 
@@ -83,7 +85,7 @@ contract BidContract {
         return(bidsList);
     }
 
-    function updateBidStatus(address _partyAddress, uint256 _tenderAddress, uint256 _bidAddress ,BidStatus _bidStatus) public isTenderOwner(_partyAddress, _tenderAddress) {
+    function updateBidStatus(address _partyAddress, uint256 _tenderId, uint256 _bidAddress ,BidStatus _bidStatus) public isTenderOwner(_partyAddress, _tenderId) {
         Bid storage updatedBid = bids[_bidAddress];
         updatedBid.bidStatus = _bidStatus;
     }
