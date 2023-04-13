@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { Tender } from 'src/models';
 
 @Component({
@@ -6,8 +7,29 @@ import { Tender } from 'src/models';
   templateUrl: './tender-detail.component.html',
   styleUrls: ['./tender-detail.component.scss']
 })
-export class TenderDetailComponent {
+export class TenderDetailComponent implements OnInit{
 
-  tender: Tender;
+  tender: Tender; 
+
+  public tenderId: string;
+
+  constructor(route: ActivatedRoute) {
+    route.params.subscribe((params) => {
+      this.tenderId = params["id"];
+      console.log(this.tenderId);
+    });
+  }
+
+  ngOnInit(): void {
+    // call get tenders api here using tenderId
+    this.tender = {
+      Title: "new",
+      Description: "d",
+      Budget: 12,
+      Status: "s",
+      Milestones: 1,
+      Deadline: "sdsd"
+    }
+  }
 
 }

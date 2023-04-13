@@ -1,35 +1,66 @@
-<app-navbar  [template]="template" ></app-navbar>
+<app-navbar [template]="template"></app-navbar>
 <ng-template #template>
     <mat-card class="matcard">
         <mat-card-content>
-            <div class="col-md-6">
-                <form #newEventForm="ngForm">
-                    <div class="form-group">
-                        <label for="title">Title:</label>
-                        <input [(ngModel)]="tender.Title" name="title" id="title" type="text" class="form-control" [readonly]="true"/>
+            <form #newEventForm="ngForm">
+                <div class="container">
+                    <div class="form-group row form-margin">
+                        <div class="col-md-3">
+                            <label for="title">Title:</label>
+                        </div>
+                        <div class="col-md-9">
+                            <input class="col-md-6" [(ngModel)]="tender.Title" name="title" id="title" type="text"
+                                class="form-control" disabled />
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="description">Description:</label>
-                        <input [(ngModel)]="tender.Description" name="description" id="description" type="text" class="form-control" [readonly]="true" />
+                    <div class="form-group row form-margin">
+                        <div class="col-md-3">
+                            <label for="description">Description:</label>
+                        </div>
+                        <div class="col-md-9">
+                            <input [(ngModel)]="tender.Description" name="description" id="description" type="text"
+                                class="form-control" disabled />
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="budget">Budget:</label>
-                        <input [(ngModel)]="tender.Budget" name="budget" id="budget" type="text" class="form-control" [readonly]="true"/>
+                    <div class="form-group row form-margin">
+                        <div class="col-md-3 ">
+                            <label for="budget">Budget:</label>
+                        </div>
+                        <div class="col-md-9 ">
+                            <input [(ngModel)]="tender.Budget" name="budget" id="budget" type="text"
+                                class="form-control" disabled />
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="status">Status:</label>
-                        <input [(ngModel)]="tender.Status" name="status" id="status" type="text" class="form-control" [readonly]="true"/>
+                    <div class="form-group row form-margin">
+                        <div class="col-md-3">
+                            <label for="status">Status:</label>
+                        </div>
+                        <div class="col-md-9 ">
+                            <input [(ngModel)]="tender.Status" name="status" id="status" type="text"
+                                class="form-control" disabled />
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="milestones">Milestones:</label>
-                        <input [(ngModel)]="tender.Milestones" name="milestones" id="milestones" type="text" type="number" class="form-control" [readonly]="true"/>
+                    <div class="form-group row form-margin">
+                        <div class="col-md-3 ">
+                            <label for="milestones">Milestones:</label>
+                        </div>
+                        <div class="col-md-9 ">
+                            <input [(ngModel)]="tender.Milestones" name="milestones" id="milestones" type="text"
+                                type="number" class="form-control" disabled />
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="deadline">Deadline:</label>
-                        <input [(ngModel)]="tender.Deadline" name="deadline" id="deadline" type="text" type="date" class="form-control" [readonly]="true"/>
+                    <div class="form-group row form-margin">
+                        <div class="col-md-3 ">
+                            <label for="deadline">Deadline:</label>
+                        </div>
+                        <div class="col-md-9 ">
+                            <input [(ngModel)]="tender.Deadline" name="deadline" id="deadline" type="text" type="text"
+                                class="form-control" disabled />
+                        </div>
                     </div>
-                </form>
-            </div>
+                </div>
+
+            </form>
         </mat-card-content>
     </mat-card>
 </ng-template>
