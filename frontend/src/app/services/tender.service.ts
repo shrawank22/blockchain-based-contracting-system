@@ -2,7 +2,7 @@ import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http'
 import { Injectable } from '@angular/core';
 import Swal from 'sweetalert2';
 import { config } from '../config';
-import { Observable, catchError, mapTo, throwError } from 'rxjs';
+import { Observable, catchError, map, mapTo, throwError } from 'rxjs';
 import { Tender, TenderResponse } from 'src/models';
 
 @Injectable({
@@ -19,7 +19,7 @@ export class TenderService {
         if (error.error.hasOwnProperty('message')) {
           Swal.fire({
             icon: 'error',
-            titleText: 'No tenders exist',
+            titleText: error.error.message,
             showConfirmButton: false,
             showCloseButton: true
           })
@@ -67,7 +67,29 @@ export class TenderService {
   getActiveTenders(address: string):  Observable<TenderResponse>{
     let queryParams = new HttpParams();
     queryParams = queryParams.append("address",address);
-    return this.http.get<TenderResponse>(`${config.apiUrl}/tenders`, {params:queryParams})
+    return this.http.get<TenderResponse>(`${config.apiUrl}/active-tenders`, {params:queryParams})
+      .pipe(
+        catchError(this.handleError)
+      )
+  }
+
+  getTenderDetails(address: string, tenderId: any):  Observable<Tender>{
+    let queryParams = new HttpParams();
+    queryParams = queryParams.append("address",address);
+    queryParams = queryParams.append("tenderId",tenderId);
+    return this.http.get<any>(`${config.apiUrl}/my-bids/tenders`, {params:queryParams})
+      .pipe(
+        map(x => x.response),
+        catchError(this.handleError)
+      )
+  }
+
+  deleteTender(tenderId: any):  Observable<any>{
+    let queryParams = new HttpParams();
+    const walletId:any = localStorage.getItem("WALLETID");
+    queryParams = queryParams.append("tenderId",tenderId);
+    queryParams = queryParams.append("address", walletId);
+    return this.http.delete<any>(`${config.apiUrl}/tenders`, {params:queryParams})
       .pipe(
         catchError(this.handleError)
       )

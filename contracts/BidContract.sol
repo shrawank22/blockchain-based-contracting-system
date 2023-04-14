@@ -52,7 +52,7 @@ contract BidContract {
         address _issuerAddress = tenderRef.getIssuerAddress(_tenderId);
         require(_budget > 0, "Tender does not exist");
         require(_tenderStatus == TenderStatus.OPEN, "Tender is not open for bids");
-        require(block.timestamp > _deadline, "Bidding has ended");
+        require(block.timestamp < _deadline, "Bidding has ended");
         require(_bidderAddress != _issuerAddress, "Owner cannot bid on their own tender");
 
         Bid storage newBid = bids[bidCount];
@@ -121,7 +121,7 @@ contract BidContract {
         uint256[] memory tenderBidIds = tenderRef.getBidIds(_tenderId);
         require(tenderBidIds.length > 0, "No bids exists");
         require(bids[_bidId].quotedAmount > 0 , "bid with address doesn't exists");
-        require(bids[_bidId].bidStatus != BidStatus.PENDING , "bid cannot be deleted");
+        require(bids[_bidId].bidStatus == BidStatus.PENDING , "bid cannot be deleted");
         delete bids[_bidId];
         tenderRef.deleteBidId(_tenderId, _bidId);             
     }

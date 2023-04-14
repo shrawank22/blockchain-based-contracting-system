@@ -1,5 +1,6 @@
 export interface Column {
-    id?: Function;
+    tenderId?: Function;
+    bidId?:Function;
     columnDef: string;
     header: string;
     cell: Function;

@@ -68,7 +68,7 @@ function routes(app, web3, Party, Tender, Bid){
             res.json({"status":"success","response" : tenderResponse})
         })
         .catch(err=>{
-            if(err.message === "Returned error: VM Exception while processing transaction: revert No tenders exists")
+            if(err.message === "Returned error: VM Exception while processing transaction: revert No tenders exists")
                 res.status(400).send({"status":"error","message" : "No tenders exists"})
             else
                 res.status(500).send({"status":"error","response" : err.message})
@@ -97,19 +97,20 @@ function routes(app, web3, Party, Tender, Bid){
             tenderResponse = []
             data.map( tender => {
                 tenderResponse.push({
-                    "title" : tender[0],
-                    "description": tender[1],
-                    "budget": tender[2],
-                    "status": tender[4],
-                    "milestones": tender[7],
-                    "deadline": (new Date(parseInt(tender[6]))).toString()
+                    "Id": tender[8],
+                    "Title" : tender[0],
+                    "Description": tender[1],
+                    "Budget": tender[2],
+                    "Status": tender[4],
+                    "Milestones": tender[7],
+                    "Deadline": (new Date(parseInt(tender[6]))).toString()
                 })
 
             })
             res.json({"status":"success","response" : tenderResponse})
         })
         .catch(err=>{
-            if(err.message === "Returned error: VM Exception while processing transaction: revert No tenders exists")
+            if(err.message === "Returned error: VM Exception while processing transaction: revert No tenders exists")
                 res.status(400).send({"status":"error","message" : "No tenders exists"})
             else
                 res.status(500).send({"status":"error","response" : err.message})
@@ -120,9 +121,40 @@ function routes(app, web3, Party, Tender, Bid){
         var bid = await Bid.deployed();
         bid.getMyBids( req.query.address, {from:req.query.address})
         .then((data)=>{
-            //write list and splice it
+            bidResponse = []
+            data[0].slice(0, data[1]).map( bid => {
+                bidResponse.push({
+                    "BidClause": bid[1],
+                    "QuoteAmount" : bid[2],
+                    "TenderId": bid[4],
+                    "BidId": bid[0],
+                    "Status": bid[5],
+                })
+
+            })
             
-            res.json({"status":"success","response" : data})
+            res.json({"status":"success","response" : bidResponse})
+        })
+        .catch(err=>{
+            if(err.message === "Returned error: VM Exception while processing transaction: revert No tenders exists")
+                res.status(400).send({"status":"error","message" : "No tenders exists"})
+            else
+                res.status(500).send({"status":"error","response" : err.message})
+        })
+    })
+
+    app.get("/api/my-bids/tenders", async(req,res,next) => {
+        var tender = await Tender.deployed();
+        tender.getTenderDetails( req.query.tenderId, {from:req.query.address})
+        .then((data)=>{
+            res.json({"status":"success","response" : {
+                "Title" : data[0],
+                "Description": data[1],
+                "Budget": data[2],
+                "Status": data[4],
+                "Milestones": data[7],
+                "Deadline": (new Date(parseInt(data[6]))).toString()
+            }})
         })
         .catch(err=>{
             if(err.message === "Returned error: VM Exception while processing transaction: revert No tenders exists")
@@ -141,10 +173,12 @@ function routes(app, web3, Party, Tender, Bid){
             res.json({"status":"success","response" : data})
         })
         .catch(err=>{
-            if(err.message === "Returned error: VM Exception while processing transaction: revert Party already exists -- Reason given: Party already exists.")
-                res.status(400).send({"status":"error","message" : "Party already exists please try login"}) //change errors
-            else if(err.message === "Returned error: VM Exception while processing transaction: revert Tender is not open for bids -- Reason given: Tender is not open for bids.")
+            if(err.message === "Returned error: VM Exception while processing transaction: revert Tender is not open for bids -- Reason given: Tender is not open for bids.")
                 res.status(400).send({"status":"error","message" : "Tender is not open for bids."})
+            else if(err.message === "Returned error: VM Exception while processing tran…ing has ended -- Reason given: Bidding has ended.")
+                res.status(400).send({"status":"error","message" : "Bidding has ended"})
+            else if(err.message === "Returned error: VM Exception while processing transaction: revert Owner cannot bid on their own tender -- Reason given: Owner cannot bid on their own tender.")
+                res.status(400).send({"status":"error","message" : " Owner cannot bid on their own tender."})
             else
                 res.status(500).send({"status":"error","response" : err.message})
         })
@@ -155,16 +189,17 @@ function routes(app, web3, Party, Tender, Bid){
         bid.getAllBids(req.query.address, req.query.tenderId, {from:req.query.address})
         .then((data)=>{
             bidsList = []
-            // data.map( bid => {
-            //     bidsList.push({
-            //         "Id": tender[8],
-            //         "BidClause" : tender[0],
-            //         "QuoteAmount": tender[1],
-            //         "Status": tender[4],
-            //     })
-            // })
+            data.map( bid => {
+                bidsList.push({
+                    "BidClause": bid[1],
+                    "QuoteAmount" : bid[2],
+                    "TenderId": bid[4],
+                    "BidId": bid[0],
+                    "Status": bid[5],
+                })
+            })
             console.log(data);
-            res.json({"status":"success","response" : data})
+            res.json({"status":"success","response" : bidsList})
         })
         .catch(err=>{
             if(err.message === "Returned error: VM Exception while processing transaction: revert No bids exists")
@@ -196,14 +231,15 @@ function routes(app, web3, Party, Tender, Bid){
         var bid = await Bid.deployed();
         bid.deleteBid(req.query.address, req.query.tenderId, req.query.bidId, {from:req.query.address})
         .then((data)=>{
+            console.log(data)
             res.json({"status":"success","response" : data})
         })
         .catch(err=>{
             if(err.message === "Returned error: VM Exception while processing transaction: revert No bids exists")
                 res.status(400).send({"status":"error","message" : "No bids exists"})
-            else if(rr.message === "Returned error: VM Exception while processing transaction: revert bid with address doesn't exists")
+            else if(err.message === "Returned error: VM Exception while processing transaction: revert bid with address doesn't exists")
                 res.status(400).send({"status":"error","message" : "Bid doesn't exists"})
-            else if(rr.message === "Returned error: VM Exception while processing transaction: revert bid cannot be deleted")
+            else if(err.message === "Returned error: VM Exception while processing transaction: revert bid cannot be deleted")
                 res.status(400).send({"status":"error","message" : "Bid cannot be deleted"})
             else
                 res.status(500).send({"status":"error","response" : err.message})
@@ -227,6 +263,19 @@ function routes(app, web3, Party, Tender, Bid){
             else
                 res.status(500).send({"status":"error","response" : err.message})
         })
+    })
+
+    app.post("/api/tender/update-status",async(req, res, next) => {
+        var tender = await Tender.deployed();
+        const {issuerAddress, tenderId, tenderStatus} = req.body;
+        tender.updateTenderStatus(tenderId, tenderStatus,{from:issuerAddress})
+        .then((data)=>{
+            res.json({"status":"success","response" : data})
+        })
+        .catch(err=>{
+            res.status(500).send({"status":"error","response" : err.message})
+        })
+        
     })
     
 }

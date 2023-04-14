@@ -17,6 +17,7 @@ export class ActiveTendersComponent {
     this.partyAddress = localStorage.getItem("WALLETID");
     this.tenderService.getActiveTenders(this.partyAddress).subscribe((tenders) => {
         this.tenders = tenders.response;
+        console.log(this.tenders)
     });
   }
 
@@ -29,7 +30,7 @@ export class ActiveTendersComponent {
     { columnDef: 'Status', header: 'Status', cell: (element: Record<string, any>) => `${element['Status']}` },
     { columnDef: 'Deadline', header: 'Deadline', cell: (element: Record<string, any>) => `${element['Deadline']}` },
     { columnDef: 'Milestones', header: 'Milestones', cell: (element: Record<string, any>) => `${element['Milestones']}` },
-    { columnDef: 'Actions', header: 'Actions', cell: (element: Record<string, any>) => `${element['Actions']}`, isActionsEnabled: true, id: (element: Record<string, any>) => `${element['Id']}`, isAddBid: true},
+    { columnDef: 'Actions', header: 'Actions', cell: (element: Record<string, any>) => `${element['Actions']}`, isActionsEnabled: true, tenderId: (element: Record<string, any>) => `${element['Id']}`, isAddBid: true},
     ];
 
   // tableData: Array<Tender> = [

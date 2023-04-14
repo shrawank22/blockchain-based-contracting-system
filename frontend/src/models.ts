@@ -9,6 +9,8 @@ export interface Tender {
   }
 
 export interface Bid {
+  BidId: number;
+  TenderId: number;
   BidClause: string;
   QuoteAmount: number;
   Status: string;

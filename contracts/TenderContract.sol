@@ -161,15 +161,17 @@ contract TenderContract is PartyContract{
         return false;
     }
 
-    function getAllActiveTenders() public view returns (Tender[] memory){
-        require(partyAddresses.length > 0, "No parties exists");
+    function getAllActiveTenders() public view returns (Tender[] memory, uint256){
+        require(tenderCount > 0, "No tenders exists");
+        uint256 count=0;
         Tender[] memory tendersList = new Tender[](tenderCount);
         for (uint256 i = 0; i < tenderCount; i++) {
             if(tenders[i].tenderStatus == TenderStatus.OPEN){
                  tendersList[i] = tenders[i];
+                 count++;
             }
         }
-        return(tendersList);
+        return(tendersList, count);
     }
 
     function getMyTenders(address _partyAddress) public view returns ( Tender[] memory){
@@ -208,8 +210,7 @@ contract TenderContract is PartyContract{
     function deleteTender(address _partyAddress, uint256 _tenderId) public isTenderOwner(_partyAddress, _tenderId){ 
         require(parties[_partyAddress].tenderIds.length > 0, "No tenders exists");
         require(tenders[_tenderId].budget > 0 , "tender with address doesn't exists");
-        require(tenders[_tenderId].tenderStatus == TenderStatus.NEW ||
-                tenders[_tenderId].tenderStatus == TenderStatus.SUSPENDED , "tender cannot be deleted");
+        require(tenders[_tenderId].tenderStatus != TenderStatus.NEW, "tender cannot be deleted");
         uint256[] storage _tenderIds = parties[_partyAddress].tenderIds;
         for (uint i = 0; i < _tenderIds.length; i++){
             if(_tenderIds[i] == _tenderId){

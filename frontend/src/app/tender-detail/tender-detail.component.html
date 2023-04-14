@@ -3,7 +3,7 @@
     <mat-card class="matcard">
         <mat-card-content>
             <form #newEventForm="ngForm">
-                <div class="container">
+                <div class="container" *ngIf="tender">
                     <div class="form-group row form-margin">
                         <div class="col-md-3">
                             <label for="title">Title:</label>

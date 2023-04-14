@@ -45,7 +45,7 @@ export class BidAddComponent {
         if (success) {
           Swal.fire({
             icon: 'success',
-            titleText: 'Tender created successfully',
+            titleText: 'Bid created successfully',
             html: `<a type="button" style="
             margin-top: 10%;
             border: none;

@@ -19,7 +19,7 @@ export class BidService {
         if (error.error.hasOwnProperty('message')) {
           Swal.fire({
             icon: 'error',
-            titleText: 'No bids exist',
+            titleText: error.error.message,
             showConfirmButton: false,
             showCloseButton: true
           })
@@ -55,6 +55,15 @@ export class BidService {
 
   }
 
+  getMyBids(address: string): Observable<BidResponse>{
+    let queryParams = new HttpParams();
+    queryParams = queryParams.append("address",address);
+    return this.http.get<BidResponse>(`${config.apiUrl}/my-bids`, {params:queryParams})
+      .pipe(
+        catchError(this.handleError)
+      )
+  }
+
   getTenderBids(address: string, tenderId: string):  Observable<BidResponse>{
     let queryParams = new HttpParams();
     queryParams = queryParams.append("address",address);
@@ -64,4 +73,17 @@ export class BidService {
         catchError(this.handleError)
       )
   }
+
+  deleteBid(tenderId: any, bidId: any):  Observable<any>{
+    let queryParams = new HttpParams();
+    const walletId:any = localStorage.getItem("WALLETID");
+    queryParams = queryParams.append("tenderId",tenderId);
+    queryParams = queryParams.append("address", walletId);
+    queryParams = queryParams.append("bidId", bidId);
+    return this.http.delete<any>(`${config.apiUrl}/my-bids`, {params:queryParams})
+      .pipe(
+        catchError(this.handleError)
+      )
+  }
+  
 }

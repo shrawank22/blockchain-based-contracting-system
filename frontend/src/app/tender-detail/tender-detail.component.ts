@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Tender } from 'src/models';
+import { TenderService } from '../services/tender.service';
 
 @Component({
   selector: 'app-tender-detail',
@@ -10,27 +11,20 @@ import { Tender } from 'src/models';
 export class TenderDetailComponent implements OnInit{
 
   tender: Tender; 
-
+  partyAddress : any;
   public tenderId: string;
 
-  constructor(route: ActivatedRoute) {
-    route.params.subscribe((params) => {
-      this.tenderId = params["id"];
-      console.log(this.tenderId);
-    });
-  }
+  constructor(private route: ActivatedRoute, private  tenderService: TenderService) {
+  } 
 
   ngOnInit(): void {
-    // call get tenders api here using tenderId
-    this.tender = {
-      Title: "new",
-      Description: "d",
-      Budget: 12,
-      Status: "s",
-      Milestones: 1,
-      Deadline: "sdsd",
-      Id: 1,
-    }
+    this.partyAddress = localStorage.getItem("WALLETID");
+    this.route.params.subscribe(parameter => {
+      this.tenderId = parameter['id'];   
+    });
+    this.tenderService.getTenderDetails(this.partyAddress, this.tenderId).subscribe((tender) => {
+        this.tender = tender;
+    });
   }
 
 }
