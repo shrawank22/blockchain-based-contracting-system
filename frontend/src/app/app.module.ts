@@ -23,8 +23,9 @@ import { MyBidsComponent } from './my-bids/my-bids.component';
 import { CdkAccordionModule } from '@angular/cdk/accordion';
 import { TenderDetailComponent } from './tender-detail/tender-detail.component';
 import { BidAddComponent } from './bid-add/bid-add.component';
-import { BidsDetailsComponent } from './bids-details/bids-details.component';
+import { BidsComponent } from './bids/bids.component';
 import { TenderAddComponent } from './tender-add/tender-add.component';
+import { BidDetailsComponent } from './bid-details/bid-details.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import { TenderAddComponent } from './tender-add/tender-add.component';
     MyBidsComponent,
     TenderDetailComponent,
     BidAddComponent,
-    BidsDetailsComponent,
+    BidsComponent,
+    BidDetailsComponent,
     TenderAddComponent,
   ],
   imports: [

@@ -1,0 +1,57 @@
+<app-navbar [template]="template"></app-navbar>
+<ng-template #template>
+    <mat-card class="matcard">
+        <mat-card-content>
+            <div class="register">
+                <div class="container">
+                    <div class="row">
+                        <div class="register-right">
+                            <form [formGroup]="bidForm">
+                                <div class="form-group row form-margin">
+                                    <div class="col-md-3">
+                                        <label for="clause">Clause:</label>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <input type="text" formControlName="clause"
+                                            [ngClass]="{'is-invalid':clause?.errors && clause?.touched}" name="clause"
+                                            class="form-control" placeholder="clause" value="" />
+                                        <div class="error-message" *ngIf="!clause?.valid && clause?.['touched']">
+                                            <div [hidden]="!clause?.errors?.['required']">
+                                                Clause is required
+                                            </div>
+                                            <div [hidden]="!clause?.errors?.['pattern']">
+                                                Clause should be valid
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row form-margin">
+                                    <div class="col-md-3">
+                                        <label for="quoteAmount">Quote Amount:</label>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <input type="text" formControlName="quoteAmount"
+                                            [ngClass]="{'is-invalid':quoteAmount?.errors && quoteAmount?.touched}" name="quoteAmount"
+                                            class="form-control" placeholder="quoteAmount" value="" />
+                                        <div class="error-message" *ngIf="!quoteAmount?.valid && quoteAmount?.['touched']">
+                                            <div [hidden]="!quoteAmount?.errors?.['required']">
+                                                Quote Amount is required
+                                            </div>
+                                            <div [hidden]="!quoteAmount?.errors?.['pattern']">
+                                                Quote Amount should be valid
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <button mat-raised-button  (click)="onCancel()" class="btnCancel" color="warn">Cancel</button>
+                                <button mat-raised-button *ngIf="isEdit" (click)="onSubmit()" [disabled]="bidForm.invalid" class="btnSave"  color="primary">Save</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </mat-card-content>
+    </mat-card>
+</ng-template>

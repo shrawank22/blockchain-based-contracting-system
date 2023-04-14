@@ -55,6 +55,22 @@ export class TenderService {
         catchError(this.handleError))
   }
 
+  updateTender(tender: any, tenderId: any): Observable<any> {
+    this.data = {
+      "title": tender.title,
+      "description": tender.description,
+      "budget": tender.budget,
+      "issuerAddress": localStorage.getItem("WALLETID"),
+      "deadline": tender.deadline,
+      "totalMilestones": tender.totalMilestones,
+    }
+    let queryParams = new HttpParams();
+    queryParams = queryParams.append("tenderId",tenderId);
+    return this.http.post<any>(`${config.apiUrl}/tenders/edit`, {params:queryParams}, this.data)
+      .pipe(
+        catchError(this.handleError))
+  }
+
   getMyTenders(address: string):  Observable<TenderResponse>{
     let queryParams = new HttpParams();
     queryParams = queryParams.append("address",address);

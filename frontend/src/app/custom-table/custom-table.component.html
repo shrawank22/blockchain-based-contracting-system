@@ -15,7 +15,7 @@
                     <button *ngIf="disCol.isDeleteEnabled" mat-icon-button (click)="onDelete(disCol?.tenderId(element), disCol?.bidId(element) )" matTooltip="Delete">
                         <mat-icon>delete_outline</mat-icon>
                       </button>
-                    <button *ngIf="disCol.isEditEnabled" mat-icon-button matTooltip="Edit">
+                    <button *ngIf="disCol.isEditEnabled" mat-icon-button (click)="onEditTender(disCol?.tenderId(element))" matTooltip="Edit">
                         <mat-icon>edit</mat-icon>
                     </button>
                     <button *ngIf="disCol.isViewBids" mat-raised-button color="primary" (click)="viewTenderBids(disCol?.tenderId(element))"> View bids</button>
