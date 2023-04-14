@@ -91,6 +91,8 @@ contract BidContract {
     }
 
     function updateBid(address _bidderAddress, uint256 _bidId, string memory _bidClause, uint256 _quotedAmount) public isBidOwner(_bidderAddress, _bidId) {
+        require(bids[_bidId].quotedAmount > 0 , "bid with address doesn't exists");
+        require(bids[_bidId].bidStatus != BidStatus.PENDING , "bid cannot be updated");
         Bid storage updatedBid = bids[_bidId];
         updatedBid.bidClause = _bidClause;
         updatedBid.quotedAmount = _quotedAmount;

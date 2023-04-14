@@ -189,6 +189,10 @@ contract TenderContract is PartyContract{
     }
 
     function updateTender(address _partyAddress, uint256 _tenderId, uint256 _budget, string memory _title, string memory _description, uint256 _deadline, uint256 _totalMilestones) public isTenderOwner(_partyAddress, _tenderId){
+        require(parties[_partyAddress].tenderIds.length > 0, "No tenders exists");
+        require(tenders[_tenderId].budget > 0 , "tender with address doesn't exists");
+        require(tenders[_tenderId].tenderStatus == TenderStatus.NEW ||
+                tenders[_tenderId].tenderStatus == TenderStatus.SUSPENDED , "tender cannot be updated");
         Tender storage updatedTender = tenders[_tenderId];
         updatedTender.budget = _budget;
         updatedTender.title = _title;
