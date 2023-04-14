@@ -46,7 +46,7 @@ export class TenderService {
       "title": tender.title,
       "description": tender.description,
       "budget": tender.budget,
-      "issuerAddress": tender.issuerAddress,
+      "issuerAddress": localStorage.getItem("WALLETID"),
       "deadline": tender.deadline,
       "totalMilestones": tender.totalMilestones,
     }

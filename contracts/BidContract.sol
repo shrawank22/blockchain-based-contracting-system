@@ -28,6 +28,11 @@ contract BidContract {
         tenderRef = _tenderRef;
     }
 
+    modifier isOwner(address owner) {
+        require(msg.sender == owner, "Caller is not owner");
+        _;
+    }
+
     modifier isTenderOwner(address _partyAddress, uint256 _tenderId) {
         address issuerAddress = tenderRef.getIssuerAddress(_tenderId);
         require(issuerAddress == _partyAddress, "you're not authorized to perform this action");
@@ -72,6 +77,20 @@ contract BidContract {
     function getBidDetails(address _bidderAddress, address _issuerAddress ,uint256 _tenderId, uint256 _bidId) public view canViewBid(_bidderAddress, _issuerAddress, _tenderId, _bidId) returns (Bid memory) {
 	    require(bids[_bidId].quotedAmount > 0, "Bid does not exist");
     	return (bids[_bidId]);
+    }
+
+    function getMyBids(address _bidderAddress) public view isOwner(_bidderAddress) returns(Bid[] memory, uint){
+        require(bidCount > 0, "No bids exist");
+        uint count =0;
+        Bid[] memory bidsList = new Bid[](tenderRef.getTenderCount());
+        for (uint256 i = 0; i < bidCount; i++) {
+            if(bids[i].bidderAddress == _bidderAddress){
+                count++;
+                bidsList[i] = bids[i];
+            }
+                
+        }
+        return(bidsList, count);
     }
 
     // For getting all bids of a tender

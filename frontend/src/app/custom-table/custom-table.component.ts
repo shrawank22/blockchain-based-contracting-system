@@ -29,9 +29,9 @@ export class CustomTableComponent<T> {
         this.dataSource = new MatTableDataSource(this.tableData);
   }
 
-  viewTender(id: any) {
+  viewTender(tenderId: any) {
     this.router.navigateByUrl('/', {skipLocationChange: true}).then(() =>
-      this.router.navigate([`my-bids/tender-detail/${id}`])
+      this.router.navigate([`my-bids/tender-detail/${tenderId}`])
     );
   }
 
@@ -41,4 +41,9 @@ export class CustomTableComponent<T> {
     );
   }
 
+  placeBid(tenderId: any) {
+    this.router.navigateByUrl('/', {skipLocationChange: true}).then(() =>
+      this.router.navigate([`active-tenders/${tenderId}/add`])
+    );
+  }
 }

@@ -1,1 +1,114 @@
-<p>tender-add works!</p>
+<app-navbar [template]="template"></app-navbar>
+<ng-template #template>
+    <mat-card class="matcard">
+        <mat-card-content>
+            <div class="register">
+                <div class="container">
+                    <div class="row">
+                        <div class="register-right">
+                            <form [formGroup]="tenderForm">
+                                <div class="form-group row form-margin">
+                                    <div class="col-md-3">
+                                        <label for="title">Title:</label>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <input type="text" formControlName="title"
+                                            [ngClass]="{'is-invalid':title?.errors && title?.touched}" name="title"
+                                            class="form-control" placeholder="title" value="" />
+                                        <div class="error-message" *ngIf="!title?.valid && title?.['touched']">
+                                            <div [hidden]="!title?.errors?.['required']">
+                                                title is required
+                                            </div>
+                                            <div [hidden]="!title?.errors?.['pattern']">
+                                                title should be valid
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row form-margin">
+                                    <div class="col-md-3">
+                                        <label for="description">Description:</label>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <input type="text" formControlName="description"
+                                            [ngClass]="{'is-invalid':description?.errors && description?.touched}" name="description"
+                                            class="form-control" placeholder="description" value="" />
+                                        <div class="error-message" *ngIf="!description?.valid && description?.['touched']">
+                                            <div [hidden]="!description?.errors?.['required']">
+                                                description is required
+                                            </div>
+                                            <div [hidden]="!description?.errors?.['pattern']">
+                                                description should be valid
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row form-margin">
+                                    <div class="col-md-3">
+                                        <label for="budget">Budget:</label>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <input type="text" formControlName="budget"
+                                            [ngClass]="{'is-invalid':budget?.errors && budget?.touched}" name="budget"
+                                            class="form-control" placeholder="budget" value="" />
+                                        <div class="error-message" *ngIf="!budget?.valid && budget?.['touched']">
+                                            <div [hidden]="!budget?.errors?.['required']">
+                                                budget is required
+                                            </div>
+                                            <div [hidden]="!budget?.errors?.['pattern']">
+                                                budget should be valid
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row form-margin">
+                                    <div class="col-md-3">
+                                        <label for="totalMilestones">Total milestones:</label>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <input type="text" formControlName="totalMilestones"
+                                            [ngClass]="{'is-invalid':totalMilestones?.errors && totalMilestones?.touched}" name="totalMilestones"
+                                            class="form-control" placeholder="totalMilestones" value="" />
+                                        <div class="error-message" *ngIf="!totalMilestones?.valid && totalMilestones?.['touched']">
+                                            <div [hidden]="!totalMilestones?.errors?.['required']">
+                                                totalMilestones is required
+                                            </div>
+                                            <div [hidden]="!totalMilestones?.errors?.['pattern']">
+                                                totalMilestones should be valid
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row form-margin">
+                                    <div class="col-md-3">
+                                        <label for="deadline">Deadline:</label>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <input type="text" formControlName="deadline"
+                                            [ngClass]="{'is-invalid':deadline?.errors && deadline?.touched}" name="deadline"
+                                            class="form-control" placeholder="deadline" value="" />
+                                        <div class="error-message" *ngIf="!deadline?.valid && deadline?.['touched']">
+                                            <div [hidden]="!deadline?.errors?.['required']">
+                                                deadline is required
+                                            </div>
+                                            <div [hidden]="!deadline?.errors?.['pattern']">
+                                                deadline should be valid
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <button mat-raised-button  (click)="onCancel()" class="btnCancel" color="warn">Cancel</button>
+                                <button mat-raised-button (click)="onSubmit()" [disabled]="tenderForm.invalid" class="btnSave"  color="primary">Save</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </mat-card-content>
+    </mat-card>
+</ng-template>

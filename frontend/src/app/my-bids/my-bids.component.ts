@@ -12,7 +12,7 @@ export class MyBidsComponent {
     [{ columnDef: 'Bid Clause', header: 'BidClause', cell: (element: Record<string, any>) => `${element['BidClause']}` },
     { columnDef: 'Quote Amount', header: 'QuoteAmount', cell: (element: Record<string, any>) => `${element['QuoteAmount']}` },
     { columnDef: 'Bid Status', header: 'Status', cell: (element: Record<string, any>) => `${element['Status']}` },
-    { columnDef: 'Actions', header: 'Actions', cell: (element: Record<string, any>) => `${element['Actions']}`, isActionsEnabled: true, isDeleteEnabled: true, isEditEnabled: true, isViewTender: true}
+    { columnDef: 'Actions', header: 'Actions', cell: (element: Record<string, any>) => `${element['Actions']}`, isActionsEnabled: true, id: (element: Record<string, any>) => `${element['Id']}`, isDeleteEnabled: true, isEditEnabled: true, isViewTender: true}
     ];
 
   tableData: Array<Bid> = [

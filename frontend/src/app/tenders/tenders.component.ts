@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Column } from '../custom-table/columns';
 import { Tender } from 'src/models';
 import { TenderService } from '../services/tender.service';
+import { Router } from '@angular/router';
 
 
 // https://jnpiyush.medium.com/how-to-build-reusable-table-component-in-angular-7a7ce79d2754
@@ -22,7 +23,7 @@ export class TendersComponent implements OnInit{
     });
   }
 
-  constructor(private tenderService : TenderService){}
+  constructor(private tenderService : TenderService, private router: Router){}
 
   tableColumns: Array<Column> =
     [{ columnDef: 'Title', header: 'Title', cell: (element: Record<string, any>) => `${element['Title']}` },
@@ -46,5 +47,11 @@ export class TendersComponent implements OnInit{
   //   { Id:0, Status: "OPEN", Title: 'Fluorine', Budget: 18.9984, Description: 'F', Milestones: 10, Deadline: '4/11/2023'},
   //   { Id:0, Status: "OPEN", Title: 'Neon', Budget: 20.1797, Description: 'Ne', Milestones: 10, Deadline: '4/11/2023'},
   // ];
+
+  addTender() {
+    this.router.navigateByUrl('/', {skipLocationChange: true}).then(() =>
+      this.router.navigate([`tenders/add`])
+    );
+  }
 
 }

@@ -18,9 +18,9 @@
                     <button *ngIf="disCol.isEditEnabled" mat-icon-button matTooltip="Edit">
                         <mat-icon>edit</mat-icon>
                     </button>
-                    <button *ngIf="disCol.isViewBids" mat-raised-button color="primary" (click) = "viewTenderBids(disCol?.id(element))"> View bids</button>
-                    <button *ngIf="disCol.isAddBid" mat-raised-button color="primary"> Place bid</button>
-                    <button *ngIf="disCol.isViewTender" mat-raised-button color="primary" (click)="viewTender(1)" > View Tender</button>
+                    <button *ngIf="disCol.isViewBids" mat-raised-button color="primary" (click)="viewTenderBids(disCol?.id(element))"> View bids</button>
+                    <button *ngIf="disCol.isAddBid" mat-raised-button color="primary" (click)="placeBid(disCol?.id(element))"> Place bid</button>
+                    <button *ngIf="disCol.isViewTender" mat-raised-button color="primary" (click)="viewTender(disCol?.id(element))" > View Tender</button>
                 </div>
              </ng-template>
         </td>

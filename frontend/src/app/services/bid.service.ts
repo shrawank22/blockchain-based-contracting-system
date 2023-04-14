@@ -9,6 +9,7 @@ import { BidResponse } from 'src/models';
   providedIn: 'root'
 })
 export class BidService {
+  data: any;
 
   private handleError(error: HttpErrorResponse) {
     if (error.status === 0) {
@@ -40,6 +41,19 @@ export class BidService {
   }
 
   constructor(private http: HttpClient) { }
+
+  createBid(bid: any, tenderId: any): Observable<any> {
+    this.data = {
+      "tenderId": tenderId,
+      "clause": bid.clause,
+      "quoteAmount": bid.quoteAmount,
+      "bidderAddress": localStorage.getItem("WALLETID"),
+    }
+    return this.http.post<any>(`${config.apiUrl}/active-tenders/addBid`, this.data)
+      .pipe(
+        catchError(this.handleError))
+
+  }
 
   getTenderBids(address: string, tenderId: string):  Observable<BidResponse>{
     let queryParams = new HttpParams();

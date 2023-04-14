@@ -27,6 +27,10 @@ contract TenderContract is PartyContract{
     uint256 tenderCount = 0;
 
     //setters and getter functions
+    function getTenderCount() public view returns(uint256){
+        return tenderCount;
+    }
+
     function getBudget(uint256 _tenderId) public view returns(uint256){
         return tenders[_tenderId].budget;
     }

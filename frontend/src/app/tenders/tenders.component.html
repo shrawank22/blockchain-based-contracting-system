@@ -1,6 +1,6 @@
 <app-navbar  [template]="template" ></app-navbar>
 <ng-template #template>
-    <button mat-raised-button class="create-tender-button" color="primary">Create Tender</button>
+    <button mat-raised-button class="create-tender-button" (click)="addTender()" color="primary">Create Tender</button>
     <app-custom-table
     [tableColumns]="tableColumns"
     [tableData]="tenders">

@@ -116,10 +116,26 @@ function routes(app, web3, Party, Tender, Bid){
         })
     })
 
-    app.post("/api/bid", async(req,res,next) => {
+    app.get("/api/my-bids", async(req,res,next) => {
         var bid = await Bid.deployed();
-        const {clause, quoteAmount, bidderAddress} = req.body;
-        bid.createBid(bidderAddress, req.query.id, clause, quoteAmount, {from: bidderAddress})
+        bid.getMyBids( req.query.address, {from:req.query.address})
+        .then((data)=>{
+            //write list and splice it
+            
+            res.json({"status":"success","response" : data})
+        })
+        .catch(err=>{
+            if(err.message === "Returned error: VM Exception while processing transaction: revert No tenders exists")
+                res.status(400).send({"status":"error","message" : "No tenders exists"})
+            else
+                res.status(500).send({"status":"error","response" : err.message})
+        })
+    })
+
+    app.post("/api/active-tenders/addBid", async(req,res,next) => {
+        var bid = await Bid.deployed();
+        const {tenderId, clause, quoteAmount, bidderAddress} = req.body;
+        bid.createBid(bidderAddress, tenderId, clause, quoteAmount, {from: bidderAddress})
         .then((data)=>{
             console.log(data)
             res.json({"status":"success","response" : data})
@@ -127,6 +143,8 @@ function routes(app, web3, Party, Tender, Bid){
         .catch(err=>{
             if(err.message === "Returned error: VM Exception while processing transaction: revert Party already exists -- Reason given: Party already exists.")
                 res.status(400).send({"status":"error","message" : "Party already exists please try login"}) //change errors
+            else if(err.message === "Returned error: VM Exception while processing transaction: revert Tender is not open for bids -- Reason given: Tender is not open for bids.")
+                res.status(400).send({"status":"error","message" : "Tender is not open for bids."})
             else
                 res.status(500).send({"status":"error","response" : err.message})
         })
