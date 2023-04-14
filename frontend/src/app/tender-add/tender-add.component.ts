@@ -14,8 +14,8 @@ export class TenderAddComponent {
     title: ["", [Validators.required, Validators.minLength(3)]],
     description: ["", [Validators.required, Validators.minLength(1)]],
     deadline: ["", [Validators.required, Validators.minLength(1)]],
-    totalMilestones: ["", [Validators.required, Validators.minLength(1)]],
-    budget: ["", [Validators.required, Validators.minLength(1)]],
+    totalMilestones: [0, [Validators.required, Validators.minLength(1)]],
+    budget: [0, [Validators.required, Validators.minLength(1)]],
   })
 
   get title() {
@@ -47,7 +47,6 @@ export class TenderAddComponent {
   }
 
   onSubmit() {
-    debugger
     this.tenderService.createTender(this.tenderForm.value)
       .subscribe(success => {
         if (success) {

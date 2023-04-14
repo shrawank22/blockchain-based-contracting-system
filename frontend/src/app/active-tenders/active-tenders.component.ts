@@ -17,7 +17,6 @@ export class ActiveTendersComponent {
     this.partyAddress = localStorage.getItem("WALLETID");
     this.tenderService.getActiveTenders(this.partyAddress).subscribe((tenders) => {
         this.tenders = tenders.response;
-        console.log(this.tenders)
     });
   }
 

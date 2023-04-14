@@ -72,19 +72,25 @@ export class CustomTableComponent<T> {
   
   viewTender(tenderId: any) {
     this.router.navigateByUrl('/', {skipLocationChange: true}).then(() =>
-      this.router.navigate([`my-bids/tender-detail/${tenderId}`])
+      this.router.navigate([`my-bids/tender-detail/${tenderId}/view`])
     );
   }
 
   viewTenderBids(tenderId:any) {
     this.router.navigateByUrl('/', {skipLocationChange: true}).then(() =>
-      this.router.navigate([`tenders/${tenderId}/bids-details`])
+      this.router.navigate([`tenders/${tenderId}/bids`])
     );
   }
 
   placeBid(tenderId: any) {
     this.router.navigateByUrl('/', {skipLocationChange: true}).then(() =>
-      this.router.navigate([`active-tenders/${tenderId}/add`])
+      this.router.navigate([`active-tenders/${tenderId}/bid/add`])
+    );
+  }
+
+  onEditTender(tenderId: any) {
+    this.router.navigateByUrl('/', {skipLocationChange: true}).then(() =>
+      this.router.navigate([`tender-detail/${tenderId}/edit`])
     );
   }
 }

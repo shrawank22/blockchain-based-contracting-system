@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import Swal from 'sweetalert2';
 import { config } from '../config';
-import { Observable, catchError, throwError } from 'rxjs';
+import { Observable, catchError, map, throwError } from 'rxjs';
 import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
-import { BidResponse } from 'src/models';
+import { Bid, BidResponse } from 'src/models';
 
 @Injectable({
   providedIn: 'root'
@@ -49,7 +49,19 @@ export class BidService {
       "quoteAmount": bid.quoteAmount,
       "bidderAddress": localStorage.getItem("WALLETID"),
     }
-    return this.http.post<any>(`${config.apiUrl}/active-tenders/addBid`, this.data)
+    return this.http.post<any>(`${config.apiUrl}/active-tenders/add-bid`, this.data)
+      .pipe(
+        catchError(this.handleError))
+  }
+
+  updateBid(bid: any, bidId: any): Observable<any> {
+    this.data = {
+      "bidId": bidId,
+      "clause": bid.clause,
+      "quoteAmount": bid.quoteAmount,
+      "bidderAddress": localStorage.getItem("WALLETID"),
+    }
+    return this.http.post<any>(`${config.apiUrl}/active-tenders/edit-bid`, this.data)
       .pipe(
         catchError(this.handleError))
 
@@ -64,11 +76,23 @@ export class BidService {
       )
   }
 
+  getBidDetails(address: string, tenderId: string, bidId: string): Observable<Bid>{
+    let queryParams = new HttpParams();
+    queryParams = queryParams.append("address",address);
+    queryParams = queryParams.append("tenderId",tenderId);
+    queryParams = queryParams.append("bidId",bidId);
+    return this.http.get<any>(`${config.apiUrl}/tenders/bid-details`, {params:queryParams})
+      .pipe(
+        map(x => x.response),
+        catchError(this.handleError)
+      )
+  }
+
   getTenderBids(address: string, tenderId: string):  Observable<BidResponse>{
     let queryParams = new HttpParams();
     queryParams = queryParams.append("address",address);
     queryParams = queryParams.append("tenderId",tenderId);
-    return this.http.get<BidResponse>(`${config.apiUrl}/tenders/bids-details`, {params:queryParams})
+    return this.http.get<BidResponse>(`${config.apiUrl}/tenders/bids`, {params:queryParams})
       .pipe(
         catchError(this.handleError)
       )

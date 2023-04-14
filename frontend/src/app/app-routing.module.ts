@@ -8,9 +8,10 @@ import { TendersComponent } from './tenders/tenders.component';
 import { ActiveTendersComponent } from './active-tenders/active-tenders.component';
 import { MyBidsComponent } from './my-bids/my-bids.component';
 import { TenderDetailComponent } from './tender-detail/tender-detail.component';
-import { BidsDetailsComponent } from './bids-details/bids-details.component';
+import { BidsComponent } from './bids/bids.component';
 import { TenderAddComponent } from './tender-add/tender-add.component';
 import { BidAddComponent } from './bid-add/bid-add.component';
+import { BidDetailsComponent } from './bid-details/bid-details.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -43,25 +44,37 @@ const routes: Routes = [
     component: MyBidsComponent,
   },
   { 
-    path: 'my-bids/tender-detail/:id', 
+    path: 'my-bids/tender-detail/:id/view', 
     component: TenderDetailComponent,
   },
   { 
-    path: 'tender-detail', 
+    path: 'tender-detail/:id/view', 
     component: TenderDetailComponent,
   },
   { 
-    path: 'tenders/:id/bids-details', 
-    component: BidsDetailsComponent, 
+    path: 'tender-detail/:id/edit', 
+    component: TenderDetailComponent,
+  },
+  { 
+    path: 'tenders/:id/bids', 
+    component: BidsComponent, 
   },
   {
     path: 'tenders/add',
     component: TenderAddComponent,
   },
   {
-    path: 'active-tenders/:id/add',
+    path: 'active-tenders/:id/bid/add',
     component: BidAddComponent,
-  }
+  },
+  { 
+    path: 'active-tenders/:tenderId/bid/:bidId/view', 
+    component: BidDetailsComponent, 
+  },
+  { 
+    path: 'active-tenders/:tenderId/bid/:bidId/edit', 
+    component: BidDetailsComponent, 
+  },
 ];
 
 @NgModule({

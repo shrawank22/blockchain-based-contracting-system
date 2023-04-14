@@ -164,12 +164,11 @@ function routes(app, web3, Party, Tender, Bid){
         })
     })
 
-    app.post("/api/active-tenders/addBid", async(req,res,next) => {
+    app.post("/api/active-tenders/add-bid", async(req,res,next) => {
         var bid = await Bid.deployed();
         const {tenderId, clause, quoteAmount, bidderAddress} = req.body;
         bid.createBid(bidderAddress, tenderId, clause, quoteAmount, {from: bidderAddress})
         .then((data)=>{
-            console.log(data)
             res.json({"status":"success","response" : data})
         })
         .catch(err=>{
@@ -184,7 +183,26 @@ function routes(app, web3, Party, Tender, Bid){
         })
     })
 
-    app.get("/api/tenders/bids-details", async(req,res,next) => {
+    app.post("/api/active-tenders/edit-bid", async(req,res,next) => {
+        var bid = await Bid.deployed();
+        const {bidId, clause, quoteAmount, bidderAddress} = req.body;
+        bid.updateBid(bidderAddress, bidId, clause, quoteAmount, {from: bidderAddress})
+        .then((data)=>{
+            res.json({"status":"success","response" : data})
+        })
+        .catch(err=>{
+            if(err.message === "Returned error: VM Exception while processing transaction: revert Tender is not open for bids -- Reason given: Tender is not open for bids.")
+                res.status(400).send({"status":"error","message" : "Tender is not open for bids."})
+            else if(err.message === "Returned error: VM Exception while processing tran…ing has ended -- Reason given: Bidding has ended.")
+                res.status(400).send({"status":"error","message" : "Bidding has ended"})
+            else if(err.message === "Returned error: VM Exception while processing transaction: revert Owner cannot bid on their own tender -- Reason given: Owner cannot bid on their own tender.")
+                res.status(400).send({"status":"error","message" : " Owner cannot bid on their own tender."})
+            else
+                res.status(500).send({"status":"error","response" : err.message})
+        })
+    })
+
+    app.get("/api/tenders/bids", async(req,res,next) => {
         var bid = await Bid.deployed();
         bid.getAllBids(req.query.address, req.query.tenderId, {from:req.query.address})
         .then((data)=>{
@@ -198,8 +216,28 @@ function routes(app, web3, Party, Tender, Bid){
                     "Status": bid[5],
                 })
             })
-            console.log(data);
             res.json({"status":"success","response" : bidsList})
+        })
+        .catch(err=>{
+            if(err.message === "Returned error: VM Exception while processing transaction: revert No bids exists")
+                res.status(400).send({"status":"error","message" : "No bids exists"})
+            else
+                res.status(500).send({"status":"error","response" : err.message})
+        })
+    })
+
+    app.get("/api/tenders/bid-details", async(req,res,next) => {
+        var bid = await Bid.deployed();
+        bid.getAllBids(req.query.address, req.query.address, req.query.tenderId, req.query.bidId, {from:req.query.address})
+        .then((data)=>{
+            bid = {
+                "BidClause": data[1],
+                "QuoteAmount" : data[2],
+                "TenderId": data[4],
+                "BidId": data[0],
+                "Status": data[5],
+            }
+            res.json({"status":"success","response" : bid})
         })
         .catch(err=>{
             if(err.message === "Returned error: VM Exception while processing transaction: revert No bids exists")
@@ -231,7 +269,6 @@ function routes(app, web3, Party, Tender, Bid){
         var bid = await Bid.deployed();
         bid.deleteBid(req.query.address, req.query.tenderId, req.query.bidId, {from:req.query.address})
         .then((data)=>{
-            console.log(data)
             res.json({"status":"success","response" : data})
         })
         .catch(err=>{

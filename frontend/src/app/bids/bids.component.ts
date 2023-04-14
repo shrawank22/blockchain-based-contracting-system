@@ -5,11 +5,11 @@ import { BidService } from '../services/bid.service';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
-  selector: 'app-bids-details',
-  templateUrl: './bids-details.component.html',
-  styleUrls: ['./bids-details.component.scss']
+  selector: 'app-bids',
+  templateUrl: './bids.component.html',
+  styleUrls: ['./bids.component.scss']
 })
-export class BidsDetailsComponent {
+export class BidsComponent {
 
   partyAddress : any;
   tenderId: any;
