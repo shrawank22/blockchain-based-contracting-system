@@ -1,8 +1,9 @@
 // SPDX-License-Identifier: UNLICENSED
 
-//the version of solidity that is compatible
+pragma solidity >=0.7.0 <0.9.0;
 
-pragma solidity ^0.8.0;
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+
 contract PartyContract {
     struct Party {
         string name;
@@ -17,8 +18,11 @@ contract PartyContract {
     
     mapping (address => Party) public parties;
     address[] public partyAddresses;
-
-    constructor() {
+    address public admin;
+       
+    constructor() {  
+        admin = msg.sender;
+        _mint(payable(msg.sender), 5000000000000000000000000000000000000000 * (10 ** 18));
     }
 
     modifier isOwner(address owner) {
@@ -43,7 +47,14 @@ contract PartyContract {
         newParty.trustScore = 0;
         newParty.createdAt = block.timestamp;
         newParty.partyAddress = _partyAddress;
-        // newParty.tenderIds = new address[](0);
+        newParty.tenderIds = new address[](0);
+        
+        // Giving 50 token to created party
+        uint256 tokenAmount = 50; // Fixed amount of tokens to credit
+        _transfer(admin, payable(_partyAddress), tokenAmount * (10 ** 18));
+
+        // newParty.trust_score = balanceOf(_partyAddress);
+        
         partyAddresses.push(_partyAddress);
     }
 
