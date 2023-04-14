@@ -2,8 +2,10 @@
 
 pragma solidity >=0.7.0 <0.9.0;
 
+// import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC20/ERC20.sol"; // Use this while running it in remix
+import "../node_modules/@openzeppelin/contracts/token/ERC20/ERC20.sol"; // Otherwise use this
 
-contract PartyContract {
+contract PartyContract is ERC20 ("ASKS Token", "ASKS" ) {
     struct Party {
         string name;
         string contactNumber;
