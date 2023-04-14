@@ -16,7 +16,6 @@ export class ActiveTendersComponent {
   ngOnInit(): void {
     this.partyAddress = localStorage.getItem("WALLETID");
     this.tenderService.getActiveTenders(this.partyAddress).subscribe((tenders) => {
-      debugger
         this.tenders = tenders.response;
     });
   }

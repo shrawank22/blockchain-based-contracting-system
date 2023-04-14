@@ -18,3 +18,8 @@ export interface TenderResponse {
   status: string;
   response: Tender[];
 }
+
+export interface BidResponse {
+  status: string;
+  response: Bid[];
+}

@@ -19,37 +19,7 @@ export class TenderService {
         if (error.error.hasOwnProperty('message')) {
           Swal.fire({
             icon: 'error',
-            titleText: 'Party already exists please login',
-            html: `<a type="button" style="
-            margin-top: 10%;
-            border: none;
-            border-radius: 1.5rem;
-            padding: 7px;
-            background: #11101D;
-            color: #fff;
-            text-decoration: none;
-            font-weight: 600;
-            width: 150px;
-            cursor: pointer;" href="/login">Login</a> `,
-            showConfirmButton: false,
-            showCloseButton: true
-          })
-        }
-        if (error.error.hasOwnProperty('non_field_errors')) {
-          Swal.fire({
-            icon: 'error',
-            titleText: 'factory name and employee id already exists please login',
-            html: `<a type="button" style="
-            margin-top: 10%;
-            border: none;
-            border-radius: 1.5rem;
-            padding: 7px;
-            background: #11101D;
-            color: #fff;
-            text-decoration: none;
-            font-weight: 600;
-            width: 150px;
-            cursor: pointer;" href="/login">Login</a> `,
+            titleText: 'No tenders exist',
             showConfirmButton: false,
             showCloseButton: true
           })

@@ -21,7 +21,6 @@ export class CustomTableComponent<T> {
   constructor(private router: Router) { }
 
   ngOnInit(): void {
-    debugger
     this.displayedColumns = this.tableColumns.map((c) => c.columnDef);
     this.dataSource = new MatTableDataSource(this.tableData);
   }
@@ -30,9 +29,15 @@ export class CustomTableComponent<T> {
         this.dataSource = new MatTableDataSource(this.tableData);
   }
 
-  redirectTo(id: any) {
+  viewTender(id: any) {
     this.router.navigateByUrl('/', {skipLocationChange: true}).then(() =>
       this.router.navigate([`my-bids/tender-detail/${id}`])
+    );
+  }
+
+  viewTenderBids(tenderId:any) {
+    this.router.navigateByUrl('/', {skipLocationChange: true}).then(() =>
+      this.router.navigate([`tenders/${tenderId}/bids-details`])
     );
   }
 

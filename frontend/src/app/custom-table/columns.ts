@@ -1,4 +1,5 @@
 export interface Column {
+    id?: Function;
     columnDef: string;
     header: string;
     cell: Function;

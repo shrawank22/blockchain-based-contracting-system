@@ -8,6 +8,7 @@ import { TendersComponent } from './tenders/tenders.component';
 import { ActiveTendersComponent } from './active-tenders/active-tenders.component';
 import { MyBidsComponent } from './my-bids/my-bids.component';
 import { TenderDetailComponent } from './tender-detail/tender-detail.component';
+import { BidsDetailsComponent } from './bids-details/bids-details.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -43,7 +44,14 @@ const routes: Routes = [
     path: 'my-bids/tender-detail/:id', 
     component: TenderDetailComponent,
   },
-  { path: 'tender-detail', component: TenderDetailComponent },
+  { 
+    path: 'tender-detail', 
+    component: TenderDetailComponent,
+  },
+  { 
+    path: 'tenders/:id/bids-details', 
+    component: BidsDetailsComponent, 
+  },
 ];
 
 @NgModule({

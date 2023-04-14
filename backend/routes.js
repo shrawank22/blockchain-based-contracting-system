@@ -1,4 +1,4 @@
-function routes(app, web3, Party, Tender){
+function routes(app, web3, Party, Tender, Bid){
 
     app.get('/', (req,res)=>{
         res.json({"status":"success"})
@@ -35,7 +35,6 @@ function routes(app, web3, Party, Tender){
         var party = await Party.deployed();
         party.getPartyDetails(walletId, {from:walletId})
         .then((data)=>{
-            console.log(data)
             if(data["5"] === password){
                 res.json({"status":"success","name" : data["0"]})
             }
@@ -55,7 +54,6 @@ function routes(app, web3, Party, Tender){
         .then((data)=>{
             tenderResponse = []
             data.map( tender => {
-                console.log(parseInt(tender[6]))
                 tenderResponse.push({
                     "Id": tender[8],
                     "Title" : tender[0],
@@ -82,7 +80,6 @@ function routes(app, web3, Party, Tender){
         const {title, description, budget, issuerAddress, deadline, totalMilestones} = req.body;
         tender.createTender(issuerAddress, budget, title, description, deadline, totalMilestones, {from:issuerAddress})
         .then((data)=>{
-            console.log(data)
             res.json({"status":"success","response" : data})
         })
         .catch(err=>{
@@ -95,11 +92,10 @@ function routes(app, web3, Party, Tender){
 
     app.get("/api/active-tenders", async(req,res,next) => {
         var tender = await Tender.deployed();
-        tender.getAllActiveTenders( {from:req.query.id})
+        tender.getAllActiveTenders( {from:req.query.address})
         .then((data)=>{
             tenderResponse = []
             data.map( tender => {
-                console.log(parseInt(tender[6]))
                 tenderResponse.push({
                     "title" : tender[0],
                     "description": tender[1],
@@ -115,6 +111,46 @@ function routes(app, web3, Party, Tender){
         .catch(err=>{
             if(err.message === "Returned error: VM Exception while processing transaction: revert No tenders exists")
                 res.status(400).send({"status":"error","message" : "No tenders exists"})
+            else
+                res.status(500).send({"status":"error","response" : err.message})
+        })
+    })
+
+    app.post("/api/bid", async(req,res,next) => {
+        var bid = await Bid.deployed();
+        const {clause, quoteAmount, bidderAddress} = req.body;
+        bid.createTender(bidderAddress, req.query.id, clause, quoteAmount, {from:bidderAddress})
+        .then((data)=>{
+            console.log(data)
+            res.json({"status":"success","response" : data})
+        })
+        .catch(err=>{
+            if(err.message === "Returned error: VM Exception while processing transaction: revert Party already exists -- Reason given: Party already exists.")
+                res.status(400).send({"status":"error","message" : "Party already exists please try login"})
+            else
+                res.status(500).send({"status":"error","response" : err.message})
+        })
+    })
+
+    app.get("/api/tenders/bids-details", async(req,res,next) => {
+        var bid = await Bid.deployed();
+        bid.getAllBids(req.query.address, req.query.tenderId, {from:req.query.address})
+        .then((data)=>{
+            bidsList = []
+            // data.map( bid => {
+            //     bidsList.push({
+            //         "Id": tender[8],
+            //         "BidClause" : tender[0],
+            //         "QuoteAmount": tender[1],
+            //         "Status": tender[4],
+            //     })
+            // })
+            console.log(data);
+            res.json({"status":"success","response" : data})
+        })
+        .catch(err=>{
+            if(err.message === "Returned error: VM Exception while processing transaction: revert No bids exists")
+                res.status(400).send({"status":"error","message" : "No bids exists"})
             else
                 res.status(500).send({"status":"error","response" : err.message})
         })
