@@ -35,8 +35,6 @@ contract Token is IERC20 {
 
     constructor(uint256 total)  {
         totalSupply_ = total;
-        balances[msg.sender] = totalSupply_;
-        admin = msg.sender;
     }
 
     function totalSupply() public override view returns (uint256) {

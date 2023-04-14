@@ -5,7 +5,7 @@ import "./PartyContract.sol";
 enum TenderStatus{ NEW, OPEN, CLOSED, SUSPENDED, ASSIGNED } //created---OPEN, deadline crosses---CLOSED, project is assigned ---- ASSIGNED
 
 pragma solidity ^0.8.0;
-contract TenderContract is PartyContract{
+contract TenderContract is PartyContract(Token(address(this))) {
     // Tender Structure
     struct Tender {
         string title;
@@ -21,6 +21,13 @@ contract TenderContract is PartyContract{
         bool[] validationVotes;
         uint256[] milestoneTimePeriods;
         uint256[] bidIds;
+        uint256 balance;
+    }
+
+    PartyContract public partyRef;
+
+    constructor(PartyContract _partyRef){
+        partyRef = _partyRef;
     }
 
     mapping (uint256 => Tender) public tenders;
@@ -66,6 +73,11 @@ contract TenderContract is PartyContract{
         }
     }
 
+    // modifier isOwner(address owner) {
+    //     require(msg.sender == owner, "Caller is not owner");
+    //     _;
+    // }
+
     // Function for creating a tender
     function createTender(address _partyAddress, uint256 _budget, string memory _title, string memory _description, uint256 _deadline, uint256 _totalMilestones) isOwner(_partyAddress) public {
         require(_partyAddress.balance >= _budget/2, "insufficient funds to create a tender");
@@ -92,6 +104,7 @@ contract TenderContract is PartyContract{
                 if(sortedlist[len-i-1] != parties[msg.sender].partyAddress)
                 {
                     newTender.validatorsAddresses.push(sortedlist[len-i-1]);
+                    parties[sortedlist[len-i-1]].tenderIdsToValidate.push(tenderCount);
                 }
             }
         }

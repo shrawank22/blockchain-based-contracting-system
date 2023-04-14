@@ -3,9 +3,11 @@
 pragma solidity >=0.7.0 <0.9.0;
 
 // import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC20/ERC20.sol"; // Use this while running it in remix
-import "../node_modules/@openzeppelin/contracts/token/ERC20/ERC20.sol"; // Otherwise use this
+ // Otherwise use this
+import "./Token.sol";
 
-contract PartyContract is ERC20 ("ASKS Token", "ASKS" ) {
+contract PartyContract {
+
     struct Party {
         string name;
         string contactNumber;
@@ -15,15 +17,27 @@ contract PartyContract is ERC20 ("ASKS Token", "ASKS" ) {
         uint256 createdAt;
         address partyAddress;
         uint256[] tenderIds;
+        uint256 balance;
+        uint256[] tenderIdsToValidate;
     }
     
     mapping (address => Party) public parties;
     address[] public partyAddresses;
     address public admin;
+    Token public tokenRef;
        
-    constructor() {  
+    constructor(Token _tokenRef) {
+        tokenRef = _tokenRef;  
         // admin = msg.sender;
-        // _mint(payable(msg.sender), 5000000000000000000000000000000000000000 * (10 ** 18));
+    }
+
+    //setters and getters
+    function getTrustScore(address _partyAddress) public view returns(uint256) {
+        return parties[_partyAddress].trustScore;
+    }
+
+    function setTrustScore(address _partyAddress, uint256 _trustScore) public {
+        parties[_partyAddress].trustScore = _trustScore;
     }
 
     modifier isOwner(address owner) {
@@ -48,13 +62,10 @@ contract PartyContract is ERC20 ("ASKS Token", "ASKS" ) {
         newParty.trustScore = 0;
         newParty.createdAt = block.timestamp;
         newParty.partyAddress = _partyAddress;
-        newParty.tenderIds = new uint256[](0);
-        
+        newParty.tenderIds = new uint256[](0); 
         // Giving 50 token to created party
-        // uint256 tokenAmount = 50; // Fixed amount of tokens to credit
-        // _transfer(admin, payable(_partyAddress), tokenAmount * (10 ** 18));
-
-        // newParty.trust_score = balanceOf(_partyAddress);
+        uint256 tokenAmount = 50; // Fixed amount of tokens to credit
+        tokenRef.transfer(payable(_partyAddress), tokenAmount * (10 ** 18));
         
         partyAddresses.push(_partyAddress);
     }

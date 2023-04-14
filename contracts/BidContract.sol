@@ -28,6 +28,11 @@ contract BidContract {
         tenderRef = _tenderRef;
     }
 
+    //setters and getters
+    function getBidderAddress(uint256 _bidId) public view returns(address) {
+        return bids[_bidId].bidderAddress;
+    }
+
     modifier isOwner(address owner) {
         require(msg.sender == owner, "Caller is not owner");
         _;

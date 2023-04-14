@@ -6,40 +6,45 @@ import './BidContract.sol';
 
 enum ProjectStatus{ ONGOING, COMPLETED, HALTED } //bid selected - ONGOING, project completed - COMPLETED, project suspended - HALTED
 
-contract MilestonesContract is BidContract {
-    PartyContract PC;
+contract MilestonesContract {
+    PartyContract public partyRef;
+    TenderContract public tenderRef;
+    BidContract public bidRef;
 
     struct Projects {
-    address tenderAddress;
-    address issuerAddress;
-    address bidderAddress;
-    uint[] milestoneTimePeriods;
-    uint[] completedMilestoneTimePeriods;
-    int[] workScore;
-    bool approvalFromIssuer;
-    ProjectStatus projectStatus;
+        uint256 tenderId;
+        address issuerAddress;
+        address bidderAddress;
+        uint[] milestoneTimePeriods;
+        uint[] completedMilestoneTimePeriods;
+        int[] workScore;
+        bool approvalFromIssuer;
+        ProjectStatus projectStatus;
     }
 
-    mapping (address => Projects) projects;
+    constructor(PartyContract _partyRef, TenderContract _tenderRef, BidContract _bidRef){
+        partyRef = _partyRef;
+        tenderRef = _tenderRef;
+        bidRef = _bidRef;
+    }
+    mapping (uint256 => Projects) projects;
 
     function setMilestoneTimeline(uint[] memory _milestoneTimePeriods, uint256 _bidId, uint256 _tenderId) public {
-        Tender memory tender = PC.getTenderDetails(_tenderId);
-        require(tender.issuerAddress == msg.sender, "You're not authorized to perform this function.");
-        Projects storage newProject = projects[tender.tenderAddress];
-        Bid memory bid = bids[_bidId];
-        address _bidderAddress = bid.bidderAddress;
+        address issuerAddress = tenderRef.getIssuerAddress(_tenderId);
+        require(issuerAddress == msg.sender, "You're not authorized to perform this function.");
+        Projects storage newProject = projects[_tenderId];
+        address _bidderAddress = bidRef.getBidderAddress(_bidId);
         newProject.milestoneTimePeriods = _milestoneTimePeriods;
         newProject.issuerAddress = msg.sender;
         newProject.bidderAddress = _bidderAddress;
-        newProject.tenderAddress = tender.tenderAddress;
+        newProject.tenderId = _tenderId;
         newProject.approvalFromIssuer = false;
         newProject.projectStatus = ProjectStatus.ONGOING;
-        projects[tender.tenderAddress] = newProject;
+        projects[_tenderId] = newProject;
     }
 
     function markMilestoneComplete(uint256 _tenderId, uint _milestoneNumber, uint _days) public {
-        Tender memory tender = PC.getTenderDetails(_tenderId);
-        Projects storage project = projects[tender.tenderAddress];
+        Projects storage project = projects[_tenderId];
         require(project.bidderAddress == msg.sender, "You're not authorized to perform this action.");
         require(project.completedMilestoneTimePeriods[_milestoneNumber-1] == 0, "Milestone already completed.");
         //modify trustscore
@@ -54,19 +59,20 @@ contract MilestonesContract is BidContract {
     }
 
     function approveMilestoneCompletion(uint256 _tenderId, bool approval) public {
-        Tender memory tender = PC.getTenderDetails(_tenderId);
-        require(tender.issuerAddress == msg.sender, "You're not authorized to perform this action.");
-        Projects storage project = projects[tender.tenderAddress];
+        address issuerAddress = tenderRef.getIssuerAddress(_tenderId);
+        require(issuerAddress == msg.sender, "You're not authorized to perform this action.");
+        Projects storage project = projects[_tenderId];
         project.approvalFromIssuer = approval;
     }
 
     function projectCompleted(uint256 _tenderId) public {
-        Tender memory tender = PC.getTenderDetails(_tenderId);
-        require(tender.issuerAddress == msg.sender, "You're not authorized to perform this action.");
-        Projects storage project = projects[tender.tenderAddress];
+        address issuerAddress = tenderRef.getIssuerAddress(_tenderId);
+        require(issuerAddress == msg.sender, "You're not authorized to perform this action.");
+        Projects storage project = projects[_tenderId];
         project.projectStatus = ProjectStatus.COMPLETED;
-        Party memory bidder = PC.getPartyDetails(project.bidderAddress);
-        int oldTrustScore = int(bidder.trustScore);
+        // Party memory bidder = PC.getPartyDetails(project.bidderAddress);
+        uint256 trustScore = partyRef.getTrustScore(project.bidderAddress);
+        int oldTrustScore = int(trustScore);
         uint len = project.workScore.length;
         int sum = 0;
         for(uint i=0; i < len; i++) {
@@ -76,20 +82,21 @@ contract MilestonesContract is BidContract {
         uint256 newTrustScore = uint(oldTrustScore + avgWorkScore);
 
         if(newTrustScore > 5) {
-            bidder.trustScore = 5;
+            trustScore = 5;
         }
         else if(newTrustScore < 0) {
-            bidder.trustScore = 0;
+            trustScore = 0;
         }
         else {
-            bidder.trustScore = newTrustScore;
+            trustScore = newTrustScore;
         }
+        partyRef.setTrustScore(project.bidderAddress, trustScore);
     }
 
     function projectHalt(uint256 _tenderId) public {
-        Tender memory tender = PC.getTenderDetails(_tenderId);
-        require(tender.issuerAddress == msg.sender, "You're not authorized to perform this action.");
-        Projects storage project = projects[tender.tenderAddress];
+        address issuerAddress = tenderRef.getIssuerAddress(_tenderId);
+        require(issuerAddress == msg.sender, "You're not authorized to perform this action.");
+        Projects storage project = projects[_tenderId];
         project.projectStatus = ProjectStatus.HALTED;
     }
 }
