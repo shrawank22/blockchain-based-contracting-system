@@ -37,6 +37,9 @@ contract TenderContract is PartyContract {
     function getTenderCount() public view returns(uint256){
         return tenderCount;
     }
+    
+    function getTotalMilestones(uint256 _tenderId) public view returns(uint256) {
+    return tenders[_tenderId].totalMilestones;
 
     function getBudget(uint256 _tenderId) public view returns(uint256){
         return tenders[_tenderId].budget;
@@ -91,27 +94,27 @@ contract TenderContract is PartyContract {
         newTender.issuerAddress = _partyAddress;
         newTender.tenderId = tenderCount;
         newTender.totalMilestones = _totalMilestones;
+        //Sort all the parties by their trust scores
         address[] memory sortedlist = sortByTrustScore();
         uint len = sortedlist.length;
-        if(len<=10)
+        uint count = 0;
+        //If there are less than 10 parties then set number to parties to len
+        len = (len < 10)?len:10;
+        //Add the validator addresses to validatorsAddresses array, also add tenderId to tenderIdsToValidate array
+        while(count < len && count < 10)
         {
-            newTender.validatorsAddresses = sortedlist;
-        }
-        else
-        {
-            for(uint i=0; i<10; i++)
+            if(sortedlist[len-count-1] != parties[msg.sender].partyAddress)
             {
-                if(sortedlist[len-i-1] != parties[msg.sender].partyAddress)
-                {
-                    newTender.validatorsAddresses.push(sortedlist[len-i-1]);
-                    parties[sortedlist[len-i-1]].tenderIdsToValidate.push(tenderCount);
-                }
+            newTender.validatorsAddresses.push(sortedlist[len-count-1]);
+            parties[sortedlist[len-count-1]].tenderIdsToValidate.push(tenderCount);
+            count ++;
             }
         }
         parties[_partyAddress].tenderIds.push(tenderCount);
         tenderCount++;
     }
 
+    //Function to sort all the parties by their trust score
     function sortByTrustScore() public view returns(address[] memory) {
     address[] memory _party = partyAddresses;
     for (uint i = 1; i < partyAddresses.length; i++)
@@ -124,7 +127,8 @@ contract TenderContract is PartyContract {
 
     return _party;
     }
-
+    
+    //Function using which validators can validate tenders
     function validate(uint256 _tenderId, bool _vote) public {
         bool valid = false;
         Tender storage newTender = tenders[_tenderId];
@@ -141,7 +145,7 @@ contract TenderContract is PartyContract {
         {
             newTender.validationVotes.push(_vote);
             if(_vote) {
-                //deduct token from party account and add it to tender account
+                //deduct token from party account and add it to tender account on positive vote
             }
         }
         else
@@ -149,7 +153,8 @@ contract TenderContract is PartyContract {
             revert("You're not authorized to validate this tender.");
         }
     }
-
+    
+    //Check if the tender is ongoing
     function checkTenderValidation(uint256 _tenderId) public {
         Tender storage newTender = tenders[_tenderId];
         if(isValid(newTender.validationVotes)) {
@@ -157,6 +162,7 @@ contract TenderContract is PartyContract {
         }
     }
     
+    //Check if a tender is valid or not i.e., it got minimum 6 positive votes
     function isValid(bool[] memory _validationVotes) public pure returns (bool) {
         uint voteCount = 0;
         for(uint i=0; i<_validationVotes.length; i++)
