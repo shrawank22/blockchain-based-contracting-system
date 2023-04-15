@@ -185,7 +185,25 @@ Follow the below steps to run the code in local environment:
 1. Visit the page http://localhost:4200/ after starting ganache, NodeJs server and angular app, then import the secong ganache account into metamsk wallet as the first address is where our contracts are deployed.
 2. Now click on register and fill in the details. To fetched wallet id from metamask, click on the button next to it. It should automatically fill in your address and submit the form to register.
 3. Once registration is successful , go to login page and connect to wallet same way as in above step, type your password and login. Voila, now you can access the DApp.
-4. To get started, create a tender by going to tenders tab of dashboard.
+4. To get started, create a tender by going to tenders tab of dashboard. here you can place a tender by clicking on create tender and entering the tender details. On submiting it  tender is created. Now the tender is in new state , so it can be edited and deleted. But the tender is not open to bid.
+5. The tender is then validated validators, which not implemented on UI but has written api and backend code to update the status on validation to new state. to update tender status use the following api in postman
+    ```
+    POST http://localhost:8082/api/tender/update-status
+
+    body:
+    {
+      "tenderId": 0,
+      "tenderStatus": 1,
+      "issuerAddress": "0x132527dC4c9F39bD650F03d51D6217152AFe26Fa"
+    }
+    
+    ```
+6. Now the tender is in open state, then it is ready to accept bids. Click on place bids and enter details and click on save. This action cannot be done by owner of tender, so create another account as directed in step 1 and 2. Now from this account the active tender open for bids can be see and the party can place bids.
+7. once the bid is created, you can view it in Bids tab along with the tender on which bid was placed. This bid can be viewed by tender owner and bidder but can edited/deleted by bidder only(restricted for security). Also the bid can be edited/ deleted in pending state i.e., before tender deadline.
+8. Now there projects when the tenders after assigning to bidder will appear and milestones are tracked(incomplete on Ui, but written functionality in smart contracts )
+9. Similarily, the validate tender and bid selection happens in dashboard tab(incomplete on Ui, but written functionality in smart contracts )
+10. for all the token implementation, and the reward system, trustScore implementation (incomplete on Ui, but written functionality in smart contracts ).
+
 
 ## ⛏️ Built Using <a name = "built_using" id="built_using"></a>
 
