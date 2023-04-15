@@ -42,6 +42,10 @@ contract TenderContract is PartyContract {
         return tenders[_tenderId].totalMilestones;
     }
     
+    function getValidators(uint256 _tenderId) public view returns(address[] memory) {
+        return tenders[_tenderId].validatorsAddresses;
+    }
+    
     function getTotalProjectDays(uint256 _tenderId) public view returns(uint256) {
         uint256 sum = 0;
         uint256[] milestoneTimePeriods = tenders[_tenderId].milestoneTimePeriods;
