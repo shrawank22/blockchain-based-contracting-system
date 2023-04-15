@@ -31,7 +31,7 @@
                                         <label for="description">Description:</label>
                                     </div>
                                     <div class="col-md-9">
-                                        <input type="text" formControlName="description"
+                                        <input type="text" maxlength="200" formControlName="description"
                                             [ngClass]="{'is-invalid':description?.errors && description?.touched}" name="description"
                                             class="form-control" placeholder="description" value="" />
                                         <div class="error-message" *ngIf="!description?.valid && description?.['touched']">
