@@ -24,10 +24,10 @@ contract PartyContract {
     mapping (address => Party) public parties;
     address[] public partyAddresses;
     address public admin;
-    Token public tokenRef;
+    // Token public tokenRef;
        
-    constructor(Token _tokenRef) {
-        tokenRef = _tokenRef;  
+    constructor() {
+        // tokenRef = _tokenRef;  
         // admin = msg.sender;
     }
 
@@ -64,8 +64,8 @@ contract PartyContract {
         newParty.partyAddress = _partyAddress;
         newParty.tenderIds = new uint256[](0); 
         // Giving 50 token to created party
-        uint256 tokenAmount = 50; // Fixed amount of tokens to credit
-        tokenRef.transfer(payable(_partyAddress), tokenAmount * (10 ** 18));
+        // uint256 tokenAmount = 50; // Fixed amount of tokens to credit
+        // tokenRef.transfer(payable(_partyAddress), tokenAmount * (10 ** 18));
         
         partyAddresses.push(_partyAddress);
     }

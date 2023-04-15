@@ -61,7 +61,7 @@ export class BidService {
       "quoteAmount": bid.quoteAmount,
       "bidderAddress": localStorage.getItem("WALLETID"),
     }
-    return this.http.post<any>(`${config.apiUrl}/active-tenders/edit-bid`, this.data)
+    return this.http.post<any>(`${config.apiUrl}/my-bids/edit-bid`, this.data)
       .pipe(
         catchError(this.handleError))
 

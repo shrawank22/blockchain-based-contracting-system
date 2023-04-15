@@ -5,7 +5,7 @@ import "./PartyContract.sol";
 enum TenderStatus{ NEW, OPEN, CLOSED, SUSPENDED, ASSIGNED } //created---OPEN, deadline crosses---CLOSED, project is assigned ---- ASSIGNED
 
 pragma solidity ^0.8.0;
-contract TenderContract is PartyContract(Token(address(this))) {
+contract TenderContract is PartyContract {
     // Tender Structure
     struct Tender {
         string title;
@@ -24,11 +24,11 @@ contract TenderContract is PartyContract(Token(address(this))) {
         uint256 balance;
     }
 
-    PartyContract public partyRef;
+    // PartyContract public partyRef;
 
-    constructor(PartyContract _partyRef){
-        partyRef = _partyRef;
-    }
+    // constructor(PartyContract _partyRef){
+    //     partyRef = _partyRef;
+    // }
 
     mapping (uint256 => Tender) public tenders;
     uint256 tenderCount = 0;
@@ -223,7 +223,7 @@ contract TenderContract is PartyContract(Token(address(this))) {
     function deleteTender(address _partyAddress, uint256 _tenderId) public isTenderOwner(_partyAddress, _tenderId){ 
         require(parties[_partyAddress].tenderIds.length > 0, "No tenders exists");
         require(tenders[_tenderId].budget > 0 , "tender with address doesn't exists");
-        require(tenders[_tenderId].tenderStatus != TenderStatus.NEW, "tender cannot be deleted");
+        require(tenders[_tenderId].tenderStatus == TenderStatus.NEW , "tender cannot be deleted");
         uint256[] storage _tenderIds = parties[_partyAddress].tenderIds;
         for (uint i = 0; i < _tenderIds.length; i++){
             if(_tenderIds[i] == _tenderId){

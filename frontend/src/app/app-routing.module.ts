@@ -74,7 +74,7 @@ const routes: Routes = [
   { 
     path: 'active-tenders/:tenderId/bid/:bidId/edit', 
     component: BidDetailsComponent, 
-  },
+  }, 
 ];
 
 @NgModule({

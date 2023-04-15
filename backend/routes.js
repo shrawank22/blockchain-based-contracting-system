@@ -61,7 +61,7 @@ function routes(app, web3, Party, Tender, Bid){
                     "Budget": tender[2],
                     "Status": tender[4],
                     "Milestones": tender[7],
-                    "Deadline": (new Date(parseInt(tender[6]))).toString()
+                    "Deadline":  (new Date(parseInt(tender[6]))).toString()
                 })
 
             })
@@ -95,17 +95,18 @@ function routes(app, web3, Party, Tender, Bid){
         tender.getAllActiveTenders( {from:req.query.address})
         .then((data)=>{
             tenderResponse = []
-            data.map( tender => {
-                tenderResponse.push({
-                    "Id": tender[8],
-                    "Title" : tender[0],
-                    "Description": tender[1],
-                    "Budget": tender[2],
-                    "Status": tender[4],
-                    "Milestones": tender[7],
-                    "Deadline": (new Date(parseInt(tender[6]))).toString()
-                })
-
+            data[0].slice(0, data[1]).map( tender => {
+                if(tender.budget > 0 ) {
+                    tenderResponse.push({
+                        "Id": tender[8],
+                        "Title" : tender[0],
+                        "Description": tender[1],
+                        "Budget": tender[2],
+                        "Status": tender[4],
+                        "Milestones": tender[7],
+                        "Deadline": (new Date(parseInt(tender[6]))).toString()
+                    })
+                }
             })
             res.json({"status":"success","response" : tenderResponse})
         })
@@ -136,8 +137,8 @@ function routes(app, web3, Party, Tender, Bid){
             res.json({"status":"success","response" : bidResponse})
         })
         .catch(err=>{
-            if(err.message === "Returned error: VM Exception while processing transaction: revert No tenders exists")
-                res.status(400).send({"status":"error","message" : "No tenders exists"})
+            if(err.message === "Returned error: VM Exception while processing transaction: revert No bids exist")
+                res.status(400).send({"status":"error","message" : "No bids exists"})
             else
                 res.status(500).send({"status":"error","response" : err.message})
         })
@@ -183,7 +184,7 @@ function routes(app, web3, Party, Tender, Bid){
         })
     })
 
-    app.post("/api/active-tenders/edit-bid", async(req,res,next) => {
+    app.post("/api/my-bids/edit-bid", async(req,res,next) => {
         var bid = await Bid.deployed();
         const {bidId, clause, quoteAmount, bidderAddress} = req.body;
         bid.updateBid(bidderAddress, bidId, clause, quoteAmount, {from: bidderAddress})
@@ -191,12 +192,8 @@ function routes(app, web3, Party, Tender, Bid){
             res.json({"status":"success","response" : data})
         })
         .catch(err=>{
-            if(err.message === "Returned error: VM Exception while processing transaction: revert Tender is not open for bids -- Reason given: Tender is not open for bids.")
-                res.status(400).send({"status":"error","message" : "Tender is not open for bids."})
-            else if(err.message === "Returned error: VM Exception while processing tran…ing has ended -- Reason given: Bidding has ended.")
-                res.status(400).send({"status":"error","message" : "Bidding has ended"})
-            else if(err.message === "Returned error: VM Exception while processing transaction: revert Owner cannot bid on their own tender -- Reason given: Owner cannot bid on their own tender.")
-                res.status(400).send({"status":"error","message" : " Owner cannot bid on their own tender."})
+            if(err.message === "Returned error: VM Exception while processing transaction: revert bid cannot be updated -- Reason given: bid cannot be updated.")
+                res.status(400).send({"status":"error","message" : "Bid cannot be updated."})
             else
                 res.status(500).send({"status":"error","response" : err.message})
         })
@@ -228,7 +225,7 @@ function routes(app, web3, Party, Tender, Bid){
 
     app.get("/api/tenders/bid-details", async(req,res,next) => {
         var bid = await Bid.deployed();
-        bid.getAllBids(req.query.address, req.query.address, req.query.tenderId, req.query.bidId, {from:req.query.address})
+        bid.getBidDetails(req.query.address, req.query.tenderId, req.query.bidId, {from:req.query.address})
         .then((data)=>{
             bid = {
                 "BidClause": data[1],
@@ -247,19 +244,19 @@ function routes(app, web3, Party, Tender, Bid){
         })
     })
 
-    app.delete("/api/tenders/", async(req, res, next) => {
+    app.delete("/api/tenders", async(req, res, next) => {
         var tender = await Tender.deployed();
         tender.deleteTender(req.query.address, req.query.tenderId, {from:req.query.address})
         .then((data)=>{
             res.json({"status":"success","response" : data})
         })
         .catch(err=>{
-            if(err.message === "Returned error: VM Exception while processing transaction: revert No tenders exists")
+            if(err.message === "Returned error: VM Exception while processing transaction: revert No tenders exists")
                 res.status(400).send({"status":"error","message" : "No tenders exists"})
-            else if(rr.message === "Returned error: VM Exception while processing transaction: revert tender with address doesn't exists")
+            else if(err.message === "Returned error: VM Exception while processing transaction: revert tender with address doesn't exists")
                 res.status(400).send({"status":"error","message" : "Tender with address doesn't exists"})
-            else if(rr.message === "Returned error: VM Exception while processing transaction: revert tender cannot be deleted")
-                res.status(400).send({"status":"error","message" : "Tender cannot be deleted"})
+            else if(err.message === "Returned error: VM Exception while processing transaction: revert tender cannot be deleted -- Reason given: tender cannot be deleted.")
+                res.status(400).send({"status":"error","message" : "Ongoing tender cannot be deleted"})
             else
                 res.status(500).send({"status":"error","response" : err.message})
         })
@@ -285,18 +282,18 @@ function routes(app, web3, Party, Tender, Bid){
 
     app.post("/api/tenders/edit", async(req, res, next) => {
         var tender = await Tender.deployed();
-        const {title, description, budget, issuerAddress, deadline, totalMilestones} = req.body;
-        tender.updateTender(issuerAddress, req.query.tenderId, budget, title, description, deadline, totalMilestones, {from:issuerAddress})
+        const {title, description, budget, issuerAddress, deadline, totalMilestones, tenderId} = req.body;
+        tender.updateTender(issuerAddress, tenderId, budget, title, description, deadline, totalMilestones, {from:issuerAddress})
         .then((data)=>{
             res.json({"status":"success","response" : data})
         })
         .catch(err=>{
             if(err.message === "Returned error: VM Exception while processing transaction: revert No tenders exists")
                 res.status(400).send({"status":"error","message" : "No tenders exists"})
-            else if(rr.message === "Returned error: VM Exception while processing transaction: revert tender with address doesn't exists")
+            else if(err.message === "Returned error: VM Exception while processing transaction: revert tender with address doesn't exists")
                 res.status(400).send({"status":"error","message" : "Tender with address doesn't exists"})
-            else if(rr.message === "Returned error: VM Exception while processing transaction: revert tender cannot be updated")
-                res.status(400).send({"status":"error","message" : "Tender cannot be updated"})
+            else if(err.message === "Returned error: VM Exception while processing transaction: revert tender cannot be updated -- Reason given: tender cannot be updated.")
+                res.status(400).send({"status":"error","message" : "ongoing tender cannot be updated"})
             else
                 res.status(500).send({"status":"error","response" : err.message})
         })

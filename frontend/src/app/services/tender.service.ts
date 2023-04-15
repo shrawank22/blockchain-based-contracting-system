@@ -9,7 +9,8 @@ import { Tender, TenderResponse } from 'src/models';
   providedIn: 'root'
 })
 export class TenderService {
-  data: any
+  data: any;
+
 
   private handleError(error: HttpErrorResponse) {
     if (error.status === 0) {
@@ -42,12 +43,13 @@ export class TenderService {
   constructor(private http: HttpClient) { }
 
   createTender(tender: any): Observable<any> {
+    var deadline = new Date(tender.deadline);
     this.data = {
       "title": tender.title,
       "description": tender.description,
       "budget": tender.budget,
       "issuerAddress": localStorage.getItem("WALLETID"),
-      "deadline": tender.deadline,
+      "deadline": deadline.getTime(),
       "totalMilestones": tender.totalMilestones,
     }
     return this.http.post<any>(`${config.apiUrl}/tenders`, this.data)
@@ -56,17 +58,19 @@ export class TenderService {
   }
 
   updateTender(tender: any, tenderId: any): Observable<any> {
+    var deadline = new Date(tender.deadline);
     this.data = {
       "title": tender.title,
       "description": tender.description,
       "budget": tender.budget,
       "issuerAddress": localStorage.getItem("WALLETID"),
-      "deadline": tender.deadline,
+      "deadline": deadline.getTime(),
       "totalMilestones": tender.totalMilestones,
+      "tenderId":tenderId,
     }
-    let queryParams = new HttpParams();
-    queryParams = queryParams.append("tenderId",tenderId);
-    return this.http.post<any>(`${config.apiUrl}/tenders/edit`, {params:queryParams}, this.data)
+    
+    console.log(this.data)
+    return this.http.post<any>(`${config.apiUrl}/tenders/edit`, this.data)
       .pipe(
         catchError(this.handleError))
   }

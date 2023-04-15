@@ -72,14 +72,14 @@ contract BidContract {
         bidCount++;
     }
 
-    modifier canViewBid(address _bidderAddress, address _issuerAddress ,uint256 _tenderId, uint256 _bidId){
+    modifier canViewBid(address _partyAddress ,uint256 _tenderId, uint256 _bidId){
         address issuerAddress = tenderRef.getIssuerAddress(_tenderId);
-        require(bids[_bidId].bidderAddress == _bidderAddress  && issuerAddress == _issuerAddress && (msg.sender == _issuerAddress || msg.sender == _bidderAddress), "Not authorized to view bid details");
+        require((bids[_bidId].bidderAddress == _partyAddress  || issuerAddress == _partyAddress), "Not authorized to view bid details");
         _;
     }
 
     // For getting bid details like message, amount, address of bidders 
-    function getBidDetails(address _bidderAddress, address _issuerAddress ,uint256 _tenderId, uint256 _bidId) public view canViewBid(_bidderAddress, _issuerAddress, _tenderId, _bidId) returns (Bid memory) {
+    function getBidDetails(address _partyAddress ,uint256 _tenderId, uint256 _bidId) public view canViewBid(_partyAddress, _tenderId, _bidId) returns (Bid memory) {
 	    require(bids[_bidId].quotedAmount > 0, "Bid does not exist");
     	return (bids[_bidId]);
     }
@@ -116,7 +116,7 @@ contract BidContract {
 
     function updateBid(address _bidderAddress, uint256 _bidId, string memory _bidClause, uint256 _quotedAmount) public isBidOwner(_bidderAddress, _bidId) {
         require(bids[_bidId].quotedAmount > 0 , "bid with address doesn't exists");
-        require(bids[_bidId].bidStatus != BidStatus.PENDING , "bid cannot be updated");
+        require(bids[_bidId].bidStatus == BidStatus.PENDING , "bid cannot be updated");
         Bid storage updatedBid = bids[_bidId];
         updatedBid.bidClause = _bidClause;
         updatedBid.quotedAmount = _quotedAmount;

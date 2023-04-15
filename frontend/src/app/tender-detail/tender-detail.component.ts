@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Tender } from 'src/models';
 import { TenderService } from '../services/tender.service';
 import { FormBuilder, Validators } from '@angular/forms';
 import Swal from 'sweetalert2';
+import { formatDate } from '@angular/common'
 
 @Component({
   selector: 'app-tender-detail',
@@ -23,7 +23,7 @@ export class TenderDetailComponent implements OnInit{
   tenderForm = this.fb.group({
     title: ["", [Validators.required, Validators.minLength(3)]],
     description: ["", [Validators.required, Validators.minLength(1)]],
-    deadline: ["", [Validators.required, Validators.minLength(1)]],
+    deadline:[ "", [Validators.required, Validators.minLength(1)]],
     totalMilestones: [0, [Validators.required, Validators.minLength(1)]],
     budget: [0, [Validators.required, Validators.minLength(1)]],
   })
@@ -62,7 +62,7 @@ export class TenderDetailComponent implements OnInit{
         this.tenderForm.setValue({
           title: tender.Title,
           description: tender.Description,
-          deadline: tender.Deadline,
+          deadline: formatDate(tender.Deadline,'yyyy-MM-dd','en'),
           totalMilestones: tender.Milestones,
           budget: tender.Budget,
         });

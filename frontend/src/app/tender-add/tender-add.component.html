@@ -88,7 +88,7 @@
                                         <label for="deadline">Deadline:</label>
                                     </div>
                                     <div class="col-md-9">
-                                        <input type="text" formControlName="deadline"
+                                        <input type="date" formControlName="deadline"
                                             [ngClass]="{'is-invalid':deadline?.errors && deadline?.touched}" name="deadline"
                                             class="form-control" placeholder="deadline" value="" />
                                         <div class="error-message" *ngIf="!deadline?.valid && deadline?.['touched']">

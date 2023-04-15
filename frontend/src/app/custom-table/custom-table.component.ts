@@ -88,9 +88,16 @@ export class CustomTableComponent<T> {
     );
   }
 
-  onEditTender(tenderId: any) {
-    this.router.navigateByUrl('/', {skipLocationChange: true}).then(() =>
-      this.router.navigate([`tender-detail/${tenderId}/edit`])
-    );
+  onEditTender(tenderId: any, bidId: any = null) {
+    if(this.page === 'tenders'){
+      this.router.navigateByUrl('/', {skipLocationChange: true}).then(() =>
+          this.router.navigate([`tender-detail/${tenderId}/edit`])
+      );
+    } 
+    else if(this.page === 'bids'){
+      this.router.navigateByUrl('/', {skipLocationChange: true}).then(() =>
+        this.router.navigate([`active-tenders/${tenderId}/bid/${bidId}/edit`])
+      );
+    }
   }
 }
