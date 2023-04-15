@@ -28,7 +28,8 @@ contract MilestonesContract {
         bidRef = _bidRef;
     }
     mapping (uint256 => Projects) projects;
-
+    
+    //set the project attributes
     function setMilestoneTimeline(uint[] memory _milestoneTimePeriods, uint256 _bidId, uint256 _tenderId) public {
         address issuerAddress = tenderRef.getIssuerAddress(_tenderId);
         require(issuerAddress == msg.sender, "You're not authorized to perform this function.");
@@ -42,14 +43,24 @@ contract MilestonesContract {
         newProject.projectStatus = ProjectStatus.ONGOING;
         projects[_tenderId] = newProject;
     }
-
+    
+    //mark milestone completed
     function markMilestoneComplete(uint256 _tenderId, uint _milestoneNumber, uint _days) public {
         Projects storage project = projects[_tenderId];
+        //Only bidder can mark milestone complete
         require(project.bidderAddress == msg.sender, "You're not authorized to perform this action.");
+        //Completion can be marked only once
         require(project.completedMilestoneTimePeriods[_milestoneNumber-1] == 0, "Milestone already completed.");
-        //modify trustscore
-        //save days in milestoneCompletion[milestoneNumber-1] after getting approval from issuer
+        //All previous milestones should be completed
+        if(_milestoneNumber < 1) {
+            require(project.completedMilestoneTimePeriods[_milestoneNumber-2] != 0, "Action not allowed.Previous milestone is yet not completed.");
+        }
+        //Milestone number should be valid
+        require(_milestoneNumber < tenderRef.getTotalMilestones(_tenderId), "Milestone doesn't exists.");
+        
+        //modify workScore and save completion days in milestoneCompletion[milestoneNumber-1] after getting approval from issuer
         bool approval = project.approvalFromIssuer;
+        
         if(approval) {
             project.completedMilestoneTimePeriods[_milestoneNumber-1] = _days;
             int decidedDays = int(project.milestoneTimePeriods[_milestoneNumber-1]);
@@ -69,18 +80,27 @@ contract MilestonesContract {
         address issuerAddress = tenderRef.getIssuerAddress(_tenderId);
         require(issuerAddress == msg.sender, "You're not authorized to perform this action.");
         Projects storage project = projects[_tenderId];
+        uint len = tenderRef.getTotalMilestones(_tenderId);
+        for(uint i = 0; i < len; i++)
+        {
+            if(project.completedMilestoneTimePeriods[i] != 0) {
+                revert("All milestones are not completed.");
+            }
+        }
         project.projectStatus = ProjectStatus.COMPLETED;
-        // Party memory bidder = PC.getPartyDetails(project.bidderAddress);
+        //Get current trust score of the bidder
         uint256 trustScore = partyRef.getTrustScore(project.bidderAddress);
         int oldTrustScore = int(trustScore);
-        uint len = project.workScore.length;
         int sum = 0;
         for(uint i=0; i < len; i++) {
             sum = sum + project.workScore[i];
         }
+        //Average of the workScore of all milestones
         int avgWorkScore = sum/int(len);
+        //New trustScore = old trustScore + avg(workScore)
         uint256 newTrustScore = uint(oldTrustScore + avgWorkScore);
-
+        
+        //Maintaining trustScore value between 0 to 5
         if(newTrustScore > 5) {
             trustScore = 5;
         }
