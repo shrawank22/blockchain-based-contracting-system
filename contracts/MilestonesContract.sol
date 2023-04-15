@@ -130,7 +130,7 @@ contract MilestonesContract {
         partyRef.setTrustScore(issuerAddress, trustScore);
         
         //Negative impact on validators' trust score
-        address[] validators = tenderRef.getValidators(_tenderId);
+        address[] memory validators = tenderRef.getValidators(_tenderId);
         len = validators.length;
         for(uint256 i=0; i < len; i++) {
             partyRef.setTrustScore(validators[i], trustScore);
