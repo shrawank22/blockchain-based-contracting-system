@@ -27,7 +27,7 @@ contract TenderContract is PartyContract {
 
     // Token public tokenRef;
 
-    constructor(Token _tokenRef) PartyContract(_tokenRef){
+    constructor() PartyContract(){
         // tokenRef = _tokenRef;
     }
 
@@ -90,18 +90,6 @@ contract TenderContract is PartyContract {
         tenders[_tenderId].bidIds.pop();
     }
 
-
-    // function deleteBidId(uint256 _tenderId, uint256 _bidId) public {
-    //     uint256[] storage tenderBidIds = tenders[_tenderId].bidIds;
-    //     for (uint i = 0; i < tenderBidIds.length; i++){
-    //         if(tenderBidIds[i] == _bidId){
-    //             tenderBidIds[i] = tenderBidIds[tenderBidIds.length - 1];
-    //             delete tenderBidIds[tenderBidIds.length - 1];
-    //             break;
-    //         }
-    //     }
-    // }
-
     // Function for creating a tender
     function createTender(address _partyAddress, uint256 _budget, string memory _title, string memory _description, uint256 _deadline, uint256 _totalMilestones) isOwner(_partyAddress) public {
         require(_partyAddress.balance >= _budget/2, "insufficient funds to create a tender");
@@ -122,7 +110,7 @@ contract TenderContract is PartyContract {
         //If there are less than 10 parties then set number to parties to len
         len = (len < 10)?len:10;
         //Add the validator addresses to validatorsAddresses array, also add tenderId to tenderIdsToValidate array
-        while(count < len && count < 10)
+        while(count < len)
         {
             if(sortedlist[len-count-1] != parties[msg.sender].partyAddress)
             {
@@ -202,14 +190,9 @@ contract TenderContract is PartyContract {
         return false;
     }
 
-    // function getTendersToValidate(address _partyAddress) public isOwner(_partyAddress) view returns(Tender[] memory){
-    //     uint256[] memory tendersIdsToValidate = parties[_partyAddress].tenderIdsToValidate;
-    //      Tender[] memory tendersList = new Tender[](tendersIdsToValidate.length);
-    //     for (uint256 i = 0; i < tendersIdsToValidate.length; i++) {
-    //         tendersList[i] = tenders[tendersIdsToValidate[i]];
-    //     }
-    //     return(tendersList);
-    // }
+    function getTendersToValidate(address _partyAddress) public isOwner(_partyAddress) view returns(uint256[] memory){
+        return(parties[_partyAddress].tenderIdsToValidate);
+    }
 
     function getAllActiveTenders() public view returns (Tender[] memory, uint256){
         require(tenderCount > 0, "No tenders exists");

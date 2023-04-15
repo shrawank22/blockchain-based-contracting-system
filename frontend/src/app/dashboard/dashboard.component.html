@@ -1,6 +1,6 @@
 <app-navbar  [template]="template" ></app-navbar>
 <ng-template #template>
-    <app-custom-table
+    <app-custom-table *ngIf="tenders.length > 0"
     [tableColumns]="tableColumns"
     [tableData]="tenders"
     [page]="'tenders'">

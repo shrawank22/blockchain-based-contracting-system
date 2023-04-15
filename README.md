@@ -162,6 +162,13 @@ Follow the below steps to run the code in local environment:
     ```
     The Angular app starts on http://localhost:4200
 
+7. To run test files for smart contracts in truffle
+   ```
+   truffle test
+
+   ```
+
+
 ## 🎈 Usage <a name="usage" id="usage"></a>
 
 1. The http://localhost:4200/ lands you on login page. To register on the platform click on register link.
@@ -185,13 +192,15 @@ Follow the below steps to run the code in local environment:
 
 ## ✍️ Authors <a name = "authors" id="authors"></a>
 
-- [@shrawank22](https://github.com/shrawank22) - Idea & Initial work
-- [@Kapil-K-Kathiriya](https://github.com/Kapil-K-Kathiriya) - Idea & Initial work
-- [@asheejain](https://github.com/asheejain) - Idea & Initial work
-- [@Srujana41](https://github.com/Srujana41) - Idea & Initial work
+- [@shrawank22](https://github.com/shrawank22) 
+- [@Kapil-K-Kathiriya](https://github.com/Kapil-K-Kathiriya) 
+- [@asheejain](https://github.com/asheejain) 
+- [@Srujana41](https://github.com/Srujana41) 
 
 ## 🎉 References <a name = "references" id="references"></a>
 
 - https://dev.to/willkre/create-deploy-an-erc-20-token-in-15-minutes-truffle-openzeppelin-goerli-33lb
 - https://github.com/agbanusi/Music-share-platform-through-Blockchain
 - https://docs.openzeppelin.com/contracts/3.x/erc20
+- https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC20/ERC20.sol
+- https://medium.com/coinmonks/5-minute-guide-to-deploying-smart-contracts-with-truffle-and-ropsten-b3e30d5ee1e
