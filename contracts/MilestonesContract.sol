@@ -127,6 +127,6 @@ contract MilestonesContract {
         }
         uint256 totalDays = tenderRef.getTotalMilestones(_tenderId);
         trustScore = trustScore - (workDays/totalDays);
-        partyRef.setTrustScore(project.bidderAddress, trustScore);
+        partyRef.setTrustScore(issuerAddress, trustScore);
     }
 }
