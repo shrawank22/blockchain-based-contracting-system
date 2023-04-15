@@ -118,7 +118,7 @@ contract MilestonesContract {
         require(issuerAddress == msg.sender, "You're not authorized to perform this action.");
         Projects storage project = projects[_tenderId];
         project.projectStatus = ProjectStatus.HALTED;
-        //Negative impact on issuer trust score
+        //Negative impact on issuer's trust score
         uint256 trustScore = partyRef.getTrustScore(issuerAddress);
         uint256 len = project.completedMilestoneTimePeriods.length;
         uint256 workDays = 0;
@@ -128,5 +128,12 @@ contract MilestonesContract {
         uint256 totalDays = tenderRef.getTotalMilestones(_tenderId);
         trustScore = trustScore - (workDays/totalDays);
         partyRef.setTrustScore(issuerAddress, trustScore);
+        
+        //Negative impact on validators' trust score
+        address[] validators = tenderRef.getValidators(_tenderId);
+        len = validators.length;
+        for(uint256 i=0; i < len; i++) {
+            partyRef.setTrustScore(validators[i], trustScore);
+        }
     }
 }
