@@ -194,7 +194,7 @@ contract TenderContract is PartyContract {
     }
     
     //Check if a tender is valid or not i.e., it got minimum 6 positive votes
-    function isValid(bool[] memory _validationVotes) public pure returns (bool) {
+    function isValid(bool[] memory _validationVotes) public returns (bool) {
         uint voteCount = 0;
         uint256 totalValidators = _validationVotes.length;
         for(uint i=0; i<totalValidators; i++)
