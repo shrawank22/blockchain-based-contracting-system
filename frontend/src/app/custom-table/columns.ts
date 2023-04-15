@@ -10,4 +10,5 @@ export interface Column {
     isViewBids?: boolean;
     isAddBid?: boolean;
     isViewTender?: boolean;
+    isValidateTender?: boolean;
   }
