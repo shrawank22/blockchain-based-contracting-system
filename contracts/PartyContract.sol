@@ -2,6 +2,8 @@
 
 pragma solidity >=0.7.0 <0.9.0;
 
+// import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC20/ERC20.sol"; // Use this while running it in remix
+
 import "./Token.sol";
 
 contract PartyContract {
@@ -25,9 +27,8 @@ contract PartyContract {
     Token public tokenRef;
     uint256 tokenAmount = 50; // Giving 50 token to created party ,Fixed amount of tokens to credit
        
-    constructor(Token _tokenRef) {
-        tokenRef = _tokenRef; 
-    //    _mint(payable(msg.sender), 5000000000000000000000000000000000000000 * (10 ** 18)); 
+    constructor() {
+        // tokenRef = _tokenRef;  
         // admin = msg.sender;
     }
 
@@ -63,9 +64,10 @@ contract PartyContract {
         newParty.createdAt = block.timestamp;
         newParty.partyAddress = _partyAddress;
         newParty.tenderIds = new uint256[](0); 
-        newParty.freezedBalance = 0;
-        
+        // Giving 50 token to created party
+        // uint256 tokenAmount = 50; // Fixed amount of tokens to credit
         // tokenRef.transfer(payable(_partyAddress), tokenAmount * (10 ** 18));
+        
         partyAddresses.push(_partyAddress);
     }
 

@@ -53,20 +53,20 @@ function routes(app, web3, Party, Tender, Bid){
         tender.getTendersToValidate(req.query.address, {from:req.query.address})
         .then((data)=>{
             console.log(data);
-            tenderResponse = []
-            data.map( tender => {
-                tenderResponse.push({
-                    "Id": tender[8],
-                    "Title" : tender[0],
-                    "Description": tender[1],
-                    "Budget": tender[2],
-                    "Status": tender[4],
-                    "Milestones": tender[7],
-                    "Deadline":  (new Date(parseInt(tender[6]))).toString()
-                })
+            // tenderResponse = []
+            // data.map( tender => {
+            //     tenderResponse.push({
+            //         "Id": tender[8],
+            //         "Title" : tender[0],
+            //         "Description": tender[1],
+            //         "Budget": tender[2],
+            //         "Status": tender[4],
+            //         "Milestones": tender[7],
+            //         "Deadline":  (new Date(parseInt(tender[6]))).toString()
+            //     })
 
-            })
-            res.json({"status":"success","response" : tenderResponse})
+            // })
+            res.json({"status":"success","response" : data})
         })
         .catch(err=>{
             res.status(500).send({"status":"error","response" : err.message})
@@ -89,7 +89,7 @@ function routes(app, web3, Party, Tender, Bid){
         var tender = await Tender.deployed();
         tender.getMyTenders(req.query.address, {from:req.query.address})
         .then((data)=>{
-            console.log(data)
+            // console.log(data)
             tenderResponse = []
             data.map( tender => {
                 tenderResponse.push({
@@ -242,7 +242,6 @@ function routes(app, web3, Party, Tender, Bid){
         var bid = await Bid.deployed();
         bid.getAllBids(req.query.address, req.query.tenderId, {from:req.query.address})
         .then((data)=>{
-            console.log(data);
             bidsList = []
             data.map( bid => {
                 if(bid[2] > 0) {
