@@ -145,4 +145,18 @@ contract MilestonesContract {
         project.milestoneTimePeriods.push(_days);
         project.totalMilestones += 1;
     }
+    
+    //Filter Projects by the number of milestones completed
+    function filterProjectsByMilestones(Project[] memory projectList) public view returns(Project[] memory) {
+	for (uint i = 1; i < projectList.length; i++){
+		for (uint j = 0; j < i; j++){
+			if (projectList[i].completedMilestones < projectList[j].completedMilestones) {
+				Project memory tempProject = projectList[i];
+				projectList[i] = projectList[j];
+				projectList[j] = tempProject;
+			}
+		}
+	}
+	returns projectList;
+}
 }
