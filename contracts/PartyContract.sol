@@ -2,8 +2,6 @@
 
 pragma solidity >=0.7.0 <0.9.0;
 
-// import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC20/ERC20.sol"; // Use this while running it in remix
-
 import "./Token.sol";
 
 contract PartyContract {
@@ -17,7 +15,6 @@ contract PartyContract {
         uint256 createdAt;
         address partyAddress;
         uint256[] tenderIds;
-        uint256 balance;
         uint256 freezedBalance;
         uint256[] tenderIdsToValidate;
     }
@@ -69,7 +66,6 @@ contract PartyContract {
         newParty.freezedBalance = 0;
         
         // tokenRef.transfer(payable(_partyAddress), tokenAmount * (10 ** 18));
-        
         partyAddresses.push(_partyAddress);
     }
 
@@ -98,6 +94,4 @@ contract PartyContract {
     function getPartyDetails(address _partyAddress) public isOwner(_partyAddress) isPartyExists(_partyAddress) view returns (string memory, string memory, string memory, address, uint256, string memory) {
         return (parties[_partyAddress].name, parties[_partyAddress].contactNumber, parties[_partyAddress].email, parties[_partyAddress].partyAddress, parties[_partyAddress].trustScore, parties[_partyAddress].password);
     }
-
-
 }

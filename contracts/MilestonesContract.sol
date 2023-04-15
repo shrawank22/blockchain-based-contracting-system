@@ -86,7 +86,7 @@ contract MilestonesContract {
         require(issuerAddress == msg.sender, "You're not authorized to perform this action.");
         Projects storage project = projects[_tenderId];
         uint len = tenderRef.getTotalMilestones(_tenderId);
-        require(project.completedMilestones == len, "Action not allowed! All milestones are not completed."
+        require(project.completedMilestones == len, "Action not allowed! All milestones are not completed.");
         project.projectStatus = ProjectStatus.COMPLETED;
         //Get current trust score of the bidder
         uint256 trustScore = partyRef.getTrustScore(project.bidderAddress);
@@ -141,22 +141,22 @@ contract MilestonesContract {
         address issuerAddress = tenderRef.getIssuerAddress(_tenderId);
         require(issuerAddress == msg.sender, "You're not authorised to perform this action.");
         Projects storage project = projects[_tenderId];
+        require(project.projectStatus == ProjectStatus.ONGOING, "Project is not active, can't add milestones.");
 
         project.milestoneTimePeriods.push(_days);
         project.totalMilestones += 1;
     }
     
     //Filter Projects by the number of milestones completed
-    function filterProjectsByMilestones(Project[] memory projectList) public view returns(Project[] memory) {
-	for (uint i = 1; i < projectList.length; i++){
-		for (uint j = 0; j < i; j++){
-			if (projectList[i].completedMilestones < projectList[j].completedMilestones) {
-				Project memory tempProject = projectList[i];
-				projectList[i] = projectList[j];
-				projectList[j] = tempProject;
-			}
-		}
-	}
-	returns projectList;
-}
+//     function filterProjectsByMilestones(Project[] memory projectList) public view returns(Project[] memory) {
+// 	for (uint i = 1; i < projectList.length; i++){
+// 		for (uint j = 0; j < i; j++){
+// 			if (projectList[i].completedMilestones < projectList[j].completedMilestones) {
+// 				Project memory tempProject = projectList[i];
+// 				projectList[i] = projectList[j];
+// 				projectList[j] = tempProject;
+// 			}
+// 		}
+// 	}
+// }
 }

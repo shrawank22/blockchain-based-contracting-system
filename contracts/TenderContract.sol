@@ -87,19 +87,20 @@ contract TenderContract is PartyContract {
 
     function setBidIds(uint256[] memory _tenderBidIds, uint256 _tenderId) public{
         tenders[_tenderId].bidIds = _tenderBidIds;
+        tenders[_tenderId].bidIds.pop();
     }
 
 
-    function deleteBidId(uint256 _tenderId, uint256 _bidId) public {
-        uint256[] storage tenderBidIds = tenders[_tenderId].bidIds;
-        for (uint i = 0; i < tenderBidIds.length; i++){
-            if(tenderBidIds[i] == _bidId){
-                tenderBidIds[i] = tenderBidIds[tenderBidIds.length - 1];
-                delete tenderBidIds[tenderBidIds.length - 1];
-                break;
-            }
-        }
-    }
+    // function deleteBidId(uint256 _tenderId, uint256 _bidId) public {
+    //     uint256[] storage tenderBidIds = tenders[_tenderId].bidIds;
+    //     for (uint i = 0; i < tenderBidIds.length; i++){
+    //         if(tenderBidIds[i] == _bidId){
+    //             tenderBidIds[i] = tenderBidIds[tenderBidIds.length - 1];
+    //             delete tenderBidIds[tenderBidIds.length - 1];
+    //             break;
+    //         }
+    //     }
+    // }
 
     // Function for creating a tender
     function createTender(address _partyAddress, uint256 _budget, string memory _title, string memory _description, uint256 _deadline, uint256 _totalMilestones) isOwner(_partyAddress) public {
@@ -164,19 +165,8 @@ contract TenderContract is PartyContract {
         if(valid)
         {
             if(_vote) {
-                //deduct token from party account and add it to tender account
-                // tokenRef.transferFrom(msg.sender, newTender.issuerAddress, 1, parties[newTender.issuerAddress].freezedBalance);
                 newTender.validationVotes.push(_vote); // adds vote only if transaction is successful
-                uint256[] storage tenderIds = parties[msg.sender].tenderIdsToValidate;// removes tenderId from validator once validator votes
-                for(uint i=0; i<tenderIds.length; i++)
-                {
-                    if(tenderIds[i] == _tenderId){
-                        tenderIds[i] = tenderIds[tenderIds.length -1];
-                        tenderIds.pop();
-                    }
-                }
-                // parties[newTender.issuerAddress].freezedBalance +=1; //freezes amount in tender owner
-                // newTender.balance +=1; //updates the same in tender balance
+                
             }
         }
         else
@@ -194,7 +184,7 @@ contract TenderContract is PartyContract {
     }
     
     //Check if a tender is valid or not i.e., it got minimum 6 positive votes
-    function isValid(bool[] memory _validationVotes) public returns (bool) {
+    function isValid(bool[] memory _validationVotes) public pure returns (bool) {
         uint voteCount = 0;
         uint256 totalValidators = _validationVotes.length;
         for(uint i=0; i<totalValidators; i++)
@@ -212,14 +202,14 @@ contract TenderContract is PartyContract {
         return false;
     }
 
-    function getTendersToValidate(address _partyAddress) public isOwner(_partyAddress) view returns(Tender[] memory){
-        uint256[] memory tendersIdsToValidate = parties[_partyAddress].tenderIdsToValidate;
-         Tender[] memory tendersList = new Tender[](tendersIdsToValidate.length);
-        for (uint256 i = 0; i < tendersIdsToValidate.length; i++) {
-            tendersList[i] = tenders[tendersIdsToValidate[i]];
-        }
-        return(tendersList);
-    }
+    // function getTendersToValidate(address _partyAddress) public isOwner(_partyAddress) view returns(Tender[] memory){
+    //     uint256[] memory tendersIdsToValidate = parties[_partyAddress].tenderIdsToValidate;
+    //      Tender[] memory tendersList = new Tender[](tendersIdsToValidate.length);
+    //     for (uint256 i = 0; i < tendersIdsToValidate.length; i++) {
+    //         tendersList[i] = tenders[tendersIdsToValidate[i]];
+    //     }
+    //     return(tendersList);
+    // }
 
     function getAllActiveTenders() public view returns (Tender[] memory, uint256){
         require(tenderCount > 0, "No tenders exists");

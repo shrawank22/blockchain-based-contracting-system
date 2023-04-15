@@ -134,7 +134,14 @@ contract BidContract {
         require(bids[_bidId].bidStatus == BidStatus.PENDING , "bid cannot be deleted");
         bids[_bidId].isExists = false;
         // delete bids[_bidId];
-        tenderRef.deleteBidId(_tenderId, _bidId);             
+        // tenderRef.deleteBidId(_tenderId, _bidId);         
+        for(uint256 i=0;i<tenderBidIds.length;i++){
+            if(tenderBidIds[i] == _bidId){
+                tenderBidIds[i] = tenderBidIds[tenderBidIds.length -1];
+                tenderRef.setBidIds(tenderBidIds, _tenderId);
+                break;
+            }
+        }    
     }
 
     modifier isValidTender(uint256 tenderId) {
@@ -183,17 +190,17 @@ contract BidContract {
         tenderRef.updateTenderStatus(_tenderId, TenderStatus.ASSIGNED);
     }
     
-    function filterBidsByQuotedAmount(Bid[] memory bidList) public returns(Bid[] memory) {
-	for (uint i = 1; i < bidList.length; i++) {
-		for (uint j = 0; j < i; j++) {
-			if (bidList[i].quotedAmount < bidList[j].quotedAmount) {
-				Bid memory tempBid = bidList[i];
-				bidList[i] = bidList[j];
-				bidList[j] = tempBid;
-			}
-		}
-	}
-	return bidList;
-     }
+    // function filterBidsByQuotedAmount(Bid[] memory bidList) public returns(Bid[] memory) {
+	// for (uint i = 1; i < bidList.length; i++) {
+	// 	for (uint j = 0; j < i; j++) {
+	// 		if (bidList[i].quotedAmount < bidList[j].quotedAmount) {
+	// 			Bid memory tempBid = bidList[i];
+	// 			bidList[i] = bidList[j];
+	// 			bidList[j] = tempBid;
+	// 		}
+	// 	}
+	// }
+	// return bidList;
+    //  }
 
 }

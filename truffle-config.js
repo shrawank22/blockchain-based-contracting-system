@@ -11,9 +11,19 @@ module.exports = {
       network_id: "*" //Match any network id
     }
   },
+  plugins: ["truffle-contract-size"],
   compilers: {
     solc: {
       version: "^0.8.0"
     }
-  }
+  },
+  solidity: {
+    version: "0.8.3",
+    settings: {
+      optimizer: {
+        enabled: true,
+        runs: 1000,
+      },
+    },
+  },
 };

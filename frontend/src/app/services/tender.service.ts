@@ -118,7 +118,7 @@ export class TenderService {
   getTendersToValidate(address: string):  Observable<TenderResponse>{
     let queryParams = new HttpParams();
     queryParams = queryParams.append("address",address);
-    return this.http.get<TenderResponse>(`${config.apiUrl}/dashboard/vadilate-tenders`, {params:queryParams})
+    return this.http.get<TenderResponse>(`${config.apiUrl}/dashboard/validate-tenders`, {params:queryParams})
       .pipe(
         catchError(this.handleError)
       )

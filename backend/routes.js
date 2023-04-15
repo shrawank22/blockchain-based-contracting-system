@@ -50,8 +50,9 @@ function routes(app, web3, Party, Tender, Bid){
 
     app.get("/api/dashboard/validate-tenders", async(req, res, next) => {
         var tender = await Tender.deployed();
-        tender.getTendersToValidate(req.req.query.address, {from:req.query.address})
+        tender.getTendersToValidate(req.query.address, {from:req.query.address})
         .then((data)=>{
+            console.log(data);
             tenderResponse = []
             data.map( tender => {
                 tenderResponse.push({
@@ -88,6 +89,7 @@ function routes(app, web3, Party, Tender, Bid){
         var tender = await Tender.deployed();
         tender.getMyTenders(req.query.address, {from:req.query.address})
         .then((data)=>{
+            console.log(data)
             tenderResponse = []
             data.map( tender => {
                 tenderResponse.push({
