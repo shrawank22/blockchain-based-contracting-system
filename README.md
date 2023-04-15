@@ -195,4 +195,3 @@ Follow the below steps to run the code in local environment:
 - https://dev.to/willkre/create-deploy-an-erc-20-token-in-15-minutes-truffle-openzeppelin-goerli-33lb
 - https://github.com/agbanusi/Music-share-platform-through-Blockchain
 - https://docs.openzeppelin.com/contracts/3.x/erc20
-- https://github.com/scocoyash/Tenders-2.0-Ethereum-Dapp
