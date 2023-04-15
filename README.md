@@ -181,6 +181,12 @@ Follow the below steps to run the code in local environment:
 8. Finally, the project tab contains the project created by or assigned to party and milestones tracking.
 9. The party logout from the app by clicking on profile -> logout.
 
+### Steps to use the DApp
+1. Visit the page http://localhost:4200/ after starting ganache, NodeJs server and angular app, then import the secong ganache account into metamsk wallet as the first address is where our contracts are deployed.
+2. Now click on register and fill in the details. To fetched wallet id from metamask, click on the button next to it. It should automatically fill in your address and submit the form to register.
+3. Once registration is successful , go to login page and connect to wallet same way as in above step, type your password and login. Voila, now you can access the DApp.
+4. To get started, create a tender by going to tenders tab of dashboard.
+
 ## ⛏️ Built Using <a name = "built_using" id="built_using"></a>
 
 - [Ganache](https://trufflesuite.com/ganache/) - Ethereun Test Network
