@@ -62,7 +62,7 @@ contract MilestonesContract {
         bool approval = project.approvalFromIssuer;
         
         if(approval) {
-            project.completedMilestoneTimePeriods[_milestoneNumber-1] = _days;
+            project.completedMilestoneTimePeriods.push(_days);
             int decidedDays = int(project.milestoneTimePeriods[_milestoneNumber-1]);
             project.workScore[_milestoneNumber-1] = int((decidedDays - int(_days)) / decidedDays);
             project.approvalFromIssuer = false;
@@ -118,5 +118,15 @@ contract MilestonesContract {
         require(issuerAddress == msg.sender, "You're not authorized to perform this action.");
         Projects storage project = projects[_tenderId];
         project.projectStatus = ProjectStatus.HALTED;
+        //Negative impact on issuer trust score
+        uint256 trustScore = partyRef.getTrustScore(issuerAddress);
+        uint256 len = project.completedMilestoneTimePeriods.length;
+        uint256 workDays = 0;
+        for(uint256 i=0; i<len; i++) {
+            workDays += project.completedMilestoneTimePeriods[i];
+        }
+        uint256 totalDays = tenderRef.getTotalMilestones(_tenderId);
+        trustScore = trustScore - (workDays/totalDays);
+        partyRef.setTrustScore(project.bidderAddress, trustScore);
     }
 }
