@@ -3,6 +3,7 @@
 //the version of solidity that is compatible
 import "./PartyContract.sol";
 enum TenderStatus{ NEW, OPEN, CLOSED, SUSPENDED, ASSIGNED } //created---OPEN, deadline crosses---CLOSED, project is assigned ---- ASSIGNED
+import "./Token.sol";
 
 pragma solidity ^0.8.0;
 contract TenderContract is PartyContract {
@@ -24,11 +25,11 @@ contract TenderContract is PartyContract {
         uint256 balance;
     }
 
-    // PartyContract public partyRef;
+    // Token public tokenRef;
 
-    // constructor(PartyContract _partyRef){
-    //     partyRef = _partyRef;
-    // }
+    constructor(Token _tokenRef) PartyContract(_tokenRef){
+        // tokenRef = _tokenRef;
+    }
 
     mapping (uint256 => Tender) public tenders;
     uint256 tenderCount = 0;
@@ -58,9 +59,22 @@ contract TenderContract is PartyContract {
         return tenders[_tenderId].issuerAddress;
     }
 
+    function getTotalMilestones(uint256 _tenderId) public view returns(uint256){
+            return tenders[_tenderId].totalMilestones;
+    }
+
+    function getBidsCount(uint256 _tenderId) public view returns(uint256){
+            return tenders[_tenderId].bidIds.length;
+    }
+
     function addBidId(uint256 _tenderId, uint256 bidId) public {
         tenders[_tenderId].bidIds.push(bidId);
     }
+
+    function setBidIds(uint256[] memory _tenderBidIds, uint256 _tenderId) public{
+        tenders[_tenderId].bidIds = _tenderBidIds;
+    }
+
 
     function deleteBidId(uint256 _tenderId, uint256 _bidId) public {
         uint256[] storage tenderBidIds = tenders[_tenderId].bidIds;
@@ -72,11 +86,6 @@ contract TenderContract is PartyContract {
             }
         }
     }
-
-    // modifier isOwner(address owner) {
-    //     require(msg.sender == owner, "Caller is not owner");
-    //     _;
-    // }
 
     // Function for creating a tender
     function createTender(address _partyAddress, uint256 _budget, string memory _title, string memory _description, uint256 _deadline, uint256 _totalMilestones) isOwner(_partyAddress) public {
@@ -139,9 +148,12 @@ contract TenderContract is PartyContract {
         }
         if(valid)
         {
-            newTender.validationVotes.push(_vote);
             if(_vote) {
                 //deduct token from party account and add it to tender account
+                // tokenRef.transferFrom(msg.sender, newTender.issuerAddress, 1, parties[newTender.issuerAddress].freezedBalance);
+                newTender.validationVotes.push(_vote); // adds vote only if transaction is successful
+                // parties[newTender.issuerAddress].freezedBalance +=1; //freezes amount in tender owner
+                // newTender.balance +=1; //updates the same in tender balance
             }
         }
         else

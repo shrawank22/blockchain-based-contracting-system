@@ -15,6 +15,7 @@ contract MilestonesContract {
         uint256 tenderId;
         address issuerAddress;
         address bidderAddress;
+        uint256 totalMilestones;
         uint[] milestoneTimePeriods;
         uint[] completedMilestoneTimePeriods;
         int[] workScore;
@@ -31,12 +32,14 @@ contract MilestonesContract {
 
     function setMilestoneTimeline(uint[] memory _milestoneTimePeriods, uint256 _bidId, uint256 _tenderId) public {
         address issuerAddress = tenderRef.getIssuerAddress(_tenderId);
+        uint256 _totalMilestones = tenderRef.getTotalMilestones(_tenderId);
         require(issuerAddress == msg.sender, "You're not authorized to perform this function.");
         Projects storage newProject = projects[_tenderId];
         address _bidderAddress = bidRef.getBidderAddress(_bidId);
         newProject.milestoneTimePeriods = _milestoneTimePeriods;
         newProject.issuerAddress = msg.sender;
         newProject.bidderAddress = _bidderAddress;
+        newProject.totalMilestones = _totalMilestones;
         newProject.tenderId = _tenderId;
         newProject.approvalFromIssuer = false;
         newProject.projectStatus = ProjectStatus.ONGOING;
@@ -98,5 +101,14 @@ contract MilestonesContract {
         require(issuerAddress == msg.sender, "You're not authorized to perform this action.");
         Projects storage project = projects[_tenderId];
         project.projectStatus = ProjectStatus.HALTED;
+    }
+
+    function addMilestone(uint256 _tenderId, uint256 _days) public {
+        address issuerAddress = tenderRef.getIssuerAddress(_tenderId);
+        require(issuerAddress == msg.sender, "You're not authorised to perform this action.");
+        Projects storage project = projects[_tenderId];
+
+        project.milestoneTimePeriods.push(_days);
+        project.totalMilestones += 1;
     }
 }

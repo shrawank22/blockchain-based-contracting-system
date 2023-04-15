@@ -18,6 +18,7 @@ contract BidContract {
         uint256 tenderId;
         BidStatus bidStatus;
         uint256 createdAt;
+        bool isExists;
     }
 
     mapping (uint256 => Bid) public bids;
@@ -51,6 +52,7 @@ contract BidContract {
 
     function createBid(address _bidderAddress, uint256 _tenderId, string memory _bidClause, uint256 _quotedAmount) public{
         // Tender storage _tender = tenderRef.tenders(_tenderId);
+        require(tenderRef.getBidsCount(_tenderId) <= 15, "Maximum bids for this tender exceeded");
         uint256 _budget = tenderRef.getBudget(_tenderId);
         TenderStatus _tenderStatus = tenderRef.getTenderStatus(_tenderId);
         uint256 _deadline = tenderRef.getDeadline(_tenderId);
@@ -68,6 +70,7 @@ contract BidContract {
         newBid.tenderId = _tenderId;
         newBid.bidStatus = BidStatus.PENDING;
         newBid.createdAt = block.timestamp;
+        newBid.isExists = true;
         tenderRef.addBidId(_tenderId, bidCount);
         bidCount++;
     }
@@ -89,7 +92,7 @@ contract BidContract {
         uint count =0;
         Bid[] memory bidsList = new Bid[](tenderRef.getTenderCount());
         for (uint256 i = 0; i < bidCount; i++) {
-            if(bids[i].bidderAddress == _bidderAddress){
+            if(bids[i].isExists == true && bids[i].bidderAddress == _bidderAddress){
                 count++;
                 bidsList[i] = bids[i];
             }
@@ -104,7 +107,9 @@ contract BidContract {
         require(tenderBidIds.length > 0, "No bids exists");
         Bid[] memory bidsList = new Bid[](tenderBidIds.length);
         for (uint256 i = 0; i < tenderBidIds.length; i++) {
-            bidsList[i] = bids[tenderBidIds[i]];
+            if(bids[i].isExists == true) {
+                bidsList[i] = bids[tenderBidIds[i]];
+            }
         }
         return(bidsList);
     }
@@ -127,7 +132,8 @@ contract BidContract {
         require(tenderBidIds.length > 0, "No bids exists");
         require(bids[_bidId].quotedAmount > 0 , "bid with address doesn't exists");
         require(bids[_bidId].bidStatus == BidStatus.PENDING , "bid cannot be deleted");
-        delete bids[_bidId];
+        bids[_bidId].isExists = false;
+        // delete bids[_bidId];
         tenderRef.deleteBidId(_tenderId, _bidId);             
     }
 

@@ -124,6 +124,7 @@ function routes(app, web3, Party, Tender, Bid){
         .then((data)=>{
             bidResponse = []
             data[0].slice(0, data[1]).map( bid => {
+                if(bid[2] > 0) {
                 bidResponse.push({
                     "BidClause": bid[1],
                     "QuoteAmount" : bid[2],
@@ -131,7 +132,7 @@ function routes(app, web3, Party, Tender, Bid){
                     "BidId": bid[0],
                     "Status": bid[5],
                 })
-
+            }
             })
             
             res.json({"status":"success","response" : bidResponse})
@@ -203,15 +204,18 @@ function routes(app, web3, Party, Tender, Bid){
         var bid = await Bid.deployed();
         bid.getAllBids(req.query.address, req.query.tenderId, {from:req.query.address})
         .then((data)=>{
+            console.log(data);
             bidsList = []
             data.map( bid => {
-                bidsList.push({
-                    "BidClause": bid[1],
-                    "QuoteAmount" : bid[2],
-                    "TenderId": bid[4],
-                    "BidId": bid[0],
-                    "Status": bid[5],
-                })
+                if(bid[2] > 0) {
+                    bidsList.push({
+                        "BidClause": bid[1],
+                        "QuoteAmount" : bid[2],
+                        "TenderId": bid[4],
+                        "BidId": bid[0],
+                        "Status": bid[5],
+                    })
+                }
             })
             res.json({"status":"success","response" : bidsList})
         })
