@@ -21,6 +21,7 @@ contract MilestonesContract {
         int[] workScore;
         bool approvalFromIssuer;
         ProjectStatus projectStatus;
+        uint256 completedMilestones;
     }
 
     constructor(PartyContract _partyRef, TenderContract _tenderRef, BidContract _bidRef){
@@ -69,6 +70,7 @@ contract MilestonesContract {
             int decidedDays = int(project.milestoneTimePeriods[_milestoneNumber-1]);
             project.workScore[_milestoneNumber-1] = int((decidedDays - int(_days)) / decidedDays);
             project.approvalFromIssuer = false;
+            project.completedMilestones += 1;
         }
     }
 
@@ -84,12 +86,7 @@ contract MilestonesContract {
         require(issuerAddress == msg.sender, "You're not authorized to perform this action.");
         Projects storage project = projects[_tenderId];
         uint len = tenderRef.getTotalMilestones(_tenderId);
-        for(uint i = 0; i < len; i++)
-        {
-            if(project.completedMilestoneTimePeriods[i] != 0) {
-                revert("All milestones are not completed.");
-            }
-        }
+        require(project.completedMilestones == len, "Action not allowed! All milestones are not completed."
         project.projectStatus = ProjectStatus.COMPLETED;
         //Get current trust score of the bidder
         uint256 trustScore = partyRef.getTrustScore(project.bidderAddress);
