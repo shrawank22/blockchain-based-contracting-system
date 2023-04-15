@@ -48,6 +48,42 @@ function routes(app, web3, Party, Tender, Bid){
         })
     })
 
+    app.get("/api/dashboard/validate-tenders", async(req, res, next) => {
+        var tender = await Tender.deployed();
+        tender.getTendersToValidate(req.req.query.address, {from:req.query.address})
+        .then((data)=>{
+            tenderResponse = []
+            data.map( tender => {
+                tenderResponse.push({
+                    "Id": tender[8],
+                    "Title" : tender[0],
+                    "Description": tender[1],
+                    "Budget": tender[2],
+                    "Status": tender[4],
+                    "Milestones": tender[7],
+                    "Deadline":  (new Date(parseInt(tender[6]))).toString()
+                })
+
+            })
+            res.json({"status":"success","response" : tenderResponse})
+        })
+        .catch(err=>{
+            res.status(500).send({"status":"error","response" : err.message})
+        })
+    })
+
+    app.post("/api/dashboard/validate",async(req,res,next) => {
+        var tender = await Tender.deployed();
+        const {partyAddress, tenderId} = req.body;
+        tender.validate(partyAddress, tenderId,{from:partyAddress})
+        .then((data)=>{
+            res.json({"status":"success","response" : data})
+        })
+        .catch(err=>{
+            res.status(500).send({"status":"error","response" : err.message})
+        })
+    })
+
     app.get("/api/tenders", async(req,res,next) => {
         var tender = await Tender.deployed();
         tender.getMyTenders(req.query.address, {from:req.query.address})

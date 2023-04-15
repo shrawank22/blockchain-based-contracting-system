@@ -39,19 +39,15 @@ contract TenderContract is PartyContract {
         return tenderCount;
     }
     
-    function getTotalMilestones(uint256 _tenderId) public view returns(uint256) {
-        return tenders[_tenderId].totalMilestones;
-    }
-    
     function getValidators(uint256 _tenderId) public view returns(address[] memory) {
         return tenders[_tenderId].validatorsAddresses;
     }
     
     function getTotalProjectDays(uint256 _tenderId) public view returns(uint256) {
         uint256 sum = 0;
-        uint256[] milestoneTimePeriods = tenders[_tenderId].milestoneTimePeriods;
+        uint256[] memory milestoneTimePeriods = tenders[_tenderId].milestoneTimePeriods;
         uint256 len = milestoneTimePeriods.length;
-        for(uint256 i=0; i , len; i++) {
+        for(uint256 i=0; i < len; i++) {
             sum += milestoneTimePeriods[i];
         }
         return sum;
@@ -168,15 +164,19 @@ contract TenderContract is PartyContract {
         if(valid)
         {
             if(_vote) {
-<<<<<<< HEAD
                 //deduct token from party account and add it to tender account
                 // tokenRef.transferFrom(msg.sender, newTender.issuerAddress, 1, parties[newTender.issuerAddress].freezedBalance);
                 newTender.validationVotes.push(_vote); // adds vote only if transaction is successful
+                uint256[] storage tenderIds = parties[msg.sender].tenderIdsToValidate;// removes tenderId from validator once validator votes
+                for(uint i=0; i<tenderIds.length; i++)
+                {
+                    if(tenderIds[i] == _tenderId){
+                        tenderIds[i] = tenderIds[tenderIds.length -1];
+                        tenderIds.pop();
+                    }
+                }
                 // parties[newTender.issuerAddress].freezedBalance +=1; //freezes amount in tender owner
                 // newTender.balance +=1; //updates the same in tender balance
-=======
-                //deduct token from party account and add it to tender account on positive vote
->>>>>>> b51a008a60352698e56da25f65cfa5c77b967238
             }
         }
         else
@@ -210,6 +210,15 @@ contract TenderContract is PartyContract {
             return true;
         }
         return false;
+    }
+
+    function getTendersToValidate(address _partyAddress) public isOwner(_partyAddress) view returns(Tender[] memory){
+        uint256[] memory tendersIdsToValidate = parties[_partyAddress].tenderIdsToValidate;
+         Tender[] memory tendersList = new Tender[](tendersIdsToValidate.length);
+        for (uint256 i = 0; i < tendersIdsToValidate.length; i++) {
+            tendersList[i] = tenders[tendersIdsToValidate[i]];
+        }
+        return(tendersList);
     }
 
     function getAllActiveTenders() public view returns (Tender[] memory, uint256){
