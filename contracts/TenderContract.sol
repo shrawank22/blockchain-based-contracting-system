@@ -39,7 +39,18 @@ contract TenderContract is PartyContract {
     }
     
     function getTotalMilestones(uint256 _tenderId) public view returns(uint256) {
-    return tenders[_tenderId].totalMilestones;
+        return tenders[_tenderId].totalMilestones;
+    }
+    
+    function getTotalProjectDays(uint256 _tenderId) public view returns(uint256) {
+        uint256 sum = 0;
+        uint256[] milestoneTimePeriods = tenders[_tenderId].milestoneTimePeriods;
+        uint256 len = milestoneTimePeriods.length;
+        for(uint256 i=0; i , len; i++) {
+            sum += milestoneTimePeriods[i];
+        }
+        return sum;
+    }
 
     function getBudget(uint256 _tenderId) public view returns(uint256){
         return tenders[_tenderId].budget;
